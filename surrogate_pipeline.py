@@ -8,3 +8,7 @@ from GENE_UQ.Samplers import uniform
 
 if __name__ == '__main__':
     print('hello')
+    
+    
+    parser = GENEparser
+
