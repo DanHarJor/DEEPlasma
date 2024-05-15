@@ -6,7 +6,7 @@ n_procs_x =  1
 n_procs_y =  1
 n_procs_z =  9
 n_procs_sim = 144
-n_parallel_sims = 10
+n_parallel_sims = 1
 /
 
 &box
@@ -26,7 +26,7 @@ kx_center = 0.0
 /
 
 &in_out
-diagdir = '/scratch/project_462000451/gene_out/ped2_safescan/' 
+diagdir = '/scratch/project_462000451/gene_out/gene_auto/' 
 read_checkpoint = .F.
 istep_nrg = 10
 istep_omega = 10
