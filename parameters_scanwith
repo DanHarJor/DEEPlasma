@@ -1,61 +1,54 @@
 &parallelization
     n_procs_s = 2
-    n_procs_v = 1
-    n_procs_w = 8
+    n_procs_v = -1
+    n_procs_w = -16
     n_procs_x = 1
     n_procs_y = 1
-    n_procs_z = 9
-    n_procs_sim = 144
-    n_parallel_sims = 1
+    min_npz = 4
+    n_procs_z = -4
 /
 
 &box
     n_spec = 2
-    nx0 = 9
+    nx0 = 15
     nky0 = 1
-    nz0 = 135
-    nv0 = 32
-    nw0 = 8
+    nz0 = 24
+    nv0 = 48
+    nw0 = 16
+    x0 = 0.75
+    kymin = 0.1
+    n0_global = -1111
+    adapt_ly = .true.
+    lx = 125.628
     lv = 3.0
     lw = 9.0
-    x0 = 0.96
-    kymin = 48.0      !scanlist: 0.19388966615554953, 0.07775102260955716, 0.9827290072072553, 0.9766058820168075, 0.20908600207032924
-    kx_center = 0.0
 /
 
 &in_out
     diagdir = '/project/project_462000451/gene_out/gene_auto'
     read_checkpoint = .false.
+    istep_field = 1000
+    istep_mom = 2000
     istep_nrg = 10
-    istep_omega = 10
-    istep_field = 10
     istep_energy = 100
-    istep_mom = 600
-    istep_vsp = 5000
-    istep_schpt = 5000
+    istep_vsp = 0
+    istep_schpt = 500
 /
 
 &general
-    bpar = .true.
-    underflow_limit = 1e-20
     nonlinear = .false.
-    x_local = .true.
-    arakawa_zv = .false.
-    comp_type = 'IV'
     calc_dt = .true.
-    ntimesteps = 1000000
-    timelim = 22000
-    simtimelim = 50
-    omega_prec = 0.001
-    hyp_z = -2
-    hyp_v = 0.2
-    init_cond = 'alm'
-    beta = 0.0022366753
-    debye2 = 0.00023915662
-    tau = 1.7
+    dt_max = 0.0385
+    timelim = 44000
+    ntimesteps = 10000000
+    simtimelim = 10000
+    beta = 0.00054323796
+    debye2 = 0.0011889208
     collision_op = 'landau'
-    coll = 0.0042788004
-    coll_cons_model = 'xu_rosenbluth'
+    coll = 0.0007544424
+    zeff = 1.6
+    hyp_z = -1
+    hyp_v = 0.0
 /
 
 &geometry
@@ -77,30 +70,30 @@
     rhostar = -1
 /
 
-&species       !scanwith: 0, 59.77745437671036, 9.018086216315417, 54.29433521090884, 34.73597113811698, 47.664905174523525
-    name = 'i'
-    omn = 15.265123
-    omt = 28.287016
+&species
+    name = 'ions'
+    omn = 1.5417906      !scanlist: 59.77745437671036, 9.018086216315417, 54.29433521090884, 34.73597113811698, 47.664905174523525
+    omt = 2.795488
     mass = 1.0
-    temp = 1.0
+    temp = 0.64656397
     dens = 1.0
     charge = 1
 /
 
 &species
-    name = 'e'
-    omn = 15.265123
-    omt = 28.287016       !scanwith: 0, 46.6103021511149, 35.07650181292344, 49.9330598243938, 60.28604945190982, 39.06962898837463
-    mass = 0.0002724
+    name = 'electrons'
+    omn = 1.5417906       !scanwith: 0, 59.77745437671036, 9.018086216315417, 54.29433521090884, 34.73597113811698, 47.664905174523525
+    omt = 5.3871083       !scanwith: 0, 19.08776838877155, 11.752696164814136, 68.90920045519508, 68.52247675895626, 20.0475369728629
+    mass = 0.00027244
     temp = 1.0
     dens = 1.0
     charge = -1
 /
 
 &units
-    bref = 1.95451278338
-    tref = 0.501585859244667
-    nref = 4.227951567070655
-    lref = 0.760585884664
-    mref = 2.0
+    lref = 0.51645
+    bref = 2.6172
+    tref = 0.60520329375
+    nref = 1.5256594374999999
+    mref = 1.999007501778479
 /
