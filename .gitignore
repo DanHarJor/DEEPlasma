@@ -1,4 +1,6 @@
 temp/*
 scanlogs/*
 saved_results/*
+run_files/*
+out_files/*
 *parameters_scanwith*

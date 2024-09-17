@@ -17,7 +17,7 @@
     nv0 = 32
     nw0 = 8
     lv = 3.0
-    lw = 9.0
+    lw = 9.0    
     x0 = 0.96
     kymin = 48.0
     kx_center = 0.0
@@ -26,6 +26,7 @@
 &in_out
     diagdir = '/scratch/project_462000451/gene_out/gene_auto/'
     read_checkpoint = .false.
+    write_checkpoint = .true.
     istep_nrg = 10
     istep_omega = 10
     istep_field = 10
@@ -44,13 +45,12 @@
     comp_type = 'IV'
     calc_dt = .true.
     ntimesteps = 1000000
-    timelim = 1040.0
-    simtimelim = 1040.0
-    omega_prec = 1e-06
+    timelim = 1300
+    simtimelim = 1300
     hyp_z = -2
     hyp_v = 0.2
     init_cond = 'alm'
-    beta = 0.0022366753
+    beta = -1
     debye2 = 0.00023915662
     tau = 1.7
     collision_op = 'landau'
@@ -63,7 +63,7 @@
     trpeps = 0.25643
     q0 = 2.2851
     shat = 2.2142
-    amhd = 0.016535
+    amhd = -1 !# Changed on 10th of september to -1. So origional data was probably incorrect as -1 is needed for it to be consistent with gradients and Bref 
     drr = -0.14686
     drz = -0.076232
     kappa = 1.349
@@ -100,7 +100,7 @@
 &units
     bref = 1.95451278338
     tref = 0.501585859244667
-    nref = 4.227951567070655
+    nref = 4.227951567070655    
     lref = 0.760585884664
     mref = 2.0
 /
