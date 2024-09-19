@@ -3,4 +3,5 @@ scanlogs/*
 saved_results/*
 run_files/*
 out_files/*
+__pycache__/*
 *parameters_scanwith*

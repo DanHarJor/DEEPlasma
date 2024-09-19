@@ -15,9 +15,32 @@ class Config():
         #  It then uses ssh to run GENE with this parametres file and a passed sbatch script.
         self.host = 'lumi1' #needs to be configured in /home/<user>/.ssh/config
         self.sbatch_base_path = "/home/djdaniel/DEEPlasma/sbatch_base_dp" 
-        # guess_sample_wallseconds = 200 # a guess for the number of seconds it takes to run one sample.
+        # single_run_timelim = 200 # a guess for the number of seconds it takes to run one sample.
         self.remote_run_dir = '/project/project_462000451/gene/'
         self.local_run_files_dir = "/home/djdaniel/DEEPlasma/run_files"
+
+
+        #Paramiko
+        #Some SSH is done with bash commands using the .ssh/config host given above
+        #Other SSH is done with paramiko, aka what I should have used from the start.
+        #___________________
+        import paramiko
+        p_host = 'lumi.csc.fi'
+        p_user = 'danieljordan'
+        p_IdentityFile = '/home/djdaniel/.ssh/lumi-key'
+        with open(p_IdentityFile, 'r') as key_file:
+            pkey = paramiko.RSAKey.from_private_key(key_file)        
+        # pkey = paramiko.RSAKey.from_private_key_file(p_IdentityFile, password=p_password)
+        self.paramiko_ssh_client = paramiko.SSHClient()
+        policy = paramiko.AutoAddPolicy()
+        self.paramiko_ssh_client.set_missing_host_key_policy(policy)
+        self.paramiko_ssh_client.connect(p_host, username=p_user, pkey=pkey)
+        self.paramiko_sftp_client = self.paramiko_ssh_client.open_sftp()
+
+        remote_params_dummy_file = config.paramiko_sftp_client.open('.bashrc') # any dummy file would serve this purpose
+        self.paramiko_file_type = type(remote_params_dummy_file) 
+
+
 
 config = Config()
 
