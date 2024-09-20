@@ -18,7 +18,7 @@ class Config():
         # single_run_timelim = 200 # a guess for the number of seconds it takes to run one sample.
         self.remote_run_dir = '/project/project_462000451/gene/'
         self.local_run_files_dir = "/home/djdaniel/DEEPlasma/run_files"
-
+        self.local_username = 'djdaniel' # used to identify if a directory is local or on remote.
 
         #Paramiko
         #Some SSH is done with bash commands using the .ssh/config host given above
@@ -37,16 +37,19 @@ class Config():
         self.paramiko_ssh_client.connect(p_host, username=p_user, pkey=pkey)
         self.paramiko_sftp_client = self.paramiko_ssh_client.open_sftp()
 
-        remote_params_dummy_file = config.paramiko_sftp_client.open('.bashrc') # any dummy file would serve this purpose
+        remote_params_dummy_file = self.paramiko_sftp_client.open('.bashrc') # any dummy file would serve this purpose
         self.paramiko_file_type = type(remote_params_dummy_file) 
 
-
+        import os
+        import sys
+        print('Appending to path:', os.path.join(os.getcwd(),'config'))
+        sys.path.append(os.path.join(os.getcwd(),'config'))
 
 config = Config()
 
 if __name__ == '__main__':
     config = Config()
-    print(config.save_dir)
+    # print(config.save_dir)
 
 
     
