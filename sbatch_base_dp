@@ -2,8 +2,8 @@
 ## LUMI-C (CPU partition) submit script template
 ## Submit via: sbatch submit.cmd (parameters below can be overwritten by command line options)
 #SBATCH -t 00:30:00                # wallclock limit
-#SBATCH -N 2                       # total number of nodes, 2 CPUs with 64 rank each
-#SBATCH --ntasks=144      # 64 per CPU (i.e. 128 per node). Additional 2 hyperthreads disabled
+#SBATCH -N 1                       # total number of nodes, 2 CPUs with 64 rank each
+#SBATCH --ntasks=128      # 64 per CPU (i.e. 128 per node). Additional 2 hyperthreads disabled
 #SBATCH --mem=0                    # Allocate all the memory on each node
 #SBATCH -p standard                # all options see: scontrol show partition
 #SBATCH -J auto_gene                    # Job name
