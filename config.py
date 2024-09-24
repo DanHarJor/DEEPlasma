@@ -39,11 +39,11 @@ class Config():
 
         remote_params_dummy_file = self.paramiko_sftp_client.open('.bashrc') # any dummy file would serve this purpose
         self.paramiko_file_type = type(remote_params_dummy_file) 
-
-        import os
-        import sys
-        print('Appending to path:', os.path.join(os.getcwd(),'config'))
-        sys.path.append(os.path.join(os.getcwd(),'config'))
+        #___________________
+        # import os
+        # import sys
+        # print('Appending to path:', os.path.join(os.getcwd(),'config'))
+        # sys.path.append(os.path.join(os.getcwd(),'config'))
 
 config = Config()
 
