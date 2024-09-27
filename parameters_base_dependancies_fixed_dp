@@ -44,8 +44,8 @@
     comp_type = 'IV'
     calc_dt = .true.
     ntimesteps = 1000000
-    timelim = 40000
-    simtimelim = 10
+    timelim = 4e-10
+    simtimelim = 6.584296553193289e-11
     hyp_z = -2
     hyp_v = 0.2
     init_cond = 'alm'
@@ -98,4 +98,7 @@
 &units
     lref = 0.760585884664
     mref = 2.0
+    tref = -1
+    nref = -1
+    bref = -1
 /
