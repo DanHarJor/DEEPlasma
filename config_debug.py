@@ -5,7 +5,7 @@ class Config():
         #The parsers main function is write_input_file
         # wite_input_file takes a parameters file from base_params_path and a set of points in the form of a dict {param1:[point1,point2...], param2:[point1,point2...]...} 
         #  It will then create a parameters file that can scan over all the points.
-        self.base_params_path = "/home/djdaniel/DEEPlasma/parameters_base_dependancies_fixed_dp" 
+        self.base_params_path = "/home/djdaniel/DEEPlasma/parameters_debug" 
         self.remote_save_base_dir=f'/scratch/project_462000451/gene_out/gene_auto/'
         self.save_dir = "/home/djdaniel/DEEPlasma/temp/"
 
@@ -15,7 +15,7 @@ class Config():
         # code_run will take the set of points named samples and parse them into a parameters file.
         #  It then uses ssh to run GENE with this parametres file and a passed sbatch script.
         self.host = 'lumi' #needs to be configured in /home/<user>/.ssh/config
-        self.base_sbatch_path = "/home/djdaniel/DEEPlasma/sbatch_base_dp" 
+        self.base_sbatch_path = "/home/djdaniel/DEEPlasma/sbatch_debug" 
         # single_run_timelim = 200 # a guess for the number of seconds it takes to run one sample.
         self.remote_run_dir = '/project/project_462000451/gene/'
         self.local_run_files_dir = "/home/djdaniel/DEEPlasma/run_files"
@@ -42,7 +42,6 @@ class Config():
 
         remote_params_dummy_file = self.paramiko_sftp_client.open('.bashrc') # any dummy file would serve this purpose
         self.paramiko_file_type = type(remote_params_dummy_file) 
-        print(self.paramiko_file_type)
         #___________________
         # import os
         # import sys
