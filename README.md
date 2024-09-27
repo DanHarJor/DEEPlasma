@@ -16,3 +16,20 @@ no
 coll=0.1
 This would cause a problem with parser.write_input_file(), it is to avoid coll being confused with collision_op
 
+# Version Management Guidelines
+
+## DEEPlasma
+No specific version management instructions as this mainly holds notebooks and the real code is in GENE_ML
+
+Just only edit your own notebooks and we shouldn't have merge issues.
+
+## GENE_ML 
+main is for stable code only  
+  
+Develop tests for your code as your write it, I use a notebook for this.  
+  
+Development branch is for merging multiple feature branches together and testing before merging to main branch.    
+
+Make a new feature branch for each feature **IMPORTANT Make sure the files being edited are different for each feature. If two features must share the same files then either focus on one before starting the other or use one branch for both features**    
+  
+## Push to remote often to keep it safe online  
