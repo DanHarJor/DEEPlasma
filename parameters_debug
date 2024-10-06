@@ -1,21 +1,21 @@
 &parallelization
     n_procs_s = 1
     n_procs_v = 1
-    n_procs_w = 1
+    n_procs_w = 2
     n_procs_x = 1
     n_procs_y = 1
-    n_procs_z = 1
-    n_procs_sim = 1
+    n_procs_z = 2
+    n_procs_sim = 4
     n_parallel_sims = 1
 /
 
 &box
     n_spec = 2
-    nx0 = 1
+    nx0 = 2
     nky0 = 1
-    nz0 = 1
-    nv0 = 1
-    nw0 = 1
+    nz0 = 4
+    nv0 = 6
+    nw0 = 2
     lv = 2
     lw = 2
     x0 = 2
@@ -27,13 +27,13 @@
     diagdir = '/scratch/project_462000451/gene_out/gene_auto/'
     read_checkpoint = .false.
     write_checkpoint = .true.
-    istep_nrg = 1e40
-    istep_omega = 1e40
-    istep_field = 1e40
-    istep_energy = 1e40
-    istep_mom = 1e40
-    istep_vsp = 1e40
-    istep_schpt = 1e40
+    istep_nrg = 10000
+    istep_omega = 10000
+    istep_field = 10000
+    istep_energy = 10000
+    istep_mom = 10000
+    istep_vsp = 10000
+    istep_schpt = 10000
 /
 
 &general
@@ -55,6 +55,11 @@
     collision_op = 'landau'
     coll = 0.0042788004
     coll_cons_model = 'xu_rosenbluth'
+/
+
+&miscellaneous
+dpdx_pm = -1
+dpdx_term = 'full_drift'
 /
 
 &geometry
