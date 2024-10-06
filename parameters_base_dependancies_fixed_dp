@@ -75,6 +75,11 @@
     major_r = 3.1481
 /
 
+&miscellaneous
+dpdx_pm = -1
+dpdx_term = 'full_drift'
+/
+
 &species
     name = 'i'
     omn = 15.265123

@@ -33,15 +33,16 @@ class Config():
     def paramiko_setup(self):
         with open(self.p_IdentityFile, 'r') as key_file:
             pkey = paramiko.RSAKey.from_private_key(key_file)        
-        # pkey = paramiko.RSAKey.from_private_key_file(p_IdentityFile, password=p_password)
         self.paramiko_ssh_client = paramiko.SSHClient()
         policy = paramiko.AutoAddPolicy()
         self.paramiko_ssh_client.set_missing_host_key_policy(policy)
         self.paramiko_ssh_client.connect(self.p_host, username=self.p_user, pkey=pkey)
         self.paramiko_sftp_client = self.paramiko_ssh_client.open_sftp()
 
-        remote_params_dummy_file = self.paramiko_sftp_client.open('.bashrc') # any dummy file would serve this purpose
-        self.paramiko_file_type = type(remote_params_dummy_file) 
+    def paramiko_close(self):
+        self.paramiko_sftp_client.close()
+        self.paramiko_sftp_client.close()
+
         #___________________
         # import os
         # import sys
@@ -51,7 +52,8 @@ class Config():
 config = Config()
 
 if __name__ == '__main__':
-    config = Config()
+    None
+    # config = Config()
     # print(config.save_dir)
 
 

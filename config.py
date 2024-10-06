@@ -1,11 +1,14 @@
 import paramiko
 class Config():
-    def __init__(self):
+    def __init__(self, local=False):
         ##Parser
         #The parsers main function is write_input_file
         # wite_input_file takes a parameters file from base_params_path and a set of points in the form of a dict {param1:[point1,point2...], param2:[point1,point2...]...} 
         #  It will then create a parameters file that can scan over all the points.
         self.base_params_path = "/home/djdaniel/DEEPlasma/parameters_base_dependancies_fixed_dp" 
+        # Ensure number_of_paralell_sims = 1, as I am not sure if the geneerr.log file order will match the run numbers if the simulations are ran in paralell.
+        # ensure syntax of '    var = value'. The spaces are important.  This is for parsing reasons. 
+
         self.remote_save_base_dir=f'/scratch/project_462000451/gene_out/gene_auto/'
         self.save_dir = "/home/djdaniel/DEEPlasma/temp/"
 
@@ -28,7 +31,8 @@ class Config():
         self.p_host = 'lumi.csc.fi'
         self.p_user = 'danieljordan'
         self.p_IdentityFile = '/home/djdaniel/.ssh/lumi-key'
-        self.paramiko_setup()
+        if not local:
+            self.paramiko_setup()
     
     def paramiko_setup(self):
         with open(self.p_IdentityFile, 'r') as key_file:
@@ -49,7 +53,6 @@ class Config():
         # print('Appending to path:', os.path.join(os.getcwd(),'config'))
         # sys.path.append(os.path.join(os.getcwd(),'config'))
 
-config = Config()
 
 if __name__ == '__main__':
     config = Config()
