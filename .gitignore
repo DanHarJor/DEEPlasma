@@ -6,3 +6,4 @@ out_files/*
 __pycache__/*
 *parameters_scanwith*
 notes.ipynb
+*.zip
