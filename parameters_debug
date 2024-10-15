@@ -38,12 +38,13 @@
 
 &general
     bpar = .true.
+    underflow_limit = 1
     nonlinear = .false.
     x_local = .true.
     arakawa_zv = .false.
     comp_type = 'IV'
     calc_dt = .true.
-    ntimesteps = 5
+    ntimesteps = 1000000
     timelim = 1
     simtimelim = 6.584296553193289e-11
     hyp_z = -2
