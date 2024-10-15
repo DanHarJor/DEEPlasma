@@ -1,4 +1,5 @@
 import paramiko
+from scp import SCPClient
 class Config():
     def __init__(self, local=False):
         ##Parser
@@ -10,7 +11,9 @@ class Config():
         # ensure syntax of '    var = value'. The spaces are important.  This is for parsing reasons. 
 
         self.remote_save_base_dir=f'/scratch/project_462000451/gene_out/gene_auto/'
-        self.save_dir = "/home/djdaniel/DEEPlasma/temp/"
+        # self.save_dir = "/home/djdaniel/DEEPlasma/temp/"
+
+        self.local_backup_dir = '/home/djdaniel/DEEPlasma/vault/'
 
 
         ## Runner
@@ -43,7 +46,7 @@ class Config():
         self.paramiko_ssh_client.set_missing_host_key_policy(policy)
         self.paramiko_ssh_client.connect(self.p_host, username=self.p_user, pkey=pkey)
         self.paramiko_sftp_client = self.paramiko_ssh_client.open_sftp()
-
+        self.scp = SCPClient(self.paramiko_ssh_client.get_transport())
         remote_params_dummy_file = self.paramiko_sftp_client.open('.bashrc') # any dummy file would serve this purpose
         self.paramiko_file_type = type(remote_params_dummy_file) 
         print(self.paramiko_file_type)
