@@ -19,7 +19,7 @@
     lv = 3.0
     lw = 9.0
     x0 = 0.96
-    kymin = 48.0
+    kymin = 0.525
     kx_center = 0.0
 /
 
@@ -62,7 +62,7 @@
 &geometry
     magn_geometry = 'miller'
     trpeps = 0.25643
-    q0 = 2.2851
+    q0 = 4.5
     shat = 2.2142
     amhd = -1
     drr = -0.14686
@@ -84,18 +84,18 @@ dpdx_term = 'full_drift'
 
 &species
     name = 'i'
-    omn = 15.265123
-    omt = 28.287016
+    omn = 32
+    omt = 45
     mass = 1.0
-    temp = 1.0
+    temp = 1.125
     dens = 1.0
     charge = 1
 /
 
 &species
     name = 'e'
-    omn = 15.265123
-    omt = 28.287016
+    omn = 32
+    omt = 40
     mass = 0.0002724
     temp = 1.0
     dens = 1.0
