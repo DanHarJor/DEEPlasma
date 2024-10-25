@@ -34,7 +34,6 @@
     istep_mom = 1000
     istep_vsp = 1000
     istep_schpt = 1000
-    istep_g1 = 10
 /
 
 &general
