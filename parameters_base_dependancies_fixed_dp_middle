@@ -19,7 +19,7 @@
     lv = 3.0
     lw = 9.0
     x0 = 0.96
-    kymin = 0.5
+    kymin = 0.525
     kx_center = 0.0
 /
 
@@ -83,8 +83,8 @@ dpdx_term = 'full_drift'
 
 &species
     name = 'i'
-    omn = 50
-    omt = 67.50000000000001
+    omn = 32
+    omt = 45
     mass = 1.0
     temp = 1.125
     dens = 1.0
@@ -93,8 +93,8 @@ dpdx_term = 'full_drift'
 
 &species
     name = 'e'
-    omn = 50
-    omt = 60
+    omn = 32
+    omt = 40
     mass = 0.0002724
     temp = 1.0
     dens = 1.0
@@ -104,7 +104,7 @@ dpdx_term = 'full_drift'
 &units
     lref = 0.76
     mref = 2.0
-    tref = 2.00005
-    nref = 5.00005
-    bref = 3.0
+    tref = 2
+    nref = 5
+    bref = 3
 /
