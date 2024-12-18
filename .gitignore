@@ -13,4 +13,4 @@ TPED/
 *data*
 *.pkl
 *config*
-
+.gitmodules
