@@ -12,3 +12,5 @@ TPED/
 .conda*
 *data*
 *.pkl
+*config*
+
