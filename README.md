@@ -11,6 +11,12 @@ git clone --recurse-submodules https://yourtoken@github.com/DanHarJor/DEEPlasma/
 SSH:
 git clone --recurse-submodules git@github.com:DanHarJor/DEEPlasma.git
 
+# SSH Security Tips for LUMI
+If you have permission issues can can add this to your  /users/<username>/.bashrc
+
+**export GIT_SSH_COMMAND="ssh -i ~/.ssh/<private_key>"**
+
+Now when git tries to ssh during the clone process it will always have access to your private key.
 # Common Errors:
 
 Each variable name must be followed by a space character, eg:
