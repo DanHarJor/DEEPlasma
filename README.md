@@ -12,7 +12,7 @@ SSH:
 git clone --recurse-submodules git@github.com:DanHarJor/DEEPlasma.git
 
 # SSH Security Tips for LUMI
-If you have permission issues can can add this to your  /users/<username>/.bashrc
+If you have permission issues you can add this to your  /users/<username>/.bashrc
 
 **export GIT_SSH_COMMAND="ssh -i ~/.ssh/<private_key>"**
 
