@@ -8,7 +8,7 @@ __pycache__/*
 notes.ipynb
 *.zip
 vault/*
-TPED/
+TPED/data
 .conda*
 *data*
 *.pkl
