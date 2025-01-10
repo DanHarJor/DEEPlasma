@@ -18,10 +18,10 @@ class GeneFilepathConverter:
 
         if not any(filename.startswith(filetype) for filetype in VALID_FILETYPES):
             raise ValueError(f"The file name {filename} does not start with any of the valid filetypes: {VALID_FILETYPES}.")
-        # if not os.path.exists(filepath):
-        #     raise FileNotFoundError(f"The file at {filepath} does not exist.")
-        # if not os.path.isfile(filepath):
-        #     raise ValueError(f"The path {filepath} is not a file.")
+        if not os.path.exists(filepath):
+            raise FileNotFoundError(f"The file at {filepath} does not exist.")
+        if not os.path.isfile(filepath):
+            raise ValueError(f"The path {filepath} is not a file.")
         
     ####################################################################################################
     #################### Functions to switch to different filetypes ####################################

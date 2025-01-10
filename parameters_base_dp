@@ -39,6 +39,7 @@
 &general
     bpar = .true.
     underflow_limit = 1e-20
+    omega_prec = 1e-2
     nonlinear = .false.
     x_local = .true.
     arakawa_zv = .false.

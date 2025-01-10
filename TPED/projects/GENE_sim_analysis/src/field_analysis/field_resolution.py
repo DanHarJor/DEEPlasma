@@ -19,7 +19,6 @@ from TPED.projects.GENE_sim_reader.utils.find_GENE_files import GeneFileFinder a
 import os
 
 
-
 def plot_para_mag_potential(filepath_list:str|list):    
     if isinstance(filepath_list, str):
         if os.path.basename(filepath_list).startswith('field'):
