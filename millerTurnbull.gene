@@ -1,0 +1,105 @@
+&parallelization
+    n_parallel_sims = -1
+    n_procs_s = -1
+    n_procs_sim = -1
+    n_procs_v = -1
+    n_procs_w = -1
+    n_procs_x = -1
+    n_procs_y = -1
+    n_procs_z = -1
+/
+
+&box
+    kx_center = -0.0
+    kymin = 0.1
+    lv = 3.0
+    lw = 9.0
+    mu_grid_type = 'eq_vperp'
+    n_spec = 2
+    nky0 = 1
+    nv0 = 32
+    nw0 = 16
+    nx0 = 12
+    nz0 = 32
+/
+
+&in_out
+    diagdir = '.'
+    istep_energy = 100
+    istep_field = 100
+    istep_mom = 600
+    istep_nrg = 20
+    istep_schpt = 0
+    istep_vsp = 0
+    write_checkpoint = .true.
+/
+
+&general
+    beta = 0.005
+    bpar = .true.
+    calc_dt = .true.
+    coll = 0.000583570594217362
+    coll_cons_model = 'nakata'
+    coll_f_fm_on = .true.
+    coll_on_h = .true.
+    collision_op = 'sugama'
+    comp_type = 'IV'
+    debye2 = 0
+    dt_max = 0.005
+    hyp_v = 0.0
+    hyp_z = -1
+    init_cond = 'alm'
+    nonlinear = .false.
+    ntimesteps = 1000000
+    simtimelim = 300.0
+    timelim = 129000
+    zeff = 1.0
+/
+
+&geometry
+    amhd = 1.262729994820698
+    delta = 0.041866721133301026
+    dpdx_pm = 0.0928231817122984
+    dpdx_term = 'full_drift'
+    drr = -0.2321280765661877
+    drz = -0.009945172667246156
+    kappa = 1.3798039103746238
+    magn_geometry = 'miller'
+    major_r = 3.3369849275361103
+    minor_r = 1.0
+    q0 = 2.0190631406621313
+    s_delta = 0.16157955712204566
+    s_kappa = 0.08750822304983714
+    s_zeta = 0.0
+    shat = 1.205480160710063
+    sign_bt_cw = -1.0
+    sign_ip_cw = -1.0
+    trpeps = 0.18352644170706667
+    zeta = 0.0
+/
+
+&species
+    charge = 1
+    dens = 1.0
+    mass = 1.0
+    name = 'ion1'
+    omn = 1.0
+    omt = 3.0
+    temp = 1.0
+/
+
+&species
+    charge = -1
+    dens = 1.0
+    mass = 0.00027244
+    name = 'electron'
+    omn = 1.0
+    omt = 3.0
+    temp = 1.0
+/
+
+&external_contr
+    exbrate = 0.0
+    omega0_tor = 0.0
+    pfsrate = 0.0
+/
