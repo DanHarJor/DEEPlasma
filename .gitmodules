@@ -1,3 +1,3 @@
 [submodule "GENE_ML"]
 	path = GENE_ML
-	url = https://github.com/DanHarJor/GENE_ML
+	url = git@github.com:DanHarJor/GENE_ML.git
