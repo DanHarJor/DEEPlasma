@@ -1,0 +1,2212 @@
+PERFORMING IMPORTS
+Cannot find bmdal_reg. Please point to those in your bash script if you intend to use ActiveLearnerBMDAL No module named 'bmdal_reg'
+Cannot find DREAM. Please add the $DREAMPATH/py to your PYTHONPATH environment variable before running. No module named 'DREAM'
+STARTING ENCHANTED SURROGATES
+LOADING ARGUMENTS FROM CONFIG FILE tests/LUMI_tests/configs/Active_MMMGaussian_config.yaml
+LOADING CONFIGURATION FILE
+Namespace(sampler={'type': 'SpatiallyAdaptiveSparseGrids', 'bounds': [[0, 1], [0, 1], [0, 1]], 'parameters': ['x0', 'x1', 'x2'], 'initial_level': 1, 'infer_bounds': False, 'infer_parents': False, 'brute_check_sampler': {'type': 'SobolSequence', 'num_samples': '1e6'}, 'do_brute_force_sobol_indicies': True}, executor={'type': 'DaskExecutorActive', 'base_run_dir': '/scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg', 'runner_return_headder': 'x0,x1,MMMG', 'max_cycles': 30, 'static_executor': {'type': 'DaskExecutorSimulation', 'runner': {'type': 'MMMGrunner', 'num_dim': 3, 'bounds': [[0, 1], [0, 1], [0, 1]], 'random_gaussians': {'num_gaussians': 5, 'seed': 42}}, 'worker_args': {'account': 'project_462000451', 'queue': 'small', 'cores': 1, 'memory': '2GB', 'walltime': '00:40:00', 'interface': 'nmn0', 'job_script_prologue': ['export PATH="/project/project_462000451/enchanted_container_lumi3/bin:$PATH"', 'cd /users/danieljordan/enchanted-surrogates2/', 'export PYTHONPATH=$PYTHONPATH:/users/danieljordan/enchanted-surrogates2/src']}, 'n_jobs': 10}, 'config_filepath': 'tests/LUMI_tests/configs/Active_MMMGaussian_config.yaml'})
+MAKING SAMPLER AND EXECUTOR
+['x0', 'x1', 'x2'] [[0 1]
+ [0 1]
+ [0 1]] 3 3
+num samp <class 'float'> 1000000.0
+
+              GENERATING SOBOL SEQUENCE SAMPLES, NUM SAMPLES REQUESTED: 524288, NUM SAMPLES: 524288
+
+              PARAMETERS: ['x0', 'x1', 'x2']
+              BOUNDS:[[0 1]
+ [0 1]
+ [0 1]]
+MAKING RUNNER RETURN FILE
+RANDOM GAUSSIAN 0 HAS-:
+MEANS OF: [0.77395605 0.43887844 0.85859792] 
+ STDs: [0.83508564 0.88660268 0.96268634]
+RANDOM GAUSSIAN 1 HAS-:
+MEANS OF: [0.64386512 0.82276161 0.4434142 ] 
+ STDs: [0.47669563 0.79477317 0.94505086]
+RANDOM GAUSSIAN 2 HAS-:
+MEANS OF: [0.7783835  0.19463871 0.466721  ] 
+ STDs: [0.20929349 0.98362073 0.43528308]
+RANDOM GAUSSIAN 3 HAS-:
+MEANS OF: [0.12992151 0.47570493 0.22690935] 
+ STDs: [0.81842165 0.5588977  0.53696192]
+RANDOM GAUSSIAN 4 HAS-:
+MEANS OF: [0.6824955  0.13975248 0.1999082 ] 
+ STDs: [0.08580367 0.88358872 0.33842292]
+RANDOM GAUSSIANS HAVE-:
+MEANS OF: [array([0.77395605, 0.43887844, 0.85859792]), array([0.64386512, 0.82276161, 0.4434142 ]), array([0.7783835 , 0.19463871, 0.466721  ]), array([0.12992151, 0.47570493, 0.22690935]), array([0.6824955 , 0.13975248, 0.1999082 ])] 
+ STDs: [array([0.83508564, 0.88660268, 0.96268634]), array([0.47669563, 0.79477317, 0.94505086]), array([0.20929349, 0.98362073, 0.43528308]), array([0.81842165, 0.5588977 , 0.53696192]), array([0.08580367, 0.88358872, 0.33842292])]
+STARTING RUNS
+STARTING ACTIVE CYCLE, FROM WITHIN A <class 'executors.DaskExecutorActive.DaskExecutorActive'>
+MAKING CLUSTERS
+Initializing DASK client
+MAKING A SLURM CLUSTER FOR MMMGrunner
+THE JOB SCRIPT FOR A WORKER IS:
+#!/usr/bin/env bash
+
+#SBATCH -J dask-worker
+#SBATCH -p small
+#SBATCH -A project_462000451
+#SBATCH -n 1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=2G
+#SBATCH -t 00:40:00
+#SBATCH -o /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/%x.%j.out
+#SBATCH -e /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/%x.%j.err
+export PATH="/project/project_462000451/enchanted_container_lumi3/bin:$PATH"
+cd /users/danieljordan/enchanted-surrogates2/
+export PYTHONPATH=$PYTHONPATH:/users/danieljordan/enchanted-surrogates2/src
+/project/project_462000451/enchanted_container_lumi3/bin/python3 -m distributed.cli.dask_worker tcp://10.120.120.244:40997 --name dummy-name --nthreads 1 --memory-limit 1.86GiB --nanny --death-timeout 60 --interface nmn0
+
+GENERATING INITIAL SAMPLES:
+MAKING AND SUBMITING DASK FUTURES FOR INITIAL RUNS
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+INITIAL FUTURES SUBMITTED WAITING FOR THEM TO COMPLETE
+INITIAL FUTURES COMPLETE IN 14.328663349151611, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/initial_runs/runner_return.txt
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 0
++++ 
+ NUM INNER LEAF POINTS 27
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.2383122549695341
+doing brute sobol indicies
+grid size before refinement: 27
+grid size after refinement: 35
+NEW POINT (1.0, 0.0, 0.25) (1.0, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.25) (0.0, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 1.0, 0.25) (0.0, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (1.0, 1.0, 0.25) (1.0, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (1.0, 0.0, 0.75) (1.0, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.75) (0.0, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 1.0, 0.75) (0.0, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (1.0, 1.0, 0.75) (1.0, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 8
+debug (0.8125, 0.5, 0.25) [{'x0': 1.0, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.0, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.0, 'x1': 1.0, 'x2': 0.25}, {'x0': 1.0, 'x1': 1.0, 'x2': 0.25}, {'x0': 1.0, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.0, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.0, 'x1': 1.0, 'x2': 0.75}, {'x0': 1.0, 'x1': 1.0, 'x2': 0.75}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 1
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 1
+FUTURES COMPLETE
+CYCLE 1 COMPLETE IN 16.72260284423828, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_1/runner_return.txt
+WRITING runner_return.txt TOOK 0.0032427310943603516 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 1
++++ 
+ NUM INNER LEAF POINTS 35
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.23437828067791483
+doing brute sobol indicies
+grid size before refinement: 35
+grid size after refinement: 43
+NEW POINT (0.0, 0.25, 0.0) (0.0, 0.25, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (1.0, 0.25, 0.0) (1.0, 0.25, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (1.0, 0.25, 1.0) (1.0, 0.25, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 1.0) (0.0, 0.25, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.0) (0.0, 0.75, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (1.0, 0.75, 0.0) (1.0, 0.75, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (1.0, 0.75, 1.0) (1.0, 0.75, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 1.0) (0.0, 0.75, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 8
+debug (0.8125, 0.5, 0.25) [{'x0': 0.0, 'x1': 0.25, 'x2': 0.0}, {'x0': 1.0, 'x1': 0.25, 'x2': 0.0}, {'x0': 1.0, 'x1': 0.25, 'x2': 1.0}, {'x0': 0.0, 'x1': 0.25, 'x2': 1.0}, {'x0': 0.0, 'x1': 0.75, 'x2': 0.0}, {'x0': 1.0, 'x1': 0.75, 'x2': 0.0}, {'x0': 1.0, 'x1': 0.75, 'x2': 1.0}, {'x0': 0.0, 'x1': 0.75, 'x2': 1.0}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 2
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 2
+FUTURES COMPLETE
+CYCLE 2 COMPLETE IN 0.0872657299041748, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_2/runner_return.txt
+WRITING runner_return.txt TOOK 0.0018694400787353516 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 2
++++ 
+ NUM INNER LEAF POINTS 43
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.2336113751004788
+doing brute sobol indicies
+grid size before refinement: 43
+grid size after refinement: 51
+NEW POINT (0.25, 1.0, 1.0) (0.25, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.25, 0.0, 1.0) (0.25, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.25, 0.0, 0.0) (0.25, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.25, 1.0, 0.0) (0.25, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 1.0, 1.0) (0.75, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.0, 1.0) (0.75, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.0) (0.75, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.0) (0.75, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 8
+debug (0.8125, 0.5, 0.25) [{'x0': 0.25, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.25, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.25, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.25, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.75, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.75, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.0}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 3
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 3
+FUTURES COMPLETE
+CYCLE 3 COMPLETE IN 0.08936738967895508, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_3/runner_return.txt
+WRITING runner_return.txt TOOK 0.0016803741455078125 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 3
++++ 
+ NUM INNER LEAF POINTS 51
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4218132286106083
+doing brute sobol indicies
+grid size before refinement: 51
+grid size after refinement: 63
+NEW POINT (0.625, 0.0, 0.0) (0.625, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 1.0, 0.0) (0.625, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 1.0, 1.0) (0.625, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.0, 1.0) (0.625, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.0) (0.875, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.0) (0.875, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 1.0) (0.875, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 1.0) (0.875, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.5, 0.0) (0.75, 0.5, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.5, 1.0) (0.75, 0.5, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.5) (0.75, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.5) (0.75, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 12
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.625, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.625, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.625, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.875, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.875, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.875, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.0}, {'x0': 0.75, 'x1': 0.5, 'x2': 1.0}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.5}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 4
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 4
+FUTURES COMPLETE
+CYCLE 4 COMPLETE IN 0.13526105880737305, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_4/runner_return.txt
+WRITING runner_return.txt TOOK 0.0019297599792480469 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 4
++++ 
+ NUM INNER LEAF POINTS 63
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4403763874658251
+doing brute sobol indicies
+grid size before refinement: 63
+grid size after refinement: 75
+NEW POINT (0.8125, 0.0, 0.0) (0.8125, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 1.0, 0.0) (0.8125, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 1.0, 1.0) (0.8125, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.0, 1.0) (0.8125, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.0, 0.0) (0.9375, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 1.0, 0.0) (0.9375, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 1.0, 1.0) (0.9375, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.0, 1.0) (0.9375, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.5, 0.0) (0.875, 0.5, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.5, 1.0) (0.875, 0.5, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.5) (0.875, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.5) (0.875, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 12
+debug (0.8125, 0.5, 0.25) [{'x0': 0.8125, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.8125, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.8125, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.8125, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.9375, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.9375, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.9375, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.9375, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.0}, {'x0': 0.875, 'x1': 0.5, 'x2': 1.0}, {'x0': 0.875, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.5}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 5
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 5
+FUTURES COMPLETE
+CYCLE 5 COMPLETE IN 0.13096952438354492, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_5/runner_return.txt
+WRITING runner_return.txt TOOK 0.0015246868133544922 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 5
++++ 
+ NUM INNER LEAF POINTS 75
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.43453486979251726
+doing brute sobol indicies
+grid size before refinement: 75
+grid size after refinement: 87
+NEW POINT (0.5625, 0.0, 0.0) (0.5625, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 1.0, 0.0) (0.5625, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 1.0, 1.0) (0.5625, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 0.0, 1.0) (0.5625, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.0, 0.0) (0.6875, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 1.0, 0.0) (0.6875, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 1.0, 1.0) (0.6875, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.0, 1.0) (0.6875, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.5, 0.0) (0.625, 0.5, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.5, 1.0) (0.625, 0.5, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.5) (0.625, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 1.0, 0.5) (0.625, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 12
+debug (0.8125, 0.5, 0.25) [{'x0': 0.5625, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.5625, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.5625, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.5625, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.6875, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.6875, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.6875, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.6875, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.625, 'x1': 0.5, 'x2': 0.0}, {'x0': 0.625, 'x1': 0.5, 'x2': 1.0}, {'x0': 0.625, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.625, 'x1': 1.0, 'x2': 0.5}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 6
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 6
+FUTURES COMPLETE
+CYCLE 6 COMPLETE IN 0.12584257125854492, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_6/runner_return.txt
+WRITING runner_return.txt TOOK 0.0015058517456054688 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 6
++++ 
+ NUM INNER LEAF POINTS 87
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.45019632926595177
+doing brute sobol indicies
+grid size before refinement: 87
+grid size after refinement: 99
+NEW POINT (0.53125, 0.0, 0.0) (0.53125, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.53125, 1.0, 0.0) (0.53125, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.53125, 1.0, 1.0) (0.53125, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.53125, 0.0, 1.0) (0.53125, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.59375, 0.0, 0.0) (0.59375, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.59375, 1.0, 0.0) (0.59375, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.59375, 1.0, 1.0) (0.59375, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.59375, 0.0, 1.0) (0.59375, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 0.5, 0.0) (0.5625, 0.5, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 0.5, 1.0) (0.5625, 0.5, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 0.0, 0.5) (0.5625, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 1.0, 0.5) (0.5625, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 12
+debug (0.8125, 0.5, 0.25) [{'x0': 0.53125, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.53125, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.53125, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.53125, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.59375, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.59375, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.59375, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.59375, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.5625, 'x1': 0.5, 'x2': 0.0}, {'x0': 0.5625, 'x1': 0.5, 'x2': 1.0}, {'x0': 0.5625, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.5625, 'x1': 1.0, 'x2': 0.5}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 7
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 7
+FUTURES COMPLETE
+CYCLE 7 COMPLETE IN 0.1276395320892334, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_7/runner_return.txt
+WRITING runner_return.txt TOOK 0.0021588802337646484 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 7
++++ 
+ NUM INNER LEAF POINTS 99
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.44181413645746404
+doing brute sobol indicies
+grid size before refinement: 99
+grid size after refinement: 111
+NEW POINT (0.65625, 0.0, 0.0) (0.65625, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.65625, 1.0, 0.0) (0.65625, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.65625, 1.0, 1.0) (0.65625, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.65625, 0.0, 1.0) (0.65625, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.71875, 0.0, 0.0) (0.71875, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.71875, 1.0, 0.0) (0.71875, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.71875, 1.0, 1.0) (0.71875, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.71875, 0.0, 1.0) (0.71875, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.5, 0.0) (0.6875, 0.5, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.5, 1.0) (0.6875, 0.5, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.0, 0.5) (0.6875, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 1.0, 0.5) (0.6875, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 12
+debug (0.8125, 0.5, 0.25) [{'x0': 0.65625, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.65625, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.65625, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.65625, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.71875, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.71875, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.71875, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.71875, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.6875, 'x1': 0.5, 'x2': 0.0}, {'x0': 0.6875, 'x1': 0.5, 'x2': 1.0}, {'x0': 0.6875, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.6875, 'x1': 1.0, 'x2': 0.5}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 8
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 8
+FUTURES COMPLETE
+CYCLE 8 COMPLETE IN 0.12295293807983398, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_8/runner_return.txt
+WRITING runner_return.txt TOOK 0.0019283294677734375 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 8
++++ 
+ NUM INNER LEAF POINTS 111
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.44763051812732507
+doing brute sobol indicies
+grid size before refinement: 111
+grid size after refinement: 123
+NEW POINT (0.78125, 0.0, 0.0) (0.78125, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 1.0, 0.0) (0.78125, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 1.0, 1.0) (0.78125, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 0.0, 1.0) (0.78125, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.84375, 0.0, 0.0) (0.84375, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.84375, 1.0, 0.0) (0.84375, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.84375, 1.0, 1.0) (0.84375, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.84375, 0.0, 1.0) (0.84375, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.5, 0.0) (0.8125, 0.5, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.5, 1.0) (0.8125, 0.5, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.0, 0.5) (0.8125, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 1.0, 0.5) (0.8125, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 12
+debug (0.8125, 0.5, 0.25) [{'x0': 0.78125, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.78125, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.78125, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.78125, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.84375, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.84375, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.84375, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.84375, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.8125, 'x1': 0.5, 'x2': 0.0}, {'x0': 0.8125, 'x1': 0.5, 'x2': 1.0}, {'x0': 0.8125, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.8125, 'x1': 1.0, 'x2': 0.5}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 9
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 9
+FUTURES COMPLETE
+CYCLE 9 COMPLETE IN 0.12560176849365234, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_9/runner_return.txt
+WRITING runner_return.txt TOOK 0.0025589466094970703 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 9
++++ 
+ NUM INNER LEAF POINTS 123
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.44304697859469633
+doing brute sobol indicies
+grid size before refinement: 123
+grid size after refinement: 135
+NEW POINT (0.90625, 0.0, 0.0) (0.90625, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.90625, 1.0, 0.0) (0.90625, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.90625, 1.0, 1.0) (0.90625, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.90625, 0.0, 1.0) (0.90625, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.96875, 0.0, 0.0) (0.96875, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.96875, 1.0, 0.0) (0.96875, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.96875, 1.0, 1.0) (0.96875, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.96875, 0.0, 1.0) (0.96875, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.5, 0.0) (0.9375, 0.5, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.5, 1.0) (0.9375, 0.5, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.0, 0.5) (0.9375, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 1.0, 0.5) (0.9375, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 12
+debug (0.8125, 0.5, 0.25) [{'x0': 0.90625, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.90625, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.90625, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.90625, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.96875, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.96875, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.96875, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.96875, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.9375, 'x1': 0.5, 'x2': 0.0}, {'x0': 0.9375, 'x1': 0.5, 'x2': 1.0}, {'x0': 0.9375, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.9375, 'x1': 1.0, 'x2': 0.5}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 10
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 10
+FUTURES COMPLETE
+CYCLE 10 COMPLETE IN 0.13292932510375977, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_10/runner_return.txt
+WRITING runner_return.txt TOOK 0.0026247501373291016 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 10
++++ 
+ NUM INNER LEAF POINTS 135
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.44298213301359357
+doing brute sobol indicies
+grid size before refinement: 135
+grid size after refinement: 158
+NEW POINT (0.53125, 0.0, 0.5) (0.53125, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.53125, 1.0, 0.5) (0.53125, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.59375, 0.0, 0.5) (0.59375, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.59375, 1.0, 0.5) (0.59375, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.5, 0.5) (0.75, 0.5, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.625, 0.5, 0.5) (0.625, 0.5, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.5625, 0.5, 0.5) (0.5625, 0.5, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.5, 0.0, 0.25) (0.5, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 1.0, 0.25) (0.5, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.25) (0.75, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.25) (0.75, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.25) (0.625, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.625, 1.0, 0.25) (0.625, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5625, 0.0, 0.25) (0.5625, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 1.0, 0.25) (0.5625, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5, 0.0, 0.75) (0.5, 0.0, 0.75)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 1.0, 0.75) (0.5, 1.0, 0.75)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.75) (0.75, 0.0, 0.75)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.75) (0.75, 1.0, 0.75)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.75) (0.625, 0.0, 0.75)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.625, 1.0, 0.75) (0.625, 1.0, 0.75)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5625, 0.0, 0.75) (0.5625, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 1.0, 0.75) (0.5625, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 23
+debug (0.8125, 0.5, 0.25) [{'x0': 0.53125, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.53125, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.59375, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.59375, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.625, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.5625, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.5, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.5, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.625, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.625, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.5625, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.5625, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.5, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.5, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.625, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.625, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.5625, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.5625, 'x1': 1.0, 'x2': 0.75}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 11
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 11
+FUTURES COMPLETE
+CYCLE 11 COMPLETE IN 0.23875117301940918, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_11/runner_return.txt
+WRITING runner_return.txt TOOK 0.002689838409423828 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 11
++++ 
+ NUM INNER LEAF POINTS 158
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.45375776530805867
+doing brute sobol indicies
+grid size before refinement: 158
+grid size after refinement: 180
+NEW POINT (0.875, 0.0, 0.25) (0.875, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.25) (0.875, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.5, 0.25) (0.0, 0.5, 0.25)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 0.5, 0.25) (1.0, 0.5, 0.25)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.5, 0.25) (0.5, 0.5, 0.25)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.5, 0.25) (0.75, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.125) (0.0, 0.0, 0.125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 0.0, 0.125) (1.0, 0.0, 0.125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 1.0, 0.125) (1.0, 1.0, 0.125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.0, 1.0, 0.125) (0.0, 1.0, 0.125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.0, 0.125) (0.5, 0.0, 0.125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 1.0, 0.125) (0.5, 1.0, 0.125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.125) (0.75, 0.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.125) (0.75, 1.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.375) (0.0, 0.0, 0.375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 0.0, 0.375) (1.0, 0.0, 0.375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 1.0, 0.375) (1.0, 1.0, 0.375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.0, 1.0, 0.375) (0.0, 1.0, 0.375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.0, 0.375) (0.5, 0.0, 0.375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 1.0, 0.375) (0.5, 1.0, 0.375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.375) (0.75, 0.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.375) (0.75, 1.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 22
+debug (0.8125, 0.5, 0.25) [{'x0': 0.875, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.0, 'x1': 0.5, 'x2': 0.25}, {'x0': 1.0, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.0, 'x1': 0.0, 'x2': 0.125}, {'x0': 1.0, 'x1': 0.0, 'x2': 0.125}, {'x0': 1.0, 'x1': 1.0, 'x2': 0.125}, {'x0': 0.0, 'x1': 1.0, 'x2': 0.125}, {'x0': 0.5, 'x1': 0.0, 'x2': 0.125}, {'x0': 0.5, 'x1': 1.0, 'x2': 0.125}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.125}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.125}, {'x0': 0.0, 'x1': 0.0, 'x2': 0.375}, {'x0': 1.0, 'x1': 0.0, 'x2': 0.375}, {'x0': 1.0, 'x1': 1.0, 'x2': 0.375}, {'x0': 0.0, 'x1': 1.0, 'x2': 0.375}, {'x0': 0.5, 'x1': 0.0, 'x2': 0.375}, {'x0': 0.5, 'x1': 1.0, 'x2': 0.375}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.375}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 12
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 12
+FUTURES COMPLETE
+CYCLE 12 COMPLETE IN 0.22685575485229492, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_12/runner_return.txt
+WRITING runner_return.txt TOOK 0.0015635490417480469 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 12
++++ 
+ NUM INNER LEAF POINTS 180
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4414605994425024
+doing brute sobol indicies
+grid size before refinement: 180
+grid size after refinement: 190
+NEW POINT (0.8125, 0.0, 0.25) (0.8125, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 1.0, 0.25) (0.8125, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.0, 0.25) (0.9375, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 1.0, 0.25) (0.9375, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.5, 0.5) (0.875, 0.5, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.875, 0.5, 0.25) (0.875, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.125) (0.875, 0.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.125) (0.875, 1.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.375) (0.875, 0.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.375) (0.875, 1.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.8125, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.8125, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.9375, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.9375, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.875, 'x1': 0.0, 'x2': 0.125}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.125}, {'x0': 0.875, 'x1': 0.0, 'x2': 0.375}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 13
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 13
+FUTURES COMPLETE
+CYCLE 13 COMPLETE IN 0.10637617111206055, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_13/runner_return.txt
+WRITING runner_return.txt TOOK 0.0019683837890625 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 13
++++ 
+ NUM INNER LEAF POINTS 190
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4390843049161774
+doing brute sobol indicies
+grid size before refinement: 190
+grid size after refinement: 212
+NEW POINT (0.875, 0.0, 0.75) (0.875, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.75) (0.875, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.5, 0.75) (0.0, 0.5, 0.75)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 0.5, 0.75) (1.0, 0.5, 0.75)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.5, 0.75) (0.5, 0.5, 0.75)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.5, 0.75) (0.75, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.625) (0.0, 0.0, 0.625)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 0.0, 0.625) (1.0, 0.0, 0.625)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 1.0, 0.625) (1.0, 1.0, 0.625)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.0, 1.0, 0.625) (0.0, 1.0, 0.625)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.0, 0.625) (0.5, 0.0, 0.625)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 1.0, 0.625) (0.5, 1.0, 0.625)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.625) (0.75, 0.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.625) (0.75, 1.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.875) (0.0, 0.0, 0.875)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 0.0, 0.875) (1.0, 0.0, 0.875)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 1.0, 0.875) (1.0, 1.0, 0.875)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.0, 1.0, 0.875) (0.0, 1.0, 0.875)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.0, 0.875) (0.5, 0.0, 0.875)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 1.0, 0.875) (0.5, 1.0, 0.875)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.875) (0.75, 0.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.875) (0.75, 1.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 22
+debug (0.8125, 0.5, 0.25) [{'x0': 0.875, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.0, 'x1': 0.5, 'x2': 0.75}, {'x0': 1.0, 'x1': 0.5, 'x2': 0.75}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.75}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.75}, {'x0': 0.0, 'x1': 0.0, 'x2': 0.625}, {'x0': 1.0, 'x1': 0.0, 'x2': 0.625}, {'x0': 1.0, 'x1': 1.0, 'x2': 0.625}, {'x0': 0.0, 'x1': 1.0, 'x2': 0.625}, {'x0': 0.5, 'x1': 0.0, 'x2': 0.625}, {'x0': 0.5, 'x1': 1.0, 'x2': 0.625}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.625}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.625}, {'x0': 0.0, 'x1': 0.0, 'x2': 0.875}, {'x0': 1.0, 'x1': 0.0, 'x2': 0.875}, {'x0': 1.0, 'x1': 1.0, 'x2': 0.875}, {'x0': 0.0, 'x1': 1.0, 'x2': 0.875}, {'x0': 0.5, 'x1': 0.0, 'x2': 0.875}, {'x0': 0.5, 'x1': 1.0, 'x2': 0.875}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.875}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 14
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 14
+FUTURES COMPLETE
+CYCLE 14 COMPLETE IN 0.4610905647277832, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_14/runner_return.txt
+WRITING runner_return.txt TOOK 0.001752614974975586 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 14
++++ 
+ NUM INNER LEAF POINTS 212
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4464012183492436
+doing brute sobol indicies
+grid size before refinement: 212
+grid size after refinement: 221
+NEW POINT (0.8125, 0.0, 0.75) (0.8125, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 1.0, 0.75) (0.8125, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.0, 0.75) (0.9375, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 1.0, 0.75) (0.9375, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.5, 0.75) (0.875, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.625) (0.875, 0.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.625) (0.875, 1.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.875) (0.875, 0.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.875) (0.875, 1.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 9
+debug (0.8125, 0.5, 0.25) [{'x0': 0.8125, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.8125, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.9375, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.9375, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.75}, {'x0': 0.875, 'x1': 0.0, 'x2': 0.625}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.625}, {'x0': 0.875, 'x1': 0.0, 'x2': 0.875}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 15
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 15
+FUTURES COMPLETE
+CYCLE 15 COMPLETE IN 0.09752273559570312, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_15/runner_return.txt
+WRITING runner_return.txt TOOK 0.002286672592163086 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 15
++++ 
+ NUM INNER LEAF POINTS 221
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.44935101603768324
+doing brute sobol indicies
+grid size before refinement: 221
+grid size after refinement: 228
+NEW POINT (0.6875, 0.0, 0.75) (0.6875, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 1.0, 0.75) (0.6875, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.5, 0.75) (0.625, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.625) (0.625, 0.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 1.0, 0.625) (0.625, 1.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.875) (0.625, 0.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 1.0, 0.875) (0.625, 1.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 7
+debug (0.8125, 0.5, 0.25) [{'x0': 0.6875, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.6875, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.625, 'x1': 0.5, 'x2': 0.75}, {'x0': 0.625, 'x1': 0.0, 'x2': 0.625}, {'x0': 0.625, 'x1': 1.0, 'x2': 0.625}, {'x0': 0.625, 'x1': 0.0, 'x2': 0.875}, {'x0': 0.625, 'x1': 1.0, 'x2': 0.875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 16
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 16
+FUTURES COMPLETE
+CYCLE 16 COMPLETE IN 0.07733750343322754, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_16/runner_return.txt
+WRITING runner_return.txt TOOK 0.002118825912475586 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 16
++++ 
+ NUM INNER LEAF POINTS 228
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4477491954592523
+doing brute sobol indicies
+grid size before refinement: 228
+grid size after refinement: 235
+NEW POINT (0.6875, 0.0, 0.25) (0.6875, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 1.0, 0.25) (0.6875, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.5, 0.25) (0.625, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.125) (0.625, 0.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 1.0, 0.125) (0.625, 1.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.375) (0.625, 0.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.625, 1.0, 0.375) (0.625, 1.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 7
+debug (0.8125, 0.5, 0.25) [{'x0': 0.6875, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.6875, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.625, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.625, 'x1': 0.0, 'x2': 0.125}, {'x0': 0.625, 'x1': 1.0, 'x2': 0.125}, {'x0': 0.625, 'x1': 0.0, 'x2': 0.375}, {'x0': 0.625, 'x1': 1.0, 'x2': 0.375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 17
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 17
+FUTURES COMPLETE
+CYCLE 17 COMPLETE IN 0.07623028755187988, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_17/runner_return.txt
+WRITING runner_return.txt TOOK 0.0017094612121582031 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 17
++++ 
+ NUM INNER LEAF POINTS 235
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.44954575516396333
+doing brute sobol indicies
+grid size before refinement: 235
+grid size after refinement: 243
+NEW POINT (0.5, 0.25, 0.0) (0.5, 0.25, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.25, 1.0) (0.5, 0.25, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.0) (0.75, 0.25, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.25, 1.0) (0.75, 0.25, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5, 0.75, 0.0) (0.5, 0.75, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.75, 1.0) (0.5, 0.75, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.0) (0.75, 0.75, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.75, 1.0) (0.75, 0.75, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 8
+debug (0.8125, 0.5, 0.25) [{'x0': 0.5, 'x1': 0.25, 'x2': 0.0}, {'x0': 0.5, 'x1': 0.25, 'x2': 1.0}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.0}, {'x0': 0.75, 'x1': 0.25, 'x2': 1.0}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.0}, {'x0': 0.5, 'x1': 0.75, 'x2': 1.0}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.0}, {'x0': 0.75, 'x1': 0.75, 'x2': 1.0}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 18
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 18
+FUTURES COMPLETE
+CYCLE 18 COMPLETE IN 0.08813261985778809, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_18/runner_return.txt
+WRITING runner_return.txt TOOK 0.0019071102142333984 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 18
++++ 
+ NUM INNER LEAF POINTS 243
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.45025829763225933
+doing brute sobol indicies
+grid size before refinement: 243
+grid size after refinement: 257
+NEW POINT (0.78125, 0.0, 0.5) (0.78125, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.78125, 1.0, 0.5) (0.78125, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.78125, 0.0, 0.75) (0.78125, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 1.0, 0.75) (0.78125, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.84375, 0.0, 0.5) (0.84375, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.84375, 1.0, 0.5) (0.84375, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.84375, 0.0, 0.75) (0.84375, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.84375, 1.0, 0.75) (0.84375, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.5, 0.5) (0.8125, 0.5, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.8125, 0.5, 0.75) (0.8125, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.0, 0.625) (0.8125, 0.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 1.0, 0.625) (0.8125, 1.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.0, 0.875) (0.8125, 0.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 1.0, 0.875) (0.8125, 1.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 14
+debug (0.8125, 0.5, 0.25) [{'x0': 0.78125, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.78125, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.78125, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.78125, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.84375, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.84375, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.84375, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.84375, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.8125, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.8125, 'x1': 0.5, 'x2': 0.75}, {'x0': 0.8125, 'x1': 0.0, 'x2': 0.625}, {'x0': 0.8125, 'x1': 1.0, 'x2': 0.625}, {'x0': 0.8125, 'x1': 0.0, 'x2': 0.875}, {'x0': 0.8125, 'x1': 1.0, 'x2': 0.875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 19
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 19
+FUTURES COMPLETE
+CYCLE 19 COMPLETE IN 0.14426636695861816, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_19/runner_return.txt
+WRITING runner_return.txt TOOK 0.0023550987243652344 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 19
++++ 
+ NUM INNER LEAF POINTS 257
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.44980445736065056
+doing brute sobol indicies
+grid size before refinement: 257
+grid size after refinement: 266
+NEW POINT (0.53125, 0.0, 0.75) (0.53125, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.53125, 1.0, 0.75) (0.53125, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.59375, 0.0, 0.75) (0.59375, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.59375, 1.0, 0.75) (0.59375, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 0.5, 0.75) (0.5625, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 0.0, 0.625) (0.5625, 0.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 1.0, 0.625) (0.5625, 1.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 0.0, 0.875) (0.5625, 0.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.5625, 1.0, 0.875) (0.5625, 1.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 9
+debug (0.8125, 0.5, 0.25) [{'x0': 0.53125, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.53125, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.59375, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.59375, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.5625, 'x1': 0.5, 'x2': 0.75}, {'x0': 0.5625, 'x1': 0.0, 'x2': 0.625}, {'x0': 0.5625, 'x1': 1.0, 'x2': 0.625}, {'x0': 0.5625, 'x1': 0.0, 'x2': 0.875}, {'x0': 0.5625, 'x1': 1.0, 'x2': 0.875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 20
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 20
+FUTURES COMPLETE
+CYCLE 20 COMPLETE IN 0.09676861763000488, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_20/runner_return.txt
+WRITING runner_return.txt TOOK 0.0016887187957763672 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 20
++++ 
+ NUM INNER LEAF POINTS 266
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.44882405334603087
+doing brute sobol indicies
+grid size before refinement: 266
+grid size after refinement: 270
+NEW POINT (0.875, 0.25, 0.0) (0.875, 0.25, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.25, 1.0) (0.875, 0.25, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.75, 0.0) (0.875, 0.75, 0.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.75, 1.0) (0.875, 0.75, 1.0)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 4
+debug (0.8125, 0.5, 0.25) [{'x0': 0.875, 'x1': 0.25, 'x2': 0.0}, {'x0': 0.875, 'x1': 0.25, 'x2': 1.0}, {'x0': 0.875, 'x1': 0.75, 'x2': 0.0}, {'x0': 0.875, 'x1': 0.75, 'x2': 1.0}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 21
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 21
+FUTURES COMPLETE
+CYCLE 21 COMPLETE IN 0.05585837364196777, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_21/runner_return.txt
+WRITING runner_return.txt TOOK 0.0022127628326416016 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 21
++++ 
+ NUM INNER LEAF POINTS 270
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.44896008632135576
+doing brute sobol indicies
+grid size before refinement: 270
+grid size after refinement: 279
+NEW POINT (0.78125, 1.0, 0.25) (0.78125, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 0.0, 0.25) (0.78125, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.84375, 1.0, 0.25) (0.84375, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.84375, 0.0, 0.25) (0.84375, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.5, 0.25) (0.8125, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 1.0, 0.125) (0.8125, 1.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.0, 0.125) (0.8125, 0.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 1.0, 0.375) (0.8125, 1.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.8125, 0.0, 0.375) (0.8125, 0.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 9
+debug (0.8125, 0.5, 0.25) [{'x0': 0.78125, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.78125, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.84375, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.84375, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.8125, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.8125, 'x1': 1.0, 'x2': 0.125}, {'x0': 0.8125, 'x1': 0.0, 'x2': 0.125}, {'x0': 0.8125, 'x1': 1.0, 'x2': 0.375}, {'x0': 0.8125, 'x1': 0.0, 'x2': 0.375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 22
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 22
+FUTURES COMPLETE
+CYCLE 22 COMPLETE IN 0.09830594062805176, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_22/runner_return.txt
+WRITING runner_return.txt TOOK 0.0020706653594970703 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 22
++++ 
+ NUM INNER LEAF POINTS 279
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4501374048820044
+doing brute sobol indicies
+grid size before refinement: 279
+grid size after refinement: 284
+NEW POINT (0.65625, 0.0, 0.5) (0.65625, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.65625, 1.0, 0.5) (0.65625, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.71875, 0.0, 0.5) (0.71875, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.71875, 1.0, 0.5) (0.71875, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.5, 0.5) (0.6875, 0.5, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 5
+debug (0.8125, 0.5, 0.25) [{'x0': 0.65625, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.65625, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.71875, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.71875, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.6875, 'x1': 0.5, 'x2': 0.5}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 23
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 23
+FUTURES COMPLETE
+CYCLE 23 COMPLETE IN 0.06387758255004883, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_23/runner_return.txt
+WRITING runner_return.txt TOOK 0.0018434524536132812 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 23
++++ 
+ NUM INNER LEAF POINTS 284
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4504745541292484
+doing brute sobol indicies
+grid size before refinement: 284
+grid size after refinement: 308
+NEW POINT (0.765625, 1.0, 0.0) (0.765625, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.765625, 0.0, 0.0) (0.765625, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.765625, 0.0, 1.0) (0.765625, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.765625, 1.0, 1.0) (0.765625, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.765625, 1.0, 0.5) (0.765625, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.765625, 0.0, 0.5) (0.765625, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.765625, 1.0, 0.25) (0.765625, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.765625, 0.0, 0.25) (0.765625, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.796875, 1.0, 0.0) (0.796875, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.796875, 0.0, 0.0) (0.796875, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.796875, 0.0, 1.0) (0.796875, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.796875, 1.0, 1.0) (0.796875, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.796875, 1.0, 0.5) (0.796875, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.796875, 0.0, 0.5) (0.796875, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.796875, 1.0, 0.25) (0.796875, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.796875, 0.0, 0.25) (0.796875, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 0.5, 0.0) (0.78125, 0.5, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.78125, 0.5, 1.0) (0.78125, 0.5, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.78125, 0.5, 0.5) (0.78125, 0.5, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.78125, 0.5, 0.25) (0.78125, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 1.0, 0.125) (0.78125, 1.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 0.0, 0.125) (0.78125, 0.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 1.0, 0.375) (0.78125, 1.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.78125, 0.0, 0.375) (0.78125, 0.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 24
+debug (0.8125, 0.5, 0.25) [{'x0': 0.765625, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.765625, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.765625, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.765625, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.765625, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.765625, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.765625, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.765625, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.796875, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.796875, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.796875, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.796875, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.796875, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.796875, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.796875, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.796875, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.78125, 'x1': 0.5, 'x2': 0.0}, {'x0': 0.78125, 'x1': 0.5, 'x2': 1.0}, {'x0': 0.78125, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.78125, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.78125, 'x1': 1.0, 'x2': 0.125}, {'x0': 0.78125, 'x1': 0.0, 'x2': 0.125}, {'x0': 0.78125, 'x1': 1.0, 'x2': 0.375}, {'x0': 0.78125, 'x1': 0.0, 'x2': 0.375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 24
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 24
+FUTURES COMPLETE
+CYCLE 24 COMPLETE IN 0.25410985946655273, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_24/runner_return.txt
+WRITING runner_return.txt TOOK 0.001966238021850586 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 24
++++ 
+ NUM INNER LEAF POINTS 308
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.45071383989971253
+doing brute sobol indicies
+grid size before refinement: 308
+grid size after refinement: 328
+NEW POINT (0.0, 0.5, 0.875) (0.0, 0.5, 0.875)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 0.5, 0.875) (1.0, 0.5, 0.875)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.5, 0.875) (0.5, 0.5, 0.875)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.5, 0.875) (0.75, 0.5, 0.875)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.8125) (0.0, 0.0, 0.8125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 0.0, 0.8125) (1.0, 0.0, 0.8125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 1.0, 0.8125) (1.0, 1.0, 0.8125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.0, 1.0, 0.8125) (0.0, 1.0, 0.8125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.0, 0.8125) (0.5, 0.0, 0.8125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 1.0, 0.8125) (0.5, 1.0, 0.8125)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.8125) (0.75, 0.0, 0.8125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.8125) (0.75, 1.0, 0.8125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.9375) (0.0, 0.0, 0.9375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 0.0, 0.9375) (1.0, 0.0, 0.9375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (1.0, 1.0, 0.9375) (1.0, 1.0, 0.9375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.0, 1.0, 0.9375) (0.0, 1.0, 0.9375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 0.0, 0.9375) (0.5, 0.0, 0.9375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.5, 1.0, 0.9375) (0.5, 1.0, 0.9375)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.9375) (0.75, 0.0, 0.9375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.75, 1.0, 0.9375) (0.75, 1.0, 0.9375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 20
+debug (0.8125, 0.5, 0.25) [{'x0': 0.0, 'x1': 0.5, 'x2': 0.875}, {'x0': 1.0, 'x1': 0.5, 'x2': 0.875}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.875}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.875}, {'x0': 0.0, 'x1': 0.0, 'x2': 0.8125}, {'x0': 1.0, 'x1': 0.0, 'x2': 0.8125}, {'x0': 1.0, 'x1': 1.0, 'x2': 0.8125}, {'x0': 0.0, 'x1': 1.0, 'x2': 0.8125}, {'x0': 0.5, 'x1': 0.0, 'x2': 0.8125}, {'x0': 0.5, 'x1': 1.0, 'x2': 0.8125}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.8125}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.8125}, {'x0': 0.0, 'x1': 0.0, 'x2': 0.9375}, {'x0': 1.0, 'x1': 0.0, 'x2': 0.9375}, {'x0': 1.0, 'x1': 1.0, 'x2': 0.9375}, {'x0': 0.0, 'x1': 1.0, 'x2': 0.9375}, {'x0': 0.5, 'x1': 0.0, 'x2': 0.9375}, {'x0': 0.5, 'x1': 1.0, 'x2': 0.9375}, {'x0': 0.75, 'x1': 0.0, 'x2': 0.9375}, {'x0': 0.75, 'x1': 1.0, 'x2': 0.9375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 25
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 25
+FUTURES COMPLETE
+CYCLE 25 COMPLETE IN 0.21052312850952148, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_25/runner_return.txt
+WRITING runner_return.txt TOOK 0.001634359359741211 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 25
++++ 
+ NUM INNER LEAF POINTS 328
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.45105642894902204
+doing brute sobol indicies
+grid size before refinement: 328
+grid size after refinement: 335
+NEW POINT (0.9375, 0.0, 0.875) (0.9375, 0.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 1.0, 0.875) (0.9375, 1.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.5, 0.875) (0.875, 0.5, 0.875)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.8125) (0.875, 0.0, 0.8125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.8125) (0.875, 1.0, 0.8125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.9375) (0.875, 0.0, 0.9375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.875, 1.0, 0.9375) (0.875, 1.0, 0.9375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 7
+debug (0.8125, 0.5, 0.25) [{'x0': 0.9375, 'x1': 0.0, 'x2': 0.875}, {'x0': 0.9375, 'x1': 1.0, 'x2': 0.875}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.875}, {'x0': 0.875, 'x1': 0.0, 'x2': 0.8125}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.8125}, {'x0': 0.875, 'x1': 0.0, 'x2': 0.9375}, {'x0': 0.875, 'x1': 1.0, 'x2': 0.9375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 26
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 26
+FUTURES COMPLETE
+CYCLE 26 COMPLETE IN 0.08650374412536621, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_26/runner_return.txt
+WRITING runner_return.txt TOOK 0.001897573471069336 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 26
++++ 
+ NUM INNER LEAF POINTS 335
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4510638600337596
+doing brute sobol indicies
+grid size before refinement: 335
+grid size after refinement: 344
+NEW POINT (0.65625, 0.0, 0.75) (0.65625, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.65625, 1.0, 0.75) (0.65625, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.71875, 0.0, 0.75) (0.71875, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.71875, 1.0, 0.75) (0.71875, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.5, 0.75) (0.6875, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.0, 0.625) (0.6875, 0.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 1.0, 0.625) (0.6875, 1.0, 0.625)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.0, 0.875) (0.6875, 0.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 1.0, 0.875) (0.6875, 1.0, 0.875)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 9
+debug (0.8125, 0.5, 0.25) [{'x0': 0.65625, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.65625, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.71875, 'x1': 0.0, 'x2': 0.75}, {'x0': 0.71875, 'x1': 1.0, 'x2': 0.75}, {'x0': 0.6875, 'x1': 0.5, 'x2': 0.75}, {'x0': 0.6875, 'x1': 0.0, 'x2': 0.625}, {'x0': 0.6875, 'x1': 1.0, 'x2': 0.625}, {'x0': 0.6875, 'x1': 0.0, 'x2': 0.875}, {'x0': 0.6875, 'x1': 1.0, 'x2': 0.875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 27
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 27
+FUTURES COMPLETE
+CYCLE 27 COMPLETE IN 0.09694290161132812, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_27/runner_return.txt
+WRITING runner_return.txt TOOK 0.0019237995147705078 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 27
++++ 
+ NUM INNER LEAF POINTS 344
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.451052323504059
+doing brute sobol indicies
+grid size before refinement: 344
+grid size after refinement: 359
+NEW POINT (0.828125, 0.0, 0.0) (0.828125, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.828125, 1.0, 0.0) (0.828125, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.828125, 1.0, 1.0) (0.828125, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.828125, 0.0, 1.0) (0.828125, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.828125, 0.0, 0.5) (0.828125, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.828125, 1.0, 0.5) (0.828125, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.859375, 0.0, 0.0) (0.859375, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.859375, 1.0, 0.0) (0.859375, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.859375, 1.0, 1.0) (0.859375, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.859375, 0.0, 1.0) (0.859375, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.859375, 0.0, 0.5) (0.859375, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.859375, 1.0, 0.5) (0.859375, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.84375, 0.5, 0.0) (0.84375, 0.5, 0.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.84375, 0.5, 1.0) (0.84375, 0.5, 1.0)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.84375, 0.5, 0.5) (0.84375, 0.5, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 15
+debug (0.8125, 0.5, 0.25) [{'x0': 0.828125, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.828125, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.828125, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.828125, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.828125, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.828125, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.859375, 'x1': 0.0, 'x2': 0.0}, {'x0': 0.859375, 'x1': 1.0, 'x2': 0.0}, {'x0': 0.859375, 'x1': 1.0, 'x2': 1.0}, {'x0': 0.859375, 'x1': 0.0, 'x2': 1.0}, {'x0': 0.859375, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.859375, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.84375, 'x1': 0.5, 'x2': 0.0}, {'x0': 0.84375, 'x1': 0.5, 'x2': 1.0}, {'x0': 0.84375, 'x1': 0.5, 'x2': 0.5}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 28
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 28
+FUTURES COMPLETE
+CYCLE 28 COMPLETE IN 0.15397143363952637, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_28/runner_return.txt
+WRITING runner_return.txt TOOK 0.0024118423461914062 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 28
++++ 
+ NUM INNER LEAF POINTS 359
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4511641796777162
+doing brute sobol indicies
+grid size before refinement: 359
+grid size after refinement: 373
+NEW POINT (0.90625, 0.0, 0.5) (0.90625, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.90625, 1.0, 0.5) (0.90625, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.90625, 0.0, 0.25) (0.90625, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.90625, 1.0, 0.25) (0.90625, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.96875, 0.0, 0.5) (0.96875, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.96875, 1.0, 0.5) (0.96875, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+adding to batch samples
+NEW POINT (0.96875, 0.0, 0.25) (0.96875, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.96875, 1.0, 0.25) (0.96875, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.5, 0.5) (0.9375, 0.5, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.9375, 0.5, 0.25) (0.9375, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.0, 0.125) (0.9375, 0.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 1.0, 0.125) (0.9375, 1.0, 0.125)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.0, 0.375) (0.9375, 0.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 1.0, 0.375) (0.9375, 1.0, 0.375)
+IS BOUNDARY True
+is parent False
+adding to batch samples
+len batch_samples 14
+debug (0.8125, 0.5, 0.25) [{'x0': 0.90625, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.90625, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.90625, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.90625, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.96875, 'x1': 0.0, 'x2': 0.5}, {'x0': 0.96875, 'x1': 1.0, 'x2': 0.5}, {'x0': 0.96875, 'x1': 0.0, 'x2': 0.25}, {'x0': 0.96875, 'x1': 1.0, 'x2': 0.25}, {'x0': 0.9375, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.9375, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.9375, 'x1': 0.0, 'x2': 0.125}, {'x0': 0.9375, 'x1': 1.0, 'x2': 0.125}, {'x0': 0.9375, 'x1': 0.0, 'x2': 0.375}, {'x0': 0.9375, 'x1': 1.0, 'x2': 0.375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 29
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 29
+FUTURES COMPLETE
+CYCLE 29 COMPLETE IN 0.1538689136505127, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/active_cycle_29/runner_return.txt
+WRITING runner_return.txt TOOK 0.002025604248046875 sec
+WRITING SAMPLER CYCLE INFO FOR CYCLE 29
++++ 
+ Write ACTIVE CYCLE: 29
++++ 
+ NUM INNER LEAF POINTS 373
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.4511641796777162
+doing brute sobol indicies
+WRITING SAMPLER CYCLE INFO TOOK 18.815908908843994 sec
+ACTIVE CYCLES FINISHED: num_cycles HIT THE max_cycles: 30
+WAITING FOR LAST FUTURES TO COMPLETE
+MAKING THE AN OUTPUT FILE CONTAINING ALL DATA: /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg/runner_return.txt
+WRITING THE SAMPLER SUMMARY FILES IN: /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg
+debug 0     0.238313
+1     0.234378
+2     0.233610
+3     0.421810
+4     0.440372
+5     0.434537
+6     0.450198
+7     0.441814
+8     0.447634
+9     0.443047
+10    0.442979
+11    0.453757
+12    0.441457
+13    0.439083
+14    0.446400
+15    0.449349
+16    0.447749
+17    0.449549
+18    0.450257
+19    0.449805
+20    0.448824
+21    0.448963
+22    0.450142
+23    0.450477
+24    0.450719
+25    0.451063
+26    0.451071
+27    0.451058
+28    0.451169
+29    0.451169
+Name: quad_expectation, dtype: float64
+debug [0.23831307 0.23437849 0.23361043 0.4218096  0.4403718  0.43453732
+ 0.45019752 0.44181367 0.44763371 0.44304679 0.44297943 0.45375746
+ 0.44145712 0.43908251 0.44640036 0.44934891 0.44774858 0.44954896
+ 0.45025685 0.44980502 0.44882411 0.44896339 0.45014161 0.45047679
+ 0.45071938 0.45106332 0.45107076 0.45105812 0.45116866 0.45116866]
+debug [0.23831307 0.23437849 0.23361043 0.4218096  0.4403718  0.43453732
+ 0.45019752 0.44181367 0.44763371 0.44304679 0.44297943 0.45375746
+ 0.44145712 0.43908251 0.44640036 0.44934891 0.44774858 0.44954896
+ 0.45025685 0.44980502 0.44882411 0.44896339 0.45014161 0.45047679
+ 0.45071938 0.45106332 0.45107076 0.45105812 0.45116866 0.45116866]
+WRITING THE STATIC EXECUTOR SUMMARY FILES IN: /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg
+ACTIVE CYCLES FINISHED
+num_samples: 373
+num_cycles: 30
+wall time sec: 477.60371708869934
+BASE RUN DIR: /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg
+SHUTTING DOWN SCHEDULER AND WORKERS

@@ -1,0 +1,4053 @@
+PERFORMING IMPORTS
+Cannot find bmdal_reg. Please point to those in your bash script if you intend to use ActiveLearnerBMDAL No module named 'bmdal_reg'
+Cannot find DREAM. Please add the $DREAMPATH/py to your PYTHONPATH environment variable before running. No module named 'DREAM'
+STARTING ENCHANTED SURROGATES
+LOADING ARGUMENTS FROM CONFIG FILE tests/LUMI_tests/configs/Active_MMMGaussian_config.yaml
+LOADING CONFIGURATION FILE
+Namespace(sampler={'type': 'SpatiallyAdaptiveSparseGrids', 'bounds': [[0, 1], [0, 1], [0, 1]], 'parameters': ['x0', 'x1', 'x2'], 'initial_level': 1, 'infer_bounds': True, 'infer_parents': False, 'brute_check_sampler': {'type': 'SobolSequence', 'num_samples': '1e6'}, 'do_brute_force_sobol_indicies': True}, executor={'type': 'DaskExecutorActive', 'base_run_dir': '/scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds', 'runner_return_headder': 'x0,x1,MMMG', 'max_cycles': 30, 'static_executor': {'type': 'DaskExecutorSimulation', 'runner': {'type': 'MMMGrunner', 'num_dim': 3, 'bounds': [[0, 1], [0, 1], [0, 1]], 'random_gaussians': {'num_gaussians': 5, 'seed': 42}}, 'worker_args': {'account': 'project_462000451', 'queue': 'small', 'cores': 1, 'memory': '2GB', 'walltime': '00:40:00', 'interface': 'nmn0', 'job_script_prologue': ['export PATH="/project/project_462000451/enchanted_container_lumi3/bin:$PATH"', 'cd /users/danieljordan/enchanted-surrogates2/', 'export PYTHONPATH=$PYTHONPATH:/users/danieljordan/enchanted-surrogates2/src']}, 'n_jobs': 10}, 'config_filepath': 'tests/LUMI_tests/configs/Active_MMMGaussian_config.yaml'})
+MAKING SAMPLER AND EXECUTOR
+['x0', 'x1', 'x2'] [[0 1]
+ [0 1]
+ [0 1]] 3 3
+num samp <class 'float'> 1000000.0
+
+              GENERATING SOBOL SEQUENCE SAMPLES, NUM SAMPLES REQUESTED: 524288, NUM SAMPLES: 524288
+
+              PARAMETERS: ['x0', 'x1', 'x2']
+              BOUNDS:[[0 1]
+ [0 1]
+ [0 1]]
+MAKING BASE RUN DIR
+MAKING RUNNER RETURN FILE
+RANDOM GAUSSIAN 0 HAS-:
+MEANS OF: [0.77395605 0.43887844 0.85859792] 
+ STDs: [0.83508564 0.88660268 0.96268634]
+RANDOM GAUSSIAN 1 HAS-:
+MEANS OF: [0.64386512 0.82276161 0.4434142 ] 
+ STDs: [0.47669563 0.79477317 0.94505086]
+RANDOM GAUSSIAN 2 HAS-:
+MEANS OF: [0.7783835  0.19463871 0.466721  ] 
+ STDs: [0.20929349 0.98362073 0.43528308]
+RANDOM GAUSSIAN 3 HAS-:
+MEANS OF: [0.12992151 0.47570493 0.22690935] 
+ STDs: [0.81842165 0.5588977  0.53696192]
+RANDOM GAUSSIAN 4 HAS-:
+MEANS OF: [0.6824955  0.13975248 0.1999082 ] 
+ STDs: [0.08580367 0.88358872 0.33842292]
+RANDOM GAUSSIANS HAVE-:
+MEANS OF: [array([0.77395605, 0.43887844, 0.85859792]), array([0.64386512, 0.82276161, 0.4434142 ]), array([0.7783835 , 0.19463871, 0.466721  ]), array([0.12992151, 0.47570493, 0.22690935]), array([0.6824955 , 0.13975248, 0.1999082 ])] 
+ STDs: [array([0.83508564, 0.88660268, 0.96268634]), array([0.47669563, 0.79477317, 0.94505086]), array([0.20929349, 0.98362073, 0.43528308]), array([0.81842165, 0.5588977 , 0.53696192]), array([0.08580367, 0.88358872, 0.33842292])]
+STARTING RUNS
+STARTING ACTIVE CYCLE, FROM WITHIN A <class 'executors.DaskExecutorActive.DaskExecutorActive'>
+MAKING CLUSTERS
+Initializing DASK client
+MAKING A SLURM CLUSTER FOR MMMGrunner
+THE JOB SCRIPT FOR A WORKER IS:
+#!/usr/bin/env bash
+
+#SBATCH -J dask-worker
+#SBATCH -p small
+#SBATCH -A project_462000451
+#SBATCH -n 1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=2G
+#SBATCH -t 00:40:00
+#SBATCH -o /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/%x.%j.out
+#SBATCH -e /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/%x.%j.err
+export PATH="/project/project_462000451/enchanted_container_lumi3/bin:$PATH"
+cd /users/danieljordan/enchanted-surrogates2/
+export PYTHONPATH=$PYTHONPATH:/users/danieljordan/enchanted-surrogates2/src
+/project/project_462000451/enchanted_container_lumi3/bin/python3 -m distributed.cli.dask_worker tcp://10.120.120.244:33479 --name dummy-name --nthreads 1 --memory-limit 1.86GiB --nanny --death-timeout 60 --interface nmn0
+
+GENERATING INITIAL SAMPLES:
+MAKING AND SUBMITING DASK FUTURES FOR INITIAL RUNS
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+INITIAL FUTURES SUBMITTED WAITING FOR THEM TO COMPLETE
+INITIAL FUTURES COMPLETE IN 23.754096508026123, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/initial_runs/runner_return.txt
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 0
++++ 
+ NUM INNER LEAF POINTS 27
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 0
+DOING BRUTE CHECK
+EXPECTATION 0.2383122549695341
+doing brute sobol indicies
+grid size before refinement: 27
+grid size after refinement: 35
+NEW POINT (1.0, 0.0, 0.25) (1.0, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 0.0, 0.25) (0.0, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 1.0, 0.25) (0.0, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 1.0, 0.25) (1.0, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 0.0, 0.75) (1.0, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 0.0, 0.75) (0.0, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 1.0, 0.75) (0.0, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 1.0, 0.75) (1.0, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+appending bounds points
+len batch_samples 0
+debug (0.8125, 0.5, 0.25) []
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 1
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 1
+FUTURES COMPLETE
+CYCLE 1 COMPLETE IN 0.005262851715087891, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_1/runner_return.txt
+WRITING runner_return.txt TOOK 0.001963376998901367 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 1
++++ 
+ NUM INNER LEAF POINTS 27
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 8
+DOING BRUTE CHECK
+EXPECTATION 0.2383122549695341
+doing brute sobol indicies
+grid size before refinement: 35
+grid size after refinement: 43
+NEW POINT (0.0, 0.25, 0.0) (0.0, 0.25, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 0.25, 0.0) (1.0, 0.25, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 0.25, 1.0) (1.0, 0.25, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 0.25, 1.0) (0.0, 0.25, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 0.75, 0.0) (0.0, 0.75, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 0.75, 0.0) (1.0, 0.75, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 0.75, 1.0) (1.0, 0.75, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 0.75, 1.0) (0.0, 0.75, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+len batch_samples 0
+debug (0.8125, 0.5, 0.25) []
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 2
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 2
+FUTURES COMPLETE
+CYCLE 2 COMPLETE IN 0.005136013031005859, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_2/runner_return.txt
+WRITING runner_return.txt TOOK 0.0016455650329589844 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 2
++++ 
+ NUM INNER LEAF POINTS 27
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 16
+DOING BRUTE CHECK
+EXPECTATION 0.2383122549695341
+doing brute sobol indicies
+grid size before refinement: 43
+grid size after refinement: 51
+NEW POINT (0.25, 1.0, 1.0) (0.25, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.25, 0.0, 1.0) (0.25, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.25, 0.0, 0.0) (0.25, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.25, 1.0, 0.0) (0.25, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.75, 1.0, 1.0) (0.75, 1.0, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.75, 0.0, 1.0) (0.75, 0.0, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.75, 0.0, 0.0) (0.75, 0.0, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.75, 1.0, 0.0) (0.75, 1.0, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+len batch_samples 0
+debug (0.8125, 0.5, 0.25) []
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 3
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 3
+FUTURES COMPLETE
+CYCLE 3 COMPLETE IN 0.01187753677368164, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_3/runner_return.txt
+WRITING runner_return.txt TOOK 0.0018849372863769531 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 3
++++ 
+ NUM INNER LEAF POINTS 27
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 24
+DOING BRUTE CHECK
+EXPECTATION 0.2383122549695341
+doing brute sobol indicies
+grid size before refinement: 51
+grid size after refinement: 59
+NEW POINT (0.25, 0.5, 1.0) (0.25, 0.5, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.25, 0.5, 0.0) (0.25, 0.5, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.75, 0.5, 1.0) (0.75, 0.5, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.75, 0.5, 0.0) (0.75, 0.5, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.5, 0.25, 1.0) (0.5, 0.25, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.5, 0.25, 0.0) (0.5, 0.25, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.5, 0.75, 1.0) (0.5, 0.75, 1.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.5, 0.75, 0.0) (0.5, 0.75, 0.0)
+IS BOUNDARY True
+is parent False
+appending bounds points
+len batch_samples 0
+debug (0.8125, 0.5, 0.25) []
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 4
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 4
+FUTURES COMPLETE
+CYCLE 4 COMPLETE IN 0.00618433952331543, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_4/runner_return.txt
+WRITING runner_return.txt TOOK 0.0017774105072021484 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 4
++++ 
+ NUM INNER LEAF POINTS 27
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 32
+DOING BRUTE CHECK
+EXPECTATION 0.2383122549695341
+doing brute sobol indicies
+grid size before refinement: 59
+grid size after refinement: 67
+NEW POINT (0.25, 1.0, 0.5) (0.25, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.25, 0.0, 0.5) (0.25, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.75, 1.0, 0.5) (0.75, 1.0, 0.5)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.75, 0.0, 0.5) (0.75, 0.0, 0.5)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.5, 1.0, 0.25) (0.5, 1.0, 0.25)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.5, 0.0, 0.25) (0.5, 0.0, 0.25)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.5, 1.0, 0.75) (0.5, 1.0, 0.75)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.5, 0.0, 0.75) (0.5, 0.0, 0.75)
+IS BOUNDARY True
+is parent False
+appending bounds points
+len batch_samples 0
+debug (0.8125, 0.5, 0.25) []
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 5
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 5
+FUTURES COMPLETE
+CYCLE 5 COMPLETE IN 0.006337881088256836, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_5/runner_return.txt
+WRITING runner_return.txt TOOK 0.0022335052490234375 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 5
++++ 
+ NUM INNER LEAF POINTS 27
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 40
+DOING BRUTE CHECK
+EXPECTATION 0.2383122549695341
+doing brute sobol indicies
+grid size before refinement: 67
+grid size after refinement: 75
+NEW POINT (0.0, 0.25, 0.5) (0.0, 0.25, 0.5)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 0.25, 0.5) (1.0, 0.25, 0.5)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 0.75, 0.5) (0.0, 0.75, 0.5)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 0.75, 0.5) (1.0, 0.75, 0.5)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 0.5, 0.25) (0.0, 0.5, 0.25)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 0.5, 0.25) (1.0, 0.5, 0.25)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (0.0, 0.5, 0.75) (0.0, 0.5, 0.75)
+IS BOUNDARY True
+is parent False
+appending bounds points
+NEW POINT (1.0, 0.5, 0.75) (1.0, 0.5, 0.75)
+IS BOUNDARY True
+is parent False
+appending bounds points
+len batch_samples 0
+debug (0.8125, 0.5, 0.25) []
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 6
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 6
+FUTURES COMPLETE
+CYCLE 6 COMPLETE IN 0.0059964656829833984, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_6/runner_return.txt
+WRITING runner_return.txt TOOK 0.0016329288482666016 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 6
++++ 
+ NUM INNER LEAF POINTS 27
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 48
+DOING BRUTE CHECK
+EXPECTATION 0.23831225496953407
+doing brute sobol indicies
+grid size before refinement: 75
+grid size after refinement: 81
+NEW POINT (0.25, 0.5, 0.5) (0.25, 0.5, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.5, 0.5) (0.75, 0.5, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.5, 0.25, 0.5) (0.5, 0.25, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.5, 0.75, 0.5) (0.5, 0.75, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.5, 0.5, 0.25) (0.5, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.5, 0.5, 0.75) (0.5, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 6
+debug (0.8125, 0.5, 0.25) [{'x0': 0.25, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.5}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.5}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.75}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 7
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 7
+FUTURES COMPLETE
+CYCLE 7 COMPLETE IN 0.07873344421386719, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_7/runner_return.txt
+WRITING runner_return.txt TOOK 0.0019235610961914062 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 7
++++ 
+ NUM INNER LEAF POINTS 33
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 48
+DOING BRUTE CHECK
+EXPECTATION 0.34963093301421855
+doing brute sobol indicies
+grid size before refinement: 81
+grid size after refinement: 111
+NEW POINT (0.625, 0.0, 0.0) (0.625, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.0) (0.625, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 1.0) (0.625, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.0, 1.0) (0.625, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.0, 0.5) (0.625, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.5) (0.625, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.0) (0.625, 0.5, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 1.0) (0.625, 0.5, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.5) (0.625, 0.5, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.0) (0.875, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.0) (0.875, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 1.0) (0.875, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.0, 1.0) (0.875, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.0, 0.5) (0.875, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.5) (0.875, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.0) (0.875, 0.5, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 1.0) (0.875, 0.5, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.5) (0.875, 0.5, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.0) (0.75, 0.25, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.25, 1.0) (0.75, 0.25, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.25, 0.5) (0.75, 0.25, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.0) (0.75, 0.75, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.75, 1.0) (0.75, 0.75, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.75, 0.5) (0.75, 0.75, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.25) (0.75, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.25) (0.75, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.25) (0.75, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.75) (0.75, 0.0, 0.75)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.75) (0.75, 1.0, 0.75)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.75) (0.75, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 6
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.5}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.5}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.75}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 8
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 8
+FUTURES COMPLETE
+CYCLE 8 COMPLETE IN 0.08143496513366699, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_8/runner_return.txt
+WRITING runner_return.txt TOOK 0.002251863479614258 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 8
++++ 
+ NUM INNER LEAF POINTS 39
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 72
+DOING BRUTE CHECK
+EXPECTATION 0.405359453749413
+doing brute sobol indicies
+grid size before refinement: 111
+grid size after refinement: 149
+NEW POINT (0.625, 0.0, 0.25) (0.625, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.25) (0.625, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.25) (0.625, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.25) (0.875, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.25) (0.875, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.25) (0.875, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.25) (0.0, 0.25, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.25) (1.0, 0.25, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.25) (0.5, 0.25, 0.25)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.25) (0.75, 0.25, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.25) (0.0, 0.75, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.25) (1.0, 0.75, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.25) (0.5, 0.75, 0.25)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.25) (0.75, 0.75, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.125) (0.0, 0.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.125) (1.0, 0.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.125) (1.0, 1.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.125) (0.0, 1.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.125) (0.0, 0.5, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.125) (1.0, 0.5, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.125) (0.5, 0.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.125) (0.5, 1.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.125) (0.5, 0.5, 0.125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.125) (0.75, 0.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.125) (0.75, 1.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.125) (0.75, 0.5, 0.125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.375) (0.0, 0.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.375) (1.0, 0.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.375) (1.0, 1.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.375) (0.0, 1.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.375) (0.0, 0.5, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.375) (1.0, 0.5, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.375) (0.5, 0.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.375) (0.5, 1.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.375) (0.5, 0.5, 0.375)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.375) (0.75, 0.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.375) (0.75, 1.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.375) (0.75, 0.5, 0.375)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.25}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.25}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.25}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.25}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.125}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.375}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 9
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 9
+FUTURES COMPLETE
+CYCLE 9 COMPLETE IN 0.14316058158874512, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_9/runner_return.txt
+WRITING runner_return.txt TOOK 0.002305269241333008 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 9
++++ 
+ NUM INNER LEAF POINTS 49
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 100
+DOING BRUTE CHECK
+EXPECTATION 0.41770314192334623
+doing brute sobol indicies
+grid size before refinement: 149
+grid size after refinement: 187
+NEW POINT (0.8125, 0.0, 0.0) (0.8125, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 1.0, 0.0) (0.8125, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 1.0, 1.0) (0.8125, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 0.0, 1.0) (0.8125, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 0.0, 0.5) (0.8125, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 1.0, 0.5) (0.8125, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 0.0, 0.25) (0.8125, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 1.0, 0.25) (0.8125, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 0.5, 0.0) (0.8125, 0.5, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 0.5, 1.0) (0.8125, 0.5, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.8125, 0.5, 0.5) (0.8125, 0.5, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.8125, 0.5, 0.25) (0.8125, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.9375, 0.0, 0.0) (0.9375, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 1.0, 0.0) (0.9375, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 1.0, 1.0) (0.9375, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 0.0, 1.0) (0.9375, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 0.0, 0.5) (0.9375, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 1.0, 0.5) (0.9375, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 0.0, 0.25) (0.9375, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 1.0, 0.25) (0.9375, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 0.5, 0.0) (0.9375, 0.5, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 0.5, 1.0) (0.9375, 0.5, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.9375, 0.5, 0.5) (0.9375, 0.5, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.9375, 0.5, 0.25) (0.9375, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.25, 0.0) (0.875, 0.25, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.25, 1.0) (0.875, 0.25, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.25, 0.5) (0.875, 0.25, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.875, 0.25, 0.25) (0.875, 0.25, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.75, 0.0) (0.875, 0.75, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.75, 1.0) (0.875, 0.75, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.75, 0.5) (0.875, 0.75, 0.5)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.875, 0.75, 0.25) (0.875, 0.75, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.125) (0.875, 0.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.125) (0.875, 1.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.125) (0.875, 0.5, 0.125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.375) (0.875, 0.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.375) (0.875, 1.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.375) (0.875, 0.5, 0.375)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.8125, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.8125, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.9375, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.9375, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.875, 'x1': 0.25, 'x2': 0.5}, {'x0': 0.875, 'x1': 0.25, 'x2': 0.25}, {'x0': 0.875, 'x1': 0.75, 'x2': 0.5}, {'x0': 0.875, 'x1': 0.75, 'x2': 0.25}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.125}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 10
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 10
+FUTURES COMPLETE
+CYCLE 10 COMPLETE IN 0.12523150444030762, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_10/runner_return.txt
+WRITING runner_return.txt TOOK 0.0019080638885498047 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 10
++++ 
+ NUM INNER LEAF POINTS 59
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 128
+DOING BRUTE CHECK
+EXPECTATION 0.3962712024075231
+doing brute sobol indicies
+grid size before refinement: 187
+grid size after refinement: 190
+NEW POINT (0.875, 0.0, 0.75) (0.875, 0.0, 0.75)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.75) (0.875, 1.0, 0.75)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.75) (0.875, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 1
+debug (0.8125, 0.5, 0.25) [{'x0': 0.875, 'x1': 0.5, 'x2': 0.75}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 11
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 11
+FUTURES COMPLETE
+CYCLE 11 COMPLETE IN 0.025552988052368164, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_11/runner_return.txt
+WRITING runner_return.txt TOOK 0.0025343894958496094 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 11
++++ 
+ NUM INNER LEAF POINTS 60
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 130
+DOING BRUTE CHECK
+EXPECTATION 0.4071551791138502
+doing brute sobol indicies
+grid size before refinement: 190
+grid size after refinement: 217
+NEW POINT (0.5625, 0.0, 0.0) (0.5625, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 1.0, 0.0) (0.5625, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 1.0, 1.0) (0.5625, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 0.0, 1.0) (0.5625, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 0.0, 0.5) (0.5625, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 1.0, 0.5) (0.5625, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 0.5, 0.0) (0.5625, 0.5, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 0.5, 1.0) (0.5625, 0.5, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 0.5, 0.5) (0.5625, 0.5, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.0, 0.0) (0.6875, 0.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 1.0, 0.0) (0.6875, 1.0, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 1.0, 1.0) (0.6875, 1.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 0.0, 1.0) (0.6875, 0.0, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 0.0, 0.5) (0.6875, 0.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 1.0, 0.5) (0.6875, 1.0, 0.5)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 0.5, 0.0) (0.6875, 0.5, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 0.5, 1.0) (0.6875, 0.5, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 0.5, 0.5) (0.6875, 0.5, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.25, 0.0) (0.625, 0.25, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.25, 1.0) (0.625, 0.25, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.25, 0.5) (0.625, 0.25, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.75, 0.0) (0.625, 0.75, 0.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.75, 1.0) (0.625, 0.75, 1.0)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.75, 0.5) (0.625, 0.75, 0.5)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.75) (0.625, 0.0, 0.75)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.75) (0.625, 1.0, 0.75)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.75) (0.625, 0.5, 0.75)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 5
+debug (0.8125, 0.5, 0.25) [{'x0': 0.5625, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.6875, 'x1': 0.5, 'x2': 0.5}, {'x0': 0.625, 'x1': 0.25, 'x2': 0.5}, {'x0': 0.625, 'x1': 0.75, 'x2': 0.5}, {'x0': 0.625, 'x1': 0.5, 'x2': 0.75}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 12
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 12
+FUTURES COMPLETE
+CYCLE 12 COMPLETE IN 0.06847667694091797, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_12/runner_return.txt
+WRITING runner_return.txt TOOK 0.002051830291748047 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 12
++++ 
+ NUM INNER LEAF POINTS 65
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 152
+DOING BRUTE CHECK
+EXPECTATION 0.4017577867449032
+doing brute sobol indicies
+grid size before refinement: 217
+grid size after refinement: 231
+NEW POINT (0.5625, 0.0, 0.25) (0.5625, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 1.0, 0.25) (0.5625, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5625, 0.5, 0.25) (0.5625, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.6875, 0.0, 0.25) (0.6875, 0.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 1.0, 0.25) (0.6875, 1.0, 0.25)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.6875, 0.5, 0.25) (0.6875, 0.5, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.25, 0.25) (0.625, 0.25, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.75, 0.25) (0.625, 0.75, 0.25)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.125) (0.625, 0.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.125) (0.625, 1.0, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.125) (0.625, 0.5, 0.125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.625, 0.0, 0.375) (0.625, 0.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.375) (0.625, 1.0, 0.375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.375) (0.625, 0.5, 0.375)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 6
+debug (0.8125, 0.5, 0.25) [{'x0': 0.5625, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.6875, 'x1': 0.5, 'x2': 0.25}, {'x0': 0.625, 'x1': 0.25, 'x2': 0.25}, {'x0': 0.625, 'x1': 0.75, 'x2': 0.25}, {'x0': 0.625, 'x1': 0.5, 'x2': 0.125}, {'x0': 0.625, 'x1': 0.5, 'x2': 0.375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 13
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 13
+FUTURES COMPLETE
+CYCLE 13 COMPLETE IN 0.07795047760009766, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_13/runner_return.txt
+WRITING runner_return.txt TOOK 0.0018157958984375 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 13
++++ 
+ NUM INNER LEAF POINTS 71
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 160
+DOING BRUTE CHECK
+EXPECTATION 0.4066678081992036
+doing brute sobol indicies
+grid size before refinement: 231
+grid size after refinement: 263
+NEW POINT (0.0, 0.25, 0.125) (0.0, 0.25, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.125) (1.0, 0.25, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.125) (0.5, 0.25, 0.125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.125) (0.75, 0.25, 0.125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.125) (0.0, 0.75, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.125) (1.0, 0.75, 0.125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.125) (0.5, 0.75, 0.125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.125) (0.75, 0.75, 0.125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.0625) (0.0, 0.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.0625) (1.0, 0.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.0625) (1.0, 1.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.0625) (0.0, 1.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.0625) (0.0, 0.5, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.0625) (1.0, 0.5, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.0625) (0.5, 0.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.0625) (0.5, 1.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.0625) (0.5, 0.5, 0.0625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.0625) (0.75, 0.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.0625) (0.75, 1.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.0625) (0.75, 0.5, 0.0625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.1875) (0.0, 0.0, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.1875) (1.0, 0.0, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.1875) (1.0, 1.0, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.1875) (0.0, 1.0, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.1875) (0.0, 0.5, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.1875) (1.0, 0.5, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.1875) (0.5, 0.0, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.1875) (0.5, 1.0, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.1875) (0.5, 0.5, 0.1875)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.1875) (0.75, 0.0, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.1875) (0.75, 1.0, 0.1875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.1875) (0.75, 0.5, 0.1875)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 8
+debug (0.8125, 0.5, 0.25) [{'x0': 0.5, 'x1': 0.25, 'x2': 0.125}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.125}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.125}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.0625}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.0625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.1875}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.1875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 14
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 14
+FUTURES COMPLETE
+CYCLE 14 COMPLETE IN 0.10825705528259277, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_14/runner_return.txt
+WRITING runner_return.txt TOOK 0.0019352436065673828 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 14
++++ 
+ NUM INNER LEAF POINTS 79
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 184
+DOING BRUTE CHECK
+EXPECTATION 0.415146007590948
+doing brute sobol indicies
+grid size before refinement: 263
+grid size after refinement: 301
+NEW POINT (0.625, 0.0, 0.0625) (0.625, 0.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.0625) (0.625, 1.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.0625) (0.625, 0.5, 0.0625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.0625) (0.875, 0.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.0625) (0.875, 1.0, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.0625) (0.875, 0.5, 0.0625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.0625) (0.0, 0.25, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.0625) (1.0, 0.25, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.0625) (0.5, 0.25, 0.0625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.0625) (0.75, 0.25, 0.0625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.0625) (0.0, 0.75, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.0625) (1.0, 0.75, 0.0625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.0625) (0.5, 0.75, 0.0625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.0625) (0.75, 0.75, 0.0625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.03125) (0.0, 0.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.03125) (1.0, 0.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.03125) (1.0, 1.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.03125) (0.0, 1.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.03125) (0.0, 0.5, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.03125) (1.0, 0.5, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.03125) (0.5, 0.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.03125) (0.5, 1.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.03125) (0.5, 0.5, 0.03125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.03125) (0.75, 0.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.03125) (0.75, 1.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.03125) (0.75, 0.5, 0.03125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.09375) (0.0, 0.0, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.09375) (1.0, 0.0, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.09375) (1.0, 1.0, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.09375) (0.0, 1.0, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.09375) (0.0, 0.5, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.09375) (1.0, 0.5, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.09375) (0.5, 0.0, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.09375) (0.5, 1.0, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.09375) (0.5, 0.5, 0.09375)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.09375) (0.75, 0.0, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.09375) (0.75, 1.0, 0.09375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.09375) (0.75, 0.5, 0.09375)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.0625}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.0625}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.0625}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.0625}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.0625}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.0625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.03125}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.03125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.09375}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.09375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 15
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 15
+FUTURES COMPLETE
+CYCLE 15 COMPLETE IN 0.12543678283691406, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_15/runner_return.txt
+WRITING runner_return.txt TOOK 0.0019495487213134766 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 15
++++ 
+ NUM INNER LEAF POINTS 89
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 212
+DOING BRUTE CHECK
+EXPECTATION 0.41839262533444094
+doing brute sobol indicies
+grid size before refinement: 301
+grid size after refinement: 339
+NEW POINT (0.625, 0.0, 0.03125) (0.625, 0.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.03125) (0.625, 1.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.03125) (0.625, 0.5, 0.03125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.03125) (0.875, 0.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.03125) (0.875, 1.0, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.03125) (0.875, 0.5, 0.03125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.03125) (0.0, 0.25, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.03125) (1.0, 0.25, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.03125) (0.5, 0.25, 0.03125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.03125) (0.75, 0.25, 0.03125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.03125) (0.0, 0.75, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.03125) (1.0, 0.75, 0.03125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.03125) (0.5, 0.75, 0.03125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.03125) (0.75, 0.75, 0.03125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.015625) (0.0, 0.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.015625) (1.0, 0.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.015625) (1.0, 1.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.015625) (0.0, 1.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.015625) (0.0, 0.5, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.015625) (1.0, 0.5, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.015625) (0.5, 0.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.015625) (0.5, 1.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.015625) (0.5, 0.5, 0.015625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.015625) (0.75, 0.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.015625) (0.75, 1.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.015625) (0.75, 0.5, 0.015625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.046875) (0.0, 0.0, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.046875) (1.0, 0.0, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.046875) (1.0, 1.0, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.046875) (0.0, 1.0, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.046875) (0.0, 0.5, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.046875) (1.0, 0.5, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.046875) (0.5, 0.0, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.046875) (0.5, 1.0, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.046875) (0.5, 0.5, 0.046875)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.046875) (0.75, 0.0, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.046875) (0.75, 1.0, 0.046875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.046875) (0.75, 0.5, 0.046875)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.03125}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.03125}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.03125}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.03125}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.03125}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.03125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.015625}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.015625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.046875}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.046875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 16
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 16
+FUTURES COMPLETE
+CYCLE 16 COMPLETE IN 0.14437150955200195, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_16/runner_return.txt
+WRITING runner_return.txt TOOK 0.0029251575469970703 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 16
++++ 
+ NUM INNER LEAF POINTS 99
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 240
+DOING BRUTE CHECK
+EXPECTATION 0.420015769393695
+doing brute sobol indicies
+grid size before refinement: 339
+grid size after refinement: 377
+NEW POINT (0.625, 0.0, 0.015625) (0.625, 0.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.015625) (0.625, 1.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.015625) (0.625, 0.5, 0.015625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.015625) (0.875, 0.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.015625) (0.875, 1.0, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.015625) (0.875, 0.5, 0.015625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.015625) (0.0, 0.25, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.015625) (1.0, 0.25, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.015625) (0.5, 0.25, 0.015625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.015625) (0.75, 0.25, 0.015625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.015625) (0.0, 0.75, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.015625) (1.0, 0.75, 0.015625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.015625) (0.5, 0.75, 0.015625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.015625) (0.75, 0.75, 0.015625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.0078125) (0.0, 0.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.0078125) (1.0, 0.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.0078125) (1.0, 1.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.0078125) (0.0, 1.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.0078125) (0.0, 0.5, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.0078125) (1.0, 0.5, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.0078125) (0.5, 0.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.0078125) (0.5, 1.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.0078125) (0.5, 0.5, 0.0078125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.0078125) (0.75, 0.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.0078125) (0.75, 1.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.0078125) (0.75, 0.5, 0.0078125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.0234375) (0.0, 0.0, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.0234375) (1.0, 0.0, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.0234375) (1.0, 1.0, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.0234375) (0.0, 1.0, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.0234375) (0.0, 0.5, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.0234375) (1.0, 0.5, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.0234375) (0.5, 0.0, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.0234375) (0.5, 1.0, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.0234375) (0.5, 0.5, 0.0234375)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.0234375) (0.75, 0.0, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.0234375) (0.75, 1.0, 0.0234375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.0234375) (0.75, 0.5, 0.0234375)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.015625}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.015625}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.015625}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.015625}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.015625}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.015625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.0078125}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.0078125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.0234375}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.0234375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 17
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 17
+FUTURES COMPLETE
+CYCLE 17 COMPLETE IN 0.13625574111938477, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_17/runner_return.txt
+WRITING runner_return.txt TOOK 0.0023703575134277344 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 17
++++ 
+ NUM INNER LEAF POINTS 109
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 268
+DOING BRUTE CHECK
+EXPECTATION 0.42083182667758
+doing brute sobol indicies
+grid size before refinement: 377
+grid size after refinement: 415
+NEW POINT (0.625, 0.0, 0.0078125) (0.625, 0.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.0078125) (0.625, 1.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.0078125) (0.625, 0.5, 0.0078125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.0078125) (0.875, 0.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.0078125) (0.875, 1.0, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.0078125) (0.875, 0.5, 0.0078125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.0078125) (0.0, 0.25, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.0078125) (1.0, 0.25, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.0078125) (0.5, 0.25, 0.0078125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.0078125) (0.75, 0.25, 0.0078125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.0078125) (0.0, 0.75, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.0078125) (1.0, 0.75, 0.0078125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.0078125) (0.5, 0.75, 0.0078125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.0078125) (0.75, 0.75, 0.0078125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.00390625) (0.0, 0.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.00390625) (1.0, 0.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.00390625) (1.0, 1.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.00390625) (0.0, 1.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.00390625) (0.0, 0.5, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.00390625) (1.0, 0.5, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.00390625) (0.5, 0.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.00390625) (0.5, 1.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.00390625) (0.5, 0.5, 0.00390625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.00390625) (0.75, 0.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.00390625) (0.75, 1.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.00390625) (0.75, 0.5, 0.00390625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.01171875) (0.0, 0.0, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.01171875) (1.0, 0.0, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.01171875) (1.0, 1.0, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.01171875) (0.0, 1.0, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.01171875) (0.0, 0.5, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.01171875) (1.0, 0.5, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.01171875) (0.5, 0.0, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.01171875) (0.5, 1.0, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.01171875) (0.5, 0.5, 0.01171875)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.01171875) (0.75, 0.0, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.01171875) (0.75, 1.0, 0.01171875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.01171875) (0.75, 0.5, 0.01171875)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.0078125}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.0078125}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.0078125}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.0078125}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.0078125}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.0078125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.00390625}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.00390625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.01171875}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.01171875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 18
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 18
+FUTURES COMPLETE
+CYCLE 18 COMPLETE IN 0.1279582977294922, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_18/runner_return.txt
+WRITING runner_return.txt TOOK 0.0018951892852783203 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 18
++++ 
+ NUM INNER LEAF POINTS 119
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 296
+DOING BRUTE CHECK
+EXPECTATION 0.42124030266771617
+doing brute sobol indicies
+grid size before refinement: 415
+grid size after refinement: 453
+NEW POINT (0.625, 0.0, 0.00390625) (0.625, 0.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.00390625) (0.625, 1.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.00390625) (0.625, 0.5, 0.00390625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.00390625) (0.875, 0.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.00390625) (0.875, 1.0, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.00390625) (0.875, 0.5, 0.00390625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.00390625) (0.0, 0.25, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.00390625) (1.0, 0.25, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.00390625) (0.5, 0.25, 0.00390625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.00390625) (0.75, 0.25, 0.00390625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.00390625) (0.0, 0.75, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.00390625) (1.0, 0.75, 0.00390625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.00390625) (0.5, 0.75, 0.00390625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.00390625) (0.75, 0.75, 0.00390625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.001953125) (0.0, 0.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.001953125) (1.0, 0.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.001953125) (1.0, 1.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.001953125) (0.0, 1.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.001953125) (0.0, 0.5, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.001953125) (1.0, 0.5, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.001953125) (0.5, 0.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.001953125) (0.5, 1.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.001953125) (0.5, 0.5, 0.001953125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.001953125) (0.75, 0.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.001953125) (0.75, 1.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.001953125) (0.75, 0.5, 0.001953125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.005859375) (0.0, 0.0, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.005859375) (1.0, 0.0, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.005859375) (1.0, 1.0, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.005859375) (0.0, 1.0, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.005859375) (0.0, 0.5, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.005859375) (1.0, 0.5, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.005859375) (0.5, 0.0, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.005859375) (0.5, 1.0, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.005859375) (0.5, 0.5, 0.005859375)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.005859375) (0.75, 0.0, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.005859375) (0.75, 1.0, 0.005859375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.005859375) (0.75, 0.5, 0.005859375)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.00390625}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.00390625}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.00390625}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.00390625}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.00390625}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.00390625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.001953125}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.001953125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.005859375}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.005859375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 19
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 19
+FUTURES COMPLETE
+CYCLE 19 COMPLETE IN 0.12359189987182617, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_19/runner_return.txt
+WRITING runner_return.txt TOOK 0.001950979232788086 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 19
++++ 
+ NUM INNER LEAF POINTS 129
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 324
+DOING BRUTE CHECK
+EXPECTATION 0.4214444347118963
+doing brute sobol indicies
+grid size before refinement: 453
+grid size after refinement: 491
+NEW POINT (0.625, 0.0, 0.001953125) (0.625, 0.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.001953125) (0.625, 1.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.001953125) (0.625, 0.5, 0.001953125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.001953125) (0.875, 0.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.001953125) (0.875, 1.0, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.001953125) (0.875, 0.5, 0.001953125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.001953125) (0.0, 0.25, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.001953125) (1.0, 0.25, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.001953125) (0.5, 0.25, 0.001953125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.001953125) (0.75, 0.25, 0.001953125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.001953125) (0.0, 0.75, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.001953125) (1.0, 0.75, 0.001953125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.001953125) (0.5, 0.75, 0.001953125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.001953125) (0.75, 0.75, 0.001953125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.0009765625) (0.0, 0.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.0009765625) (1.0, 0.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.0009765625) (1.0, 1.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.0009765625) (0.0, 1.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.0009765625) (0.0, 0.5, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.0009765625) (1.0, 0.5, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.0009765625) (0.5, 0.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.0009765625) (0.5, 1.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.0009765625) (0.5, 0.5, 0.0009765625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.0009765625) (0.75, 0.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.0009765625) (0.75, 1.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.0009765625) (0.75, 0.5, 0.0009765625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.0029296875) (0.0, 0.0, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.0029296875) (1.0, 0.0, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.0029296875) (1.0, 1.0, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.0029296875) (0.0, 1.0, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.0029296875) (0.0, 0.5, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.0029296875) (1.0, 0.5, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.0029296875) (0.5, 0.0, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.0029296875) (0.5, 1.0, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.0029296875) (0.5, 0.5, 0.0029296875)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.0029296875) (0.75, 0.0, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.0029296875) (0.75, 1.0, 0.0029296875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.0029296875) (0.75, 0.5, 0.0029296875)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.001953125}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.001953125}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.001953125}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.001953125}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.001953125}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.001953125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.0009765625}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.0009765625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.0029296875}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.0029296875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 20
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 20
+FUTURES COMPLETE
+CYCLE 20 COMPLETE IN 0.12764191627502441, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_20/runner_return.txt
+WRITING runner_return.txt TOOK 0.0016748905181884766 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 20
++++ 
+ NUM INNER LEAF POINTS 139
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 352
+DOING BRUTE CHECK
+EXPECTATION 0.4215461711090015
+doing brute sobol indicies
+grid size before refinement: 491
+grid size after refinement: 529
+NEW POINT (0.625, 0.0, 0.0009765625) (0.625, 0.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.0009765625) (0.625, 1.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.0009765625) (0.625, 0.5, 0.0009765625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.0009765625) (0.875, 0.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.0009765625) (0.875, 1.0, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.0009765625) (0.875, 0.5, 0.0009765625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.0009765625) (0.0, 0.25, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.0009765625) (1.0, 0.25, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.0009765625) (0.5, 0.25, 0.0009765625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.0009765625) (0.75, 0.25, 0.0009765625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.0009765625) (0.0, 0.75, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.0009765625) (1.0, 0.75, 0.0009765625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.0009765625) (0.5, 0.75, 0.0009765625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.0009765625) (0.75, 0.75, 0.0009765625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.00048828125) (0.0, 0.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.00048828125) (1.0, 0.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.00048828125) (1.0, 1.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.00048828125) (0.0, 1.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.00048828125) (0.0, 0.5, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.00048828125) (1.0, 0.5, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.00048828125) (0.5, 0.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.00048828125) (0.5, 1.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.00048828125) (0.5, 0.5, 0.00048828125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.00048828125) (0.75, 0.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.00048828125) (0.75, 1.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.00048828125) (0.75, 0.5, 0.00048828125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.00146484375) (0.0, 0.0, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.00146484375) (1.0, 0.0, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.00146484375) (1.0, 1.0, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.00146484375) (0.0, 1.0, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.00146484375) (0.0, 0.5, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.00146484375) (1.0, 0.5, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.00146484375) (0.5, 0.0, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.00146484375) (0.5, 1.0, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.00146484375) (0.5, 0.5, 0.00146484375)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.00146484375) (0.75, 0.0, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.00146484375) (0.75, 1.0, 0.00146484375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.00146484375) (0.75, 0.5, 0.00146484375)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.0009765625}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.0009765625}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.0009765625}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.0009765625}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.0009765625}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.0009765625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.00048828125}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.00048828125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.00146484375}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.00146484375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 21
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 21
+FUTURES COMPLETE
+CYCLE 21 COMPLETE IN 0.14521479606628418, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_21/runner_return.txt
+WRITING runner_return.txt TOOK 0.002660036087036133 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 21
++++ 
+ NUM INNER LEAF POINTS 149
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 380
+DOING BRUTE CHECK
+EXPECTATION 0.4215977103298447
+doing brute sobol indicies
+grid size before refinement: 529
+grid size after refinement: 567
+NEW POINT (0.625, 0.0, 0.00048828125) (0.625, 0.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.00048828125) (0.625, 1.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.00048828125) (0.625, 0.5, 0.00048828125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.00048828125) (0.875, 0.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.00048828125) (0.875, 1.0, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.00048828125) (0.875, 0.5, 0.00048828125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.00048828125) (0.0, 0.25, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.00048828125) (1.0, 0.25, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.00048828125) (0.5, 0.25, 0.00048828125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.00048828125) (0.75, 0.25, 0.00048828125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.00048828125) (0.0, 0.75, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.00048828125) (1.0, 0.75, 0.00048828125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.00048828125) (0.5, 0.75, 0.00048828125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.00048828125) (0.75, 0.75, 0.00048828125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.000244140625) (0.0, 0.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.000244140625) (1.0, 0.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.000244140625) (1.0, 1.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.000244140625) (0.0, 1.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.000244140625) (0.0, 0.5, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.000244140625) (1.0, 0.5, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.000244140625) (0.5, 0.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.000244140625) (0.5, 1.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.000244140625) (0.5, 0.5, 0.000244140625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.000244140625) (0.75, 0.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.000244140625) (0.75, 1.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.000244140625) (0.75, 0.5, 0.000244140625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.000732421875) (0.0, 0.0, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.000732421875) (1.0, 0.0, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.000732421875) (1.0, 1.0, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.000732421875) (0.0, 1.0, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.000732421875) (0.0, 0.5, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.000732421875) (1.0, 0.5, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.000732421875) (0.5, 0.0, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.000732421875) (0.5, 1.0, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.000732421875) (0.5, 0.5, 0.000732421875)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.000732421875) (0.75, 0.0, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.000732421875) (0.75, 1.0, 0.000732421875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.000732421875) (0.75, 0.5, 0.000732421875)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.00048828125}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.00048828125}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.00048828125}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.00048828125}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.00048828125}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.00048828125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.000244140625}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.000244140625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.000732421875}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.000732421875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 22
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 22
+FUTURES COMPLETE
+CYCLE 22 COMPLETE IN 0.11982393264770508, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_22/runner_return.txt
+WRITING runner_return.txt TOOK 0.002008199691772461 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 22
++++ 
+ NUM INNER LEAF POINTS 159
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 408
+DOING BRUTE CHECK
+EXPECTATION 0.421623609435796
+doing brute sobol indicies
+grid size before refinement: 567
+grid size after refinement: 605
+NEW POINT (0.625, 0.0, 0.000244140625) (0.625, 0.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.000244140625) (0.625, 1.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.000244140625) (0.625, 0.5, 0.000244140625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.000244140625) (0.875, 0.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.000244140625) (0.875, 1.0, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.000244140625) (0.875, 0.5, 0.000244140625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.000244140625) (0.0, 0.25, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.000244140625) (1.0, 0.25, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.000244140625) (0.5, 0.25, 0.000244140625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.000244140625) (0.75, 0.25, 0.000244140625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.000244140625) (0.0, 0.75, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.000244140625) (1.0, 0.75, 0.000244140625)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.000244140625) (0.5, 0.75, 0.000244140625)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.000244140625) (0.75, 0.75, 0.000244140625)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.0001220703125) (0.0, 0.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.0001220703125) (1.0, 0.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.0001220703125) (1.0, 1.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.0001220703125) (0.0, 1.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.0001220703125) (0.0, 0.5, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.0001220703125) (1.0, 0.5, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.0001220703125) (0.5, 0.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.0001220703125) (0.5, 1.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.0001220703125) (0.5, 0.5, 0.0001220703125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.0001220703125) (0.75, 0.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.0001220703125) (0.75, 1.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.0001220703125) (0.75, 0.5, 0.0001220703125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.0003662109375) (0.0, 0.0, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.0003662109375) (1.0, 0.0, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.0003662109375) (1.0, 1.0, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.0003662109375) (0.0, 1.0, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.0003662109375) (0.0, 0.5, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.0003662109375) (1.0, 0.5, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.0003662109375) (0.5, 0.0, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.0003662109375) (0.5, 1.0, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.0003662109375) (0.5, 0.5, 0.0003662109375)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.0003662109375) (0.75, 0.0, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.0003662109375) (0.75, 1.0, 0.0003662109375)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.0003662109375) (0.75, 0.5, 0.0003662109375)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.000244140625}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.000244140625}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.000244140625}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.000244140625}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.000244140625}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.000244140625}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.0001220703125}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.0001220703125}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.0003662109375}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.0003662109375}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 23
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 23
+FUTURES COMPLETE
+CYCLE 23 COMPLETE IN 0.12468647956848145, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_23/runner_return.txt
+WRITING runner_return.txt TOOK 0.002081155776977539 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 23
++++ 
+ NUM INNER LEAF POINTS 169
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 436
+DOING BRUTE CHECK
+EXPECTATION 0.4216359232834438
+doing brute sobol indicies
+grid size before refinement: 605
+grid size after refinement: 643
+NEW POINT (0.625, 0.0, 0.0001220703125) (0.625, 0.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 0.0001220703125) (0.625, 1.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 0.0001220703125) (0.625, 0.5, 0.0001220703125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 0.0001220703125) (0.875, 0.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 0.0001220703125) (0.875, 1.0, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 0.0001220703125) (0.875, 0.5, 0.0001220703125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 0.0001220703125) (0.0, 0.25, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 0.0001220703125) (1.0, 0.25, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 0.0001220703125) (0.5, 0.25, 0.0001220703125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 0.0001220703125) (0.75, 0.25, 0.0001220703125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 0.0001220703125) (0.0, 0.75, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 0.0001220703125) (1.0, 0.75, 0.0001220703125)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 0.0001220703125) (0.5, 0.75, 0.0001220703125)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 0.0001220703125) (0.75, 0.75, 0.0001220703125)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 6.103515625e-05) (0.0, 0.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 6.103515625e-05) (1.0, 0.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 6.103515625e-05) (1.0, 1.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 6.103515625e-05) (0.0, 1.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 6.103515625e-05) (0.0, 0.5, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 6.103515625e-05) (1.0, 0.5, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 6.103515625e-05) (0.5, 0.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 6.103515625e-05) (0.5, 1.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 6.103515625e-05) (0.5, 0.5, 6.103515625e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 6.103515625e-05) (0.75, 0.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 6.103515625e-05) (0.75, 1.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 6.103515625e-05) (0.75, 0.5, 6.103515625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 0.00018310546875) (0.0, 0.0, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 0.00018310546875) (1.0, 0.0, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 0.00018310546875) (1.0, 1.0, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 0.00018310546875) (0.0, 1.0, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 0.00018310546875) (0.0, 0.5, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 0.00018310546875) (1.0, 0.5, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 0.00018310546875) (0.5, 0.0, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 0.00018310546875) (0.5, 1.0, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 0.00018310546875) (0.5, 0.5, 0.00018310546875)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 0.00018310546875) (0.75, 0.0, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 0.00018310546875) (0.75, 1.0, 0.00018310546875)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 0.00018310546875) (0.75, 0.5, 0.00018310546875)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 0.0001220703125}, {'x0': 0.875, 'x1': 0.5, 'x2': 0.0001220703125}, {'x0': 0.5, 'x1': 0.25, 'x2': 0.0001220703125}, {'x0': 0.75, 'x1': 0.25, 'x2': 0.0001220703125}, {'x0': 0.5, 'x1': 0.75, 'x2': 0.0001220703125}, {'x0': 0.75, 'x1': 0.75, 'x2': 0.0001220703125}, {'x0': 0.5, 'x1': 0.5, 'x2': 6.103515625e-05}, {'x0': 0.75, 'x1': 0.5, 'x2': 6.103515625e-05}, {'x0': 0.5, 'x1': 0.5, 'x2': 0.00018310546875}, {'x0': 0.75, 'x1': 0.5, 'x2': 0.00018310546875}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 24
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 24
+FUTURES COMPLETE
+CYCLE 24 COMPLETE IN 0.12490463256835938, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_24/runner_return.txt
+WRITING runner_return.txt TOOK 0.004139900207519531 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 24
++++ 
+ NUM INNER LEAF POINTS 179
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 464
+DOING BRUTE CHECK
+EXPECTATION 0.4216415975421114
+doing brute sobol indicies
+grid size before refinement: 643
+grid size after refinement: 681
+NEW POINT (0.625, 0.0, 6.103515625e-05) (0.625, 0.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 6.103515625e-05) (0.625, 1.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 6.103515625e-05) (0.625, 0.5, 6.103515625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 6.103515625e-05) (0.875, 0.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 6.103515625e-05) (0.875, 1.0, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 6.103515625e-05) (0.875, 0.5, 6.103515625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 6.103515625e-05) (0.0, 0.25, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 6.103515625e-05) (1.0, 0.25, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 6.103515625e-05) (0.5, 0.25, 6.103515625e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 6.103515625e-05) (0.75, 0.25, 6.103515625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 6.103515625e-05) (0.0, 0.75, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 6.103515625e-05) (1.0, 0.75, 6.103515625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 6.103515625e-05) (0.5, 0.75, 6.103515625e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 6.103515625e-05) (0.75, 0.75, 6.103515625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 3.0517578125e-05) (0.0, 0.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 3.0517578125e-05) (1.0, 0.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 3.0517578125e-05) (1.0, 1.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 3.0517578125e-05) (0.0, 1.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 3.0517578125e-05) (0.0, 0.5, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 3.0517578125e-05) (1.0, 0.5, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 3.0517578125e-05) (0.5, 0.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 3.0517578125e-05) (0.5, 1.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 3.0517578125e-05) (0.5, 0.5, 3.0517578125e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 3.0517578125e-05) (0.75, 0.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 3.0517578125e-05) (0.75, 1.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 3.0517578125e-05) (0.75, 0.5, 3.0517578125e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 9.1552734375e-05) (0.0, 0.0, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 9.1552734375e-05) (1.0, 0.0, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 9.1552734375e-05) (1.0, 1.0, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 9.1552734375e-05) (0.0, 1.0, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 9.1552734375e-05) (0.0, 0.5, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 9.1552734375e-05) (1.0, 0.5, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 9.1552734375e-05) (0.5, 0.0, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 9.1552734375e-05) (0.5, 1.0, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 9.1552734375e-05) (0.5, 0.5, 9.1552734375e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 9.1552734375e-05) (0.75, 0.0, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 9.1552734375e-05) (0.75, 1.0, 9.1552734375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 9.1552734375e-05) (0.75, 0.5, 9.1552734375e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 6.103515625e-05}, {'x0': 0.875, 'x1': 0.5, 'x2': 6.103515625e-05}, {'x0': 0.5, 'x1': 0.25, 'x2': 6.103515625e-05}, {'x0': 0.75, 'x1': 0.25, 'x2': 6.103515625e-05}, {'x0': 0.5, 'x1': 0.75, 'x2': 6.103515625e-05}, {'x0': 0.75, 'x1': 0.75, 'x2': 6.103515625e-05}, {'x0': 0.5, 'x1': 0.5, 'x2': 3.0517578125e-05}, {'x0': 0.75, 'x1': 0.5, 'x2': 3.0517578125e-05}, {'x0': 0.5, 'x1': 0.5, 'x2': 9.1552734375e-05}, {'x0': 0.75, 'x1': 0.5, 'x2': 9.1552734375e-05}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 25
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 25
+FUTURES COMPLETE
+CYCLE 25 COMPLETE IN 0.12885594367980957, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_25/runner_return.txt
+WRITING runner_return.txt TOOK 0.002690553665161133 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 25
++++ 
+ NUM INNER LEAF POINTS 189
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 492
+DOING BRUTE CHECK
+EXPECTATION 0.4216442109973483
+doing brute sobol indicies
+grid size before refinement: 681
+grid size after refinement: 719
+NEW POINT (0.625, 0.0, 3.0517578125e-05) (0.625, 0.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 3.0517578125e-05) (0.625, 1.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 3.0517578125e-05) (0.625, 0.5, 3.0517578125e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 3.0517578125e-05) (0.875, 0.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 3.0517578125e-05) (0.875, 1.0, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 3.0517578125e-05) (0.875, 0.5, 3.0517578125e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 3.0517578125e-05) (0.0, 0.25, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 3.0517578125e-05) (1.0, 0.25, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 3.0517578125e-05) (0.5, 0.25, 3.0517578125e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 3.0517578125e-05) (0.75, 0.25, 3.0517578125e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 3.0517578125e-05) (0.0, 0.75, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 3.0517578125e-05) (1.0, 0.75, 3.0517578125e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 3.0517578125e-05) (0.5, 0.75, 3.0517578125e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 3.0517578125e-05) (0.75, 0.75, 3.0517578125e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 1.52587890625e-05) (0.0, 0.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 1.52587890625e-05) (1.0, 0.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 1.52587890625e-05) (1.0, 1.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 1.52587890625e-05) (0.0, 1.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 1.52587890625e-05) (0.0, 0.5, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 1.52587890625e-05) (1.0, 0.5, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 1.52587890625e-05) (0.5, 0.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 1.52587890625e-05) (0.5, 1.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 1.52587890625e-05) (0.5, 0.5, 1.52587890625e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 1.52587890625e-05) (0.75, 0.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 1.52587890625e-05) (0.75, 1.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 1.52587890625e-05) (0.75, 0.5, 1.52587890625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 4.57763671875e-05) (0.0, 0.0, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 4.57763671875e-05) (1.0, 0.0, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 4.57763671875e-05) (1.0, 1.0, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 4.57763671875e-05) (0.0, 1.0, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 4.57763671875e-05) (0.0, 0.5, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 4.57763671875e-05) (1.0, 0.5, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 4.57763671875e-05) (0.5, 0.0, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 4.57763671875e-05) (0.5, 1.0, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 4.57763671875e-05) (0.5, 0.5, 4.57763671875e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 4.57763671875e-05) (0.75, 0.0, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 4.57763671875e-05) (0.75, 1.0, 4.57763671875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 4.57763671875e-05) (0.75, 0.5, 4.57763671875e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 3.0517578125e-05}, {'x0': 0.875, 'x1': 0.5, 'x2': 3.0517578125e-05}, {'x0': 0.5, 'x1': 0.25, 'x2': 3.0517578125e-05}, {'x0': 0.75, 'x1': 0.25, 'x2': 3.0517578125e-05}, {'x0': 0.5, 'x1': 0.75, 'x2': 3.0517578125e-05}, {'x0': 0.75, 'x1': 0.75, 'x2': 3.0517578125e-05}, {'x0': 0.5, 'x1': 0.5, 'x2': 1.52587890625e-05}, {'x0': 0.75, 'x1': 0.5, 'x2': 1.52587890625e-05}, {'x0': 0.5, 'x1': 0.5, 'x2': 4.57763671875e-05}, {'x0': 0.75, 'x1': 0.5, 'x2': 4.57763671875e-05}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 26
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 26
+FUTURES COMPLETE
+CYCLE 26 COMPLETE IN 0.13384389877319336, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_26/runner_return.txt
+WRITING runner_return.txt TOOK 0.0034139156341552734 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 26
++++ 
+ NUM INNER LEAF POINTS 199
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 520
+DOING BRUTE CHECK
+EXPECTATION 0.4216459768454813
+doing brute sobol indicies
+grid size before refinement: 719
+grid size after refinement: 757
+NEW POINT (0.625, 0.0, 1.52587890625e-05) (0.625, 0.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 1.52587890625e-05) (0.625, 1.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 1.52587890625e-05) (0.625, 0.5, 1.52587890625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 1.52587890625e-05) (0.875, 0.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 1.52587890625e-05) (0.875, 1.0, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 1.52587890625e-05) (0.875, 0.5, 1.52587890625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 1.52587890625e-05) (0.0, 0.25, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 1.52587890625e-05) (1.0, 0.25, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 1.52587890625e-05) (0.5, 0.25, 1.52587890625e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 1.52587890625e-05) (0.75, 0.25, 1.52587890625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 1.52587890625e-05) (0.0, 0.75, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 1.52587890625e-05) (1.0, 0.75, 1.52587890625e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 1.52587890625e-05) (0.5, 0.75, 1.52587890625e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 1.52587890625e-05) (0.75, 0.75, 1.52587890625e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 7.62939453125e-06) (0.0, 0.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 7.62939453125e-06) (1.0, 0.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 7.62939453125e-06) (1.0, 1.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 7.62939453125e-06) (0.0, 1.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 7.62939453125e-06) (0.0, 0.5, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 7.62939453125e-06) (1.0, 0.5, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 7.62939453125e-06) (0.5, 0.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 7.62939453125e-06) (0.5, 1.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 7.62939453125e-06) (0.5, 0.5, 7.62939453125e-06)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 7.62939453125e-06) (0.75, 0.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 7.62939453125e-06) (0.75, 1.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 7.62939453125e-06) (0.75, 0.5, 7.62939453125e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 2.288818359375e-05) (0.0, 0.0, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 2.288818359375e-05) (1.0, 0.0, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 2.288818359375e-05) (1.0, 1.0, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 2.288818359375e-05) (0.0, 1.0, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 2.288818359375e-05) (0.0, 0.5, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 2.288818359375e-05) (1.0, 0.5, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 2.288818359375e-05) (0.5, 0.0, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 2.288818359375e-05) (0.5, 1.0, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 2.288818359375e-05) (0.5, 0.5, 2.288818359375e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 2.288818359375e-05) (0.75, 0.0, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 2.288818359375e-05) (0.75, 1.0, 2.288818359375e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 2.288818359375e-05) (0.75, 0.5, 2.288818359375e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 1.52587890625e-05}, {'x0': 0.875, 'x1': 0.5, 'x2': 1.52587890625e-05}, {'x0': 0.5, 'x1': 0.25, 'x2': 1.52587890625e-05}, {'x0': 0.75, 'x1': 0.25, 'x2': 1.52587890625e-05}, {'x0': 0.5, 'x1': 0.75, 'x2': 1.52587890625e-05}, {'x0': 0.75, 'x1': 0.75, 'x2': 1.52587890625e-05}, {'x0': 0.5, 'x1': 0.5, 'x2': 7.62939453125e-06}, {'x0': 0.75, 'x1': 0.5, 'x2': 7.62939453125e-06}, {'x0': 0.5, 'x1': 0.5, 'x2': 2.288818359375e-05}, {'x0': 0.75, 'x1': 0.5, 'x2': 2.288818359375e-05}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 27
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 27
+FUTURES COMPLETE
+CYCLE 27 COMPLETE IN 0.13040709495544434, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_27/runner_return.txt
+WRITING runner_return.txt TOOK 0.0020143985748291016 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 27
++++ 
+ NUM INNER LEAF POINTS 209
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 548
+DOING BRUTE CHECK
+EXPECTATION 0.4216472482561371
+doing brute sobol indicies
+grid size before refinement: 757
+grid size after refinement: 795
+NEW POINT (0.625, 0.0, 7.62939453125e-06) (0.625, 0.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 7.62939453125e-06) (0.625, 1.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 7.62939453125e-06) (0.625, 0.5, 7.62939453125e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 7.62939453125e-06) (0.875, 0.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 7.62939453125e-06) (0.875, 1.0, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 7.62939453125e-06) (0.875, 0.5, 7.62939453125e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 7.62939453125e-06) (0.0, 0.25, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 7.62939453125e-06) (1.0, 0.25, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 7.62939453125e-06) (0.5, 0.25, 7.62939453125e-06)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 7.62939453125e-06) (0.75, 0.25, 7.62939453125e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 7.62939453125e-06) (0.0, 0.75, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 7.62939453125e-06) (1.0, 0.75, 7.62939453125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 7.62939453125e-06) (0.5, 0.75, 7.62939453125e-06)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 7.62939453125e-06) (0.75, 0.75, 7.62939453125e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 3.814697265625e-06) (0.0, 0.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 3.814697265625e-06) (1.0, 0.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 3.814697265625e-06) (1.0, 1.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 3.814697265625e-06) (0.0, 1.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 3.814697265625e-06) (0.0, 0.5, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 3.814697265625e-06) (1.0, 0.5, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 3.814697265625e-06) (0.5, 0.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 3.814697265625e-06) (0.5, 1.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 3.814697265625e-06) (0.5, 0.5, 3.814697265625e-06)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 3.814697265625e-06) (0.75, 0.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 3.814697265625e-06) (0.75, 1.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 3.814697265625e-06) (0.75, 0.5, 3.814697265625e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 1.1444091796875e-05) (0.0, 0.0, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 1.1444091796875e-05) (1.0, 0.0, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 1.1444091796875e-05) (1.0, 1.0, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 1.1444091796875e-05) (0.0, 1.0, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 1.1444091796875e-05) (0.0, 0.5, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 1.1444091796875e-05) (1.0, 0.5, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 1.1444091796875e-05) (0.5, 0.0, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 1.1444091796875e-05) (0.5, 1.0, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 1.1444091796875e-05) (0.5, 0.5, 1.1444091796875e-05)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 1.1444091796875e-05) (0.75, 0.0, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 1.1444091796875e-05) (0.75, 1.0, 1.1444091796875e-05)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 1.1444091796875e-05) (0.75, 0.5, 1.1444091796875e-05)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 7.62939453125e-06}, {'x0': 0.875, 'x1': 0.5, 'x2': 7.62939453125e-06}, {'x0': 0.5, 'x1': 0.25, 'x2': 7.62939453125e-06}, {'x0': 0.75, 'x1': 0.25, 'x2': 7.62939453125e-06}, {'x0': 0.5, 'x1': 0.75, 'x2': 7.62939453125e-06}, {'x0': 0.75, 'x1': 0.75, 'x2': 7.62939453125e-06}, {'x0': 0.5, 'x1': 0.5, 'x2': 3.814697265625e-06}, {'x0': 0.75, 'x1': 0.5, 'x2': 3.814697265625e-06}, {'x0': 0.5, 'x1': 0.5, 'x2': 1.1444091796875e-05}, {'x0': 0.75, 'x1': 0.5, 'x2': 1.1444091796875e-05}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 28
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 28
+FUTURES COMPLETE
+CYCLE 28 COMPLETE IN 0.1288440227508545, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_28/runner_return.txt
+WRITING runner_return.txt TOOK 0.0027544498443603516 sec
+WRITING CYCLE INFO
++++ 
+ Write ACTIVE CYCLE: 28
++++ 
+ NUM INNER LEAF POINTS 219
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 576
+DOING BRUTE CHECK
+EXPECTATION 0.42164823713109156
+doing brute sobol indicies
+grid size before refinement: 795
+grid size after refinement: 833
+NEW POINT (0.625, 0.0, 3.814697265625e-06) (0.625, 0.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 1.0, 3.814697265625e-06) (0.625, 1.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.625, 0.5, 3.814697265625e-06) (0.625, 0.5, 3.814697265625e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.875, 0.0, 3.814697265625e-06) (0.875, 0.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 1.0, 3.814697265625e-06) (0.875, 1.0, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.875, 0.5, 3.814697265625e-06) (0.875, 0.5, 3.814697265625e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.25, 3.814697265625e-06) (0.0, 0.25, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.25, 3.814697265625e-06) (1.0, 0.25, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.25, 3.814697265625e-06) (0.5, 0.25, 3.814697265625e-06)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.25, 3.814697265625e-06) (0.75, 0.25, 3.814697265625e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.75, 3.814697265625e-06) (0.0, 0.75, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.75, 3.814697265625e-06) (1.0, 0.75, 3.814697265625e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.75, 3.814697265625e-06) (0.5, 0.75, 3.814697265625e-06)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.75, 3.814697265625e-06) (0.75, 0.75, 3.814697265625e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 1.9073486328125e-06) (0.0, 0.0, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 1.9073486328125e-06) (1.0, 0.0, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 1.9073486328125e-06) (1.0, 1.0, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 1.9073486328125e-06) (0.0, 1.0, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 1.9073486328125e-06) (0.0, 0.5, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 1.9073486328125e-06) (1.0, 0.5, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 1.9073486328125e-06) (0.5, 0.0, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 1.9073486328125e-06) (0.5, 1.0, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 1.9073486328125e-06) (0.5, 0.5, 1.9073486328125e-06)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 1.9073486328125e-06) (0.75, 0.0, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 1.9073486328125e-06) (0.75, 1.0, 1.9073486328125e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 1.9073486328125e-06) (0.75, 0.5, 1.9073486328125e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+NEW POINT (0.0, 0.0, 5.7220458984375e-06) (0.0, 0.0, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.0, 5.7220458984375e-06) (1.0, 0.0, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 1.0, 5.7220458984375e-06) (1.0, 1.0, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 1.0, 5.7220458984375e-06) (0.0, 1.0, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.0, 0.5, 5.7220458984375e-06) (0.0, 0.5, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (1.0, 0.5, 5.7220458984375e-06) (1.0, 0.5, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.0, 5.7220458984375e-06) (0.5, 0.0, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 1.0, 5.7220458984375e-06) (0.5, 1.0, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.5, 0.5, 5.7220458984375e-06) (0.5, 0.5, 5.7220458984375e-06)
+IS BOUNDARY False
+is parent True
+adding to batch samples
+NEW POINT (0.75, 0.0, 5.7220458984375e-06) (0.75, 0.0, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 1.0, 5.7220458984375e-06) (0.75, 1.0, 5.7220458984375e-06)
+IS BOUNDARY True
+is parent True
+appending bounds points
+NEW POINT (0.75, 0.5, 5.7220458984375e-06) (0.75, 0.5, 5.7220458984375e-06)
+IS BOUNDARY False
+is parent False
+adding to batch samples
+len batch_samples 10
+debug (0.8125, 0.5, 0.25) [{'x0': 0.625, 'x1': 0.5, 'x2': 3.814697265625e-06}, {'x0': 0.875, 'x1': 0.5, 'x2': 3.814697265625e-06}, {'x0': 0.5, 'x1': 0.25, 'x2': 3.814697265625e-06}, {'x0': 0.75, 'x1': 0.25, 'x2': 3.814697265625e-06}, {'x0': 0.5, 'x1': 0.75, 'x2': 3.814697265625e-06}, {'x0': 0.75, 'x1': 0.75, 'x2': 3.814697265625e-06}, {'x0': 0.5, 'x1': 0.5, 'x2': 1.9073486328125e-06}, {'x0': 0.75, 'x1': 0.5, 'x2': 1.9073486328125e-06}, {'x0': 0.5, 'x1': 0.5, 'x2': 5.7220458984375e-06}, {'x0': 0.75, 'x1': 0.5, 'x2': 5.7220458984375e-06}]
+MAKING RUN DIRECTORIES
+MAKING AND SUBMITTING DASK FUTURES
+FUTURES SUBMITTED FOR ACTIVE LEARNING CYCLE 29
+WAITING FOR FUTURES FROM ACTIVE LEARNING CYCLE 29
+FUTURES COMPLETE
+CYCLE 29 COMPLETE IN 0.14470887184143066, WRITING runner_return.txt at:
+ /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/active_cycle_29/runner_return.txt
+WRITING runner_return.txt TOOK 0.0026848316192626953 sec
+WRITING SAMPLER CYCLE INFO FOR CYCLE 29
++++ 
+ Write ACTIVE CYCLE: 29
++++ 
+ NUM INNER LEAF POINTS 229
++++ 
+ NUM PARENT POINTS 0
++++ 
+ NUM bounds POINTS 604
+DOING BRUTE CHECK
+EXPECTATION 0.42164823713109156
+doing brute sobol indicies
+WRITING SAMPLER CYCLE INFO TOOK 21.796931266784668 sec
+ACTIVE CYCLES FINISHED: num_cycles HIT THE max_cycles: 30
+WAITING FOR LAST FUTURES TO COMPLETE
+MAKING THE AN OUTPUT FILE CONTAINING ALL DATA: /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds/runner_return.txt
+WRITING THE SAMPLER SUMMARY FILES IN: /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds
+debug 0     0.238313
+1     0.238313
+2     0.238313
+3     0.238313
+4     0.238313
+5     0.238313
+6     0.238313
+7     0.349626
+8     0.405374
+9     0.417721
+10    0.396287
+11    0.407172
+12    0.401739
+13    0.406695
+14    0.415149
+15    0.418411
+16    0.420034
+17    0.420848
+18    0.421256
+19    0.421459
+20    0.421561
+21    0.421612
+22    0.421637
+23    0.421650
+24    0.421656
+25    0.421660
+26    0.421661
+27    0.421662
+28    0.421662
+29    0.421662
+Name: quad_expectation, dtype: float64
+debug [0.23831307 0.23831307 0.23831307 0.23831307 0.23831307 0.23831307
+ 0.23831307 0.34962622 0.40537375 0.41772056 0.3962866  0.40717195
+ 0.40173905 0.40669517 0.41514931 0.41841062 0.42003402 0.42084846
+ 0.42125558 0.42145914 0.42156093 0.42161182 0.42163726 0.42164998
+ 0.42165635 0.42165953 0.42166112 0.42166191 0.42166231 0.42166231]
+debug [0.23831307 0.23831307 0.23831307 0.23831307 0.23831307 0.23831307
+ 0.23831307 0.34962622 0.40537375 0.41772056 0.3962866  0.40717195
+ 0.40173905 0.40669517 0.41514931 0.41841062 0.42003402 0.42084846
+ 0.42125558 0.42145914 0.42156093 0.42161182 0.42163726 0.42164998
+ 0.42165635 0.42165953 0.42166112 0.42166191 0.42166231 0.42166231]
+WRITING THE STATIC EXECUTOR SUMMARY FILES IN: /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds
+ACTIVE CYCLES FINISHED
+num_samples: 229
+num_cycles: 30
+wall time sec: 570.1091923713684
+BASE RUN DIR: /scratch/project_462000451/enchanted_test_out/MMMG_quad_sasg_infer_bounds
+SHUTTING DOWN SCHEDULER AND WORKERS
