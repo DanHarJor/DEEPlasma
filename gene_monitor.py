@@ -280,7 +280,7 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
 #     # Define the function to be executed concurrently
 #     def process_item(item):
 #         print(f"Processing item: {item}")
-#         time.sleep(2)  # Simulate a time-consuming task
+#         sleep(2)  # Simulate a time-consuming task
 #         return f"Processed {item}"
 
 #     # List of items to process
@@ -442,7 +442,7 @@ def read_status(scanfiles_dir, timeout=100):
             return False
     
     while not open_status() and time()-start < timeout:
-        time.sleep(0.1)
+        sleep(0.1)
     if time()-start > timeout:
         return None
     return status
