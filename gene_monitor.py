@@ -160,7 +160,8 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
                 df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
                 continue
             # check stability every (stability_threshold_time_to_flux)sec 
-            if (time()-start_time[suffix]) // stability_threshold_time_to_flux > check_stability_counter[suffix]:
+            nrg_path = os.path.join(scanfiles_dir, f'nrg_{suffix}')
+            if (time()-start_time[suffix]) // stability_threshold_time_to_flux > check_stability_counter[suffix] and os.path.exists(nrg_path):
                 check_stability_counter[suffix]+=1
                 print(suffix, 'CHECKING IF STABLE')
                 Q_e, Q_time = get_logQ_e_corrected(scanfiles_dir, suffix)
@@ -226,7 +227,7 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
                     print(suffix, f'SUFFIX {suffix} IS AT {len(gr_time)} FILE UPATES, WAITING FOR {min_number_of_file_updates}')
                     continue
                 if 2*time_window > gr_time[-1]:
-                    print(suffix, f'TIME WINDOW {time_window} IS LARGER THAN SIM TIME PASSED {gr_time[-1]} + TIME WINDOW = {gr_time[-1] + time_window}.\n',
+                    print(suffix, f'TIME WINDOW 2*{time_window} IS LARGER THAN SIM TIME PASSED {gr_time[-1]}.\n',
                             suffix, 'AT LEAST 2 TIME WINDOWS OF DATA IS NEEDED FOR THE STATS')
                     continue
                 print(suffix, 'CALCULATING WINDOW STATS')
