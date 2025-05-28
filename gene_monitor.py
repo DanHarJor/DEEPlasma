@@ -38,17 +38,14 @@ class Tee:
         self.terminal.flush()
         self.file.flush()
 
-def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sigma_threshold=None, time_window_multiplyer=30, stability_threshold_time_to_flux=100, do_plots=False, comparison_mode=False, gene_timeout=2000):
+def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sigma_threshold=None, time_window_multiplyer=30, stability_threshold_time_to_flux=100, do_plots=False, comparison_mode=False, gene_timeout=2000, report_path='./early_stopping_report.csv'):
     print('EARLY CONVERGENCE MONITOR')
+    
     stability_threshold_time_to_flux = float(stability_threshold_time_to_flux)
-    print('1', stability_threshold_time_to_flux)
     gene_timeout = float(gene_timeout)
-    print('2', gene_timeout)
     # needs to be started before the sbatch to run gene is sent, maybe a few secods before to be safe
     def latest_scanfiles_dir(diagdir):
-        print('3', diagdir)
         dirs = os.listdir(diagdir)
-        print('4', dirs)
         scanfiles_number = [re.findall('scanfiles[0-9]{4}',sc_dir) for sc_dir in dirs]
         scanfiles_number = [item for sublist in scanfiles_number for item in sublist]
         scanfiles_number = [re.findall('[0-9]{4}',sn) for sn in scanfiles_number]
@@ -58,7 +55,7 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
         else:
             latest_scan_dir = os.path.join(diagdir,f'scanfiles{np.sort(np.array(scanfiles_number))[-1]}')
         return latest_scan_dir
-    
+    print('LATEST SCANFILES DIR:',latest_scanfiles_dir)
     initial_latest_scanfiles_dir = latest_scanfiles_dir(diagdir)
     # Do early convergence monitoring
     print('STARTING EARLY CONVERGENCE MONITORING')
@@ -74,8 +71,8 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
     sys.stderr = sys.stdout
 
     # assumes atleast a ky scan
-    print('GETTING PARAMETERS DICT')
-    parameters_path = os.path.join(diagdir, 'parameters')
+    # print('GETTING PARAMETERS DICT')
+    # parameters_path = os.path.join(diagdir, 'parameters')
     # params_dict = read_parameters_dict(parameters_path)
         
     # print('WAITING FOR GENE TO SET CORRECT OUTPUT DIRECOTRY FOR THE SCAN')
@@ -92,11 +89,13 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
     # sleep(start_up_time)
 
     print('MONITORING SCANFILES DIRECTORY FOR EARLY CONVERGENCE:', scanfiles_dir)
-    print('WAITING FOR in_par TO EXIST')
     in_par_dir = os.path.join(scanfiles_dir,'in_par')
+    print('WAITING FOR in_par TO EXIST:', in_par_dir)
+    
     while not os.path.exists(in_par_dir):
-        print('WAITING FOR in_par TO EXIST')
+        print('WAITING FOR in_par TO EXIST:', in_par_dir)
         sleep(3)
+    sleep(10) # stragnge behaviour by gene that 10 parameters_XXXX are created in in_par and then deleted less than a second later.
     suffix_s = get_all_suffixes(os.path.join(scanfiles_dir,'in_par'))
     print('SUFFIXES BEING MONITORED', suffix_s)
     df = pd.DataFrame({'early_growthrate':np.repeat(np.nan,len(suffix_s)),
@@ -128,6 +127,20 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
             sleep(1)
         finished = False
         while not finished:
+            # check the suffix still exists
+            suffix_s = get_all_suffixes(os.path.join(scanfiles_dir,'in_par'))
+            if not suffix in suffix_s:
+                print(suffix,'has dissapeared from in_par, removing it from monitor')
+                df.drop(index=suffix)
+                del growthrates[suffix]
+                del start_time[suffix]
+                del field_file_exists[suffix]
+                del check_stability_counter[suffix]
+                finished = True
+                print(suffix, 'WRITTING REPORT TO:', report_path)
+                df.to_csv(report_path)
+                    
+                
             print(suffix, 'SLEEPING 2sec TO GIVE GENE A CHANCE TO RUN')
             for i in range(2):
                 print(suffix, i+1)
@@ -154,10 +167,10 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
                 sleep(0.5)
                 ky, growthrate, frequency = read_omega(scanfiles_dir, '_'+suffix)
                 df.loc[suffix, 'gene_growthrate'] = growthrate
-                print(suffix, 'WRITTING REPORT TO:',os.path.join(problem_dir,'early_stopping_report.csv'))
+                print(suffix, 'WRITTING REPORT TO:', report_path)
                 df.loc[suffix, 'stable'] = False
-                df.to_csv(os.path.join(problem_dir,'early_convergence_report.csv'))
-                df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
+                df.to_csv(report_path)
+                # # df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
                 continue
             # check stability every (stability_threshold_time_to_flux)sec 
             if (time()-start_time[suffix]) // stability_threshold_time_to_flux > check_stability_counter[suffix]:
@@ -176,18 +189,18 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
                 else:
                     df.loc[suffix, 'stable'] = False
                     print(suffix, 'DECLARED AS UNSTABLE')
-                print(suffix, 'WRITTING REPORT TO:',os.path.join(problem_dir,'early_stopping_report.csv'))
-                df.to_csv(os.path.join(problem_dir,'early_convergence_report.csv'))
-                df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
+                print(suffix, 'WRITTING REPORT TO:', report_path)
+                df.to_csv(report_path)
+                # df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
 
             #check if the gene_timeout is reached
             if time() - start_time[suffix] > gene_timeout:
                 print(suffix, 'REACHED THE TIMEOUT OF:', gene_timeout, 'sec')
                 df.loc[suffix, 'timeout_reached?'] = True
                 finished = True
-                print(suffix, 'WRITTING REPORT TO:',os.path.join(problem_dir,'early_stopping_report.csv'))
-                df.to_csv(os.path.join(problem_dir,'early_convergence_report.csv'))
-                df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
+                print(suffix, 'WRITTING REPORT TO:', report_path)
+                df.to_csv(report_path)
+                # df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
             
             if not df.loc[suffix, 'converged_early?']:
                 #check if it has early converged
@@ -215,9 +228,9 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
                         print(suffix, 'NOT ENOUGH PEAKS OR NAN OR PEAKS ARE IRREGULARLY SPACED')
                         continue
                     df.loc[suffix, 'sim_time_window'] = time_window
-                    print(suffix, 'WRITTING REPORT TO:',os.path.join(problem_dir,'early_stopping_report.csv'))
-                    df.to_csv(os.path.join(problem_dir,'early_convergence_report.csv'))
-                    df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
+                    print(suffix, 'WRITTING REPORT TO:', report_path)
+                    df.to_csv(report_path)
+                    # df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
 
                     print(suffix, 'TIME WINDOW:', time_window)
                 elif not np.isnan(df.loc[suffix, 'sim_time_window']):
@@ -253,10 +266,10 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
                                 GENE WILL CONTINUE RUNNING
                                 THE EARLY CONVERGENCE TIME CAN THEN BE COMPARED WITH GENE CONVEREGENCE TIME''')
                     
-                    print(suffix, 'WRITING OMEGA FILE')
+                    print(suffix, 'WRITING EARLY CONVERGED OMEGA FILE')
                     gamma, omega = calculate_latest_omega(scanfiles_dir, suffix)
-                    with open(os.path.join(scanfiles_dir,f'omega_{suffix}'), 'w') as file:
-                        file.write(f'  gene_monitor.py_early_converged     {gamma}    {omega}')
+                    with open(os.path.join(scanfiles_dir,f'early_converged_omega_{suffix}'), 'w') as file:
+                        file.write(f'{gamma},{omega}')
                     print(suffix, 'WRITING EARLY CONVERGED NOTICE FILE')
                     with open(os.path.join(scanfiles_dir, 'in_par', f'early_stopped_{suffix}'), 'w') as file:
                         pass 
@@ -265,9 +278,9 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
                     df.loc[suffix, 'time_to_EARLY_convergence'] = time()-start_time[suffix]
                     df.loc[suffix, 'simtime_early_converge'] = growthrate_window_mean_time[-1]
                     df.loc[suffix, 'early_growthrate'] = growthrate_window_mean[-1]
-                    print(suffix, 'WRITTING REPORT TO:',os.path.join(problem_dir,'early_stopping_report.csv'))
-                    df.to_csv(os.path.join(problem_dir,'early_convergence_report.csv'))
-                    df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))                    
+                    print(suffix, 'WRITTING REPORT TO:', report_path)
+                    df.to_csv(report_path)
+                    # df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))                    
                     growthrates[suffix] = growthrate_window_mean[-1]
 
             else:
@@ -303,9 +316,9 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
             
                 
     print('EARLY CONVERGENCE FINNISHED')
-    print('WRITTING REPORT TO:',os.path.join(problem_dir,'early_stopping_report.csv'))
-    df.to_csv(os.path.join(problem_dir,'early_convergence_report.csv'))
-    df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
+    print('WRITTING REPORT TO:', report_path)
+    df.to_csv(report_path)
+    # df.to_csv(os.path.join(scanfiles_dir,'early_convergence_report.csv'))
 
     if do_plots:
         def plot_suffix(suffix):
@@ -373,7 +386,7 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
         with concurrent.futures.ThreadPoolExecutor(max_workers=len(suffix_s)) as executor:
             results = list(executor.map(plot_suffix, suffix_s))    
             
-    print('EARLY CONVERGENCE MONITORING ALL DONE, see:\n',scanfiles_dir)
+    print('EARLY CONVERGENCE MONITORING ALL DONE, see:\n',report_path)
 
             
 
@@ -807,9 +820,9 @@ def get_species_order(scanfiles_dir):
 if __name__ == '__main__':
     import ast
     print('NAME == MAIN')
-    this_file_path, problem_dir, diagdir, early_convergence_2sigma_threshold, time_period_multiplyer, stability_threshold_time_to_flux, do_plots, comparison_mode, gene_timeout = sys.argv
+    this_file_path, problem_dir, diagdir, early_convergence_2sigma_threshold, time_period_multiplyer, stability_threshold_time_to_flux, do_plots, comparison_mode, gene_timeout, report_path = sys.argv
     print('SYS.ARGV',sys.argv)
-    begin_early_convergence_monitor(problem_dir, diagdir, float(early_convergence_2sigma_threshold), float(time_period_multiplyer), float(stability_threshold_time_to_flux), do_plots, comparison_mode, gene_timeout)
+    begin_early_convergence_monitor(problem_dir, diagdir, float(early_convergence_2sigma_threshold), float(time_period_multiplyer), float(stability_threshold_time_to_flux), do_plots, comparison_mode, gene_timeout, report_path)
 
 
 
