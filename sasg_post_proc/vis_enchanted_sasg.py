@@ -4,9 +4,14 @@ import numpy as np
 import pysgpp
 import sys, os
 sys.path.append('/users/danieljordan/enchanted-surrogates2/src')
-# sys.path.append('/users/danieljordan/DEEPlasma')
+sys.path.append('/users/danieljordan/DEEPlasma')
+sys.path.append('/users/danieljordan/DEEPlasma/highD_visualise')
+sys.path.append('/users/danieljordan/DEEPlasma/slice1d_post_proc')
 from samplers.SpatiallyAdaptiveSparseGrids import SpatiallyAdaptiveSparseGrids
-from highD_visualise import plot_matrix_contour, plot_slices
+
+from highD_visualise.highD_visualise import plot_matrix_contour, plot_slices
+from slice1d_post_proc.slice1d_post_proc import slice1d_post_proc
+
 import argparse
 import os
 import yaml
@@ -40,8 +45,16 @@ def vis_enchanted_sasg(base_run_dir, cycle_num='all'):
     config_file_name = config_file_name[0]
     config = load_configuration(os.path.join(base_run_dir, config_file_name))
     bounds=np.array(config.sampler['bounds'])
-    parameters = config.sampler['parameters']
-
+    if config.sampler.get('parameters_labels') != None:
+        parameters = config.sampler['parameters_labels']
+        parameters = [fr"{p}" for p in parameters]
+        print(parameters)
+    else:
+        parameters = config.sampler['parameters']
+    
+    value_of_interest = config.general.get('value_of_interest', 'function value')
+    parent_model = config.general.get('simulation_name', 'Parent Model')
+    
     sasg = SpatiallyAdaptiveSparseGrids(bounds, parameters)
     cycle_dirs = np.sort([d for d in listdir if 'active_cycle_' in d])
     if cycle_num=='latest':
@@ -52,7 +65,19 @@ def vis_enchanted_sasg(base_run_dir, cycle_num='all'):
     if cycle_num != 'all':
         cycle_dirs = [cycle_dir]
 
+    # Get 1d slice points from parent function if they exist
+    slice1d_dir = None
+    for di in listdir:
+        if 'slice1d' in di:
+            slice1d_dir = os.path.join(base_run_dir,di)
+            break
+    slices = None
+    if slice1d_dir != None:
+        slices = slice1d_post_proc(slice1d_dir)
+    
     for cycle_dir in cycle_dirs:
+        if not os.path.exists(os.path.join(base_run_dir,cycle_dir, 'pysgpp_grid.txt')):
+            pass
         grid_file_path = os.path.join(base_run_dir,cycle_dir, 'pysgpp_grid.txt')
         surpluses_file_path = os.path.join(base_run_dir,cycle_dir, 'surpluses.mat')
         train_points_file = os.path.join(base_run_dir,cycle_dir, 'train_points.pkl')
@@ -70,14 +95,14 @@ def vis_enchanted_sasg(base_run_dir, cycle_num='all'):
         with open(train_points_file, 'rb') as file:
             train_points_dict = pickle.load(file)
         train_points = np.array(list(train_points_dict.keys()))
-        
+         
         # train_unit_points = sasg.points_transform_box2unit(train_points)
         fig_contours = plot_matrix_contour(function=eval, bounds=bounds, dimension_labels=parameters, points=train_points)
-        fig_slices = plot_slices(function=eval_many, bounds=bounds, dimension_labels=parameters)
+        # fig_slices = plot_slices(function=eval_many, bounds=bounds, dimension_labels=parameters, ylabel=value_of_interest, parent_model=parent_model, slices=slices)
         fig_contours.savefig(os.path.join(base_run_dir, cycle_dir, 'contour_plots.png'))
-        fig_slices.savefig(os.path.join(base_run_dir, cycle_dir, 'slice_plots.png'))
+        # fig_slices.savefig(os.path.join(base_run_dir, cycle_dir, 'slice_plots.png'))
         plt.close(fig_contours)
-        plt.close(fig_slices)
+        # plt.close(fig_slices)
 
 # def vis_enchanted_sasg_unit(base_run_dir, cycle_num='latest'):
 #     listdir = os.listdir(base_run_dir)

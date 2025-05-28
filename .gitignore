@@ -3,7 +3,7 @@ scanlogs/*
 saved_results/*
 run_files/*
 out_files/*
-__pycache__/*
+*__pycache__*
 *parameters_scanwith*
 notes.ipynb
 *.zip
@@ -16,3 +16,5 @@ TPED/data
 config.py
 classified/*
 slurm-*
+*notebooks*
+
