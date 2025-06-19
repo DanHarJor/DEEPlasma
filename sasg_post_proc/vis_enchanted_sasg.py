@@ -3,7 +3,9 @@ import pickle
 import numpy as np
 import pysgpp
 import sys, os
-sys.path.append('/users/danieljordan/enchanted-surrogates2/src')
+
+sys.path.append('/users/danieljordan/enchanted-surrogates/src')#Mahti
+# sys.path.append('/users/danieljordan/enchanted-surrogates2/src')#Lumi
 sys.path.append('/users/danieljordan/DEEPlasma')
 sys.path.append('/users/danieljordan/DEEPlasma/highD_visualise')
 sys.path.append('/users/danieljordan/DEEPlasma/slice1d_post_proc')

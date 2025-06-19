@@ -1,3 +1,6 @@
 [submodule "GENE_ML"]
 	path = GENE_ML
 	url = git@github.com:DanHarJor/GENE_ML.git
+[submodule "sasg_post_proc/enchanted-surrogates"]
+	path = sasg_post_proc/enchanted-surrogates
+	url = git@github.com:DIGIfusion/enchanted-surrogates.git
