@@ -5,8 +5,8 @@ import numpy as np
 import pysgpp
 import sys, os
 
-import matplotlib.pyplot as plt
-sys.path.append('/users/danieljordan/enchanted-surrogates2/src')
+sys.path.append('/users/danieljordan/enchanted-surrogates/src')#Mahti
+# sys.path.append('/users/danieljordan/enchanted-surrogates2/src')#Lumi
 sys.path.append('/users/danieljordan/DEEPlasma')
 plt.rcParams.update({'font.size': 40})
 from samplers.SpatiallyAdaptiveSparseGrids import SpatiallyAdaptiveSparseGrids

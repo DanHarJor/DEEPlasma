@@ -4,3 +4,6 @@
 [submodule "SGpp"]
 	path = SGpp_local
 	url = git@github.com:SGpp/SGpp.git
+[submodule "sasg_post_proc/enchanted-surrogates"]
+	path = sasg_post_proc/enchanted-surrogates
+	url = git@github.com:DIGIfusion/enchanted-surrogates.git
