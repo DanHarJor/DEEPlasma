@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import warnings
 import re
 import os
-plt.rcParams.update({'font.size': 24})  # Adjust number as needed
+plt.rcParams.update({'font.size': 40})  # Adjust number as needed
 # Set scientific notation for all plots when numbers are smaller than 10^-2
 plt.rcParams["axes.formatter.limits"] = (-2, 2)  # Use scientific notation below 10^-2
 plt.rcParams["axes.formatter.use_mathtext"] = True  # Use LaTeX-style formatting
@@ -29,7 +29,7 @@ def plot_slices(function=None, dimension_labels=None, ylabel='Function Value', p
                 y.append(function(pi))
         else:
             y = function(p)
-        AX.flat[i].plot(*slices[i], label=parent_model, linestyle='--', color='blue')
+        if slices != None: AX.flat[i].plot(*slices[i], label=parent_model, linestyle='--', color='blue')
         AX.flat[i].plot(x,y, color ='black', label='Prediction')
         if i==0:
             AX.flat[i].legend(fontsize=18)
@@ -44,6 +44,35 @@ def plot_slices(function=None, dimension_labels=None, ylabel='Function Value', p
         fig.show()
     return fig
 
+def plot_single_slice(which, ax,function=None, dimension_labels=None, ylabel='Function Value', parent_model='Parent Model', bounds=None, grid_size=200, nominals=None, not_vectorised=False, slices=None):
+    if type(bounds) == type(None):
+        bounds = np.repeat((0,1), len(dimension_labels))
+
+    if type(nominals) == type(None):
+        nominals = [np.mean(b) for b in bounds]
+
+    i = which
+    b = bounds[which]
+
+    p = np.stack([nominals for i in range(grid_size)])
+    x = np.linspace(b[0],b[1], grid_size)
+    p[:,i] = x
+    if not_vectorised:
+        y = []
+        for pi in p:
+            y.append(function(pi))
+    else:
+        y = function(p)
+    if slices != None: ax.plot(*slices[i], label=parent_model, color='blue', linewidth=4)
+    ax.plot(x,y, color ='black', label='Prediction', linewidth=4)
+    ax.legend(fontsize=18)
+    ax.set_ylabel(ylabel)
+    if type(dimension_labels) != type(None):
+        ax.set_xlabel(dimension_labels[i])
+    else:
+        ax.set_xlabel(f'dimension {i}')
+    return ax
+
 # Function to conditionally apply scientific notation
 def sci_notation(value, _):
     if abs(value) < 10**-2 or abs(value) >= 10**2:  # Only format if ≤10⁻² or ≥10²
@@ -51,13 +80,19 @@ def sci_notation(value, _):
     else:
         return f"{value:.3f}"  # Otherwise, use standard decimal format
 
-def plot_matrix_contour(function, bounds, points=None, dimension_labels=None):
-    num_dim = len(bounds)
-    w=2
-    h=2
+def plot_matrix_contour(function, bounds, indicies_to_do=None, points=None, dimension_labels=None, ):
+    if indicies_to_do == None:
+        num_dim = len(bounds)
+        indicies_to_do = range(len(bounds))
+    else:
+        num_dim = len(indicies_to_do)
+    w=4
+    h=4
     figure, AX = plt.subplots(num_dim, num_dim, figsize=(w*num_dim, h*num_dim), sharex='col', sharey='row')
     Z_all = []
     axij = []
+    contours = []
+    axs = []
     for i in range(num_dim):
         for j in range(num_dim):
             if i==j:
@@ -66,26 +101,40 @@ def plot_matrix_contour(function, bounds, points=None, dimension_labels=None):
                 figure.delaxes(AX[i,j])
                 # break
             else:
-                Zi, contour = plot_2D_of_many(which2=(j,i), bounds=bounds, points=points ,ax=AX[i,j], style='contour', grid_size=50, function=function)
+                label_fontsize = 40
+                numbers_fontsize = 30
+                Zi, contour = plot_2D_of_many(which2=(indicies_to_do[j],indicies_to_do[i]), bounds=bounds, points=points ,ax=AX[i,j], style='contour', grid_size=50, function=function)
+                contours.append(contour)
+                axs.append(AX[i,j])
                 Z_all.append(Zi)
                 if j==0:
                     if type(dimension_labels) != type(None):
-                        AX[i,j].set_ylabel(dimension_labels[i])
+                        AX[i,j].set_ylabel(dimension_labels[indicies_to_do[i]], fontsize=label_fontsize)
+                        AX[i,j].tick_params(axis='y', which='major', labelsize=numbers_fontsize)
                     else:
-                        AX[i,j].set_ylabel(f'{i}')
+                        AX[i,j].set_ylabel(f'{i}',fontsize=label_fontsize)
+                        AX[i,j].tick_params(axis='y', which='major', labelsize=numbers_fontsize)
                     AX[i,j].yaxis.set_major_formatter(FuncFormatter(sci_notation))
                 if i==num_dim-1:
                     if type(dimension_labels) != type(None):
-                        AX[i,j].set_xlabel(dimension_labels[j])
+                        AX[i,j].set_xlabel(dimension_labels[indicies_to_do[j]],fontsize=label_fontsize)
+                        AX[i,j].tick_params(axis='x', which='major', labelsize=numbers_fontsize, rotation=35)
                     else:
-                        AX[i,j].set_xlabel(f'{j}')
+                        AX[i,j].set_xlabel(f'{indicies_to_do[j]}', fontsize=label_fontsize)
+                        AX[i,j].tick_params(axis='x', which='major', labelsize=numbers_fontsize, rotation=35)
                     # AX[i,j].set_xticklabels(AX[i,j].get_xticks(), rotation=30)
                     # Ensure scientific notation formatting
                     # AX[i,j].xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
-                    AX[i,j].tick_params(axis="x", rotation=35)  # Rotate labels properly without overriding formatting
+                    # AX[i,j].tick_params(axis="x", rotation=35)  # Rotate labels properly without overriding formatting
                     AX[i,j].xaxis.set_major_formatter(FuncFormatter(sci_notation))
             
-    Z_all = np.array(Z_all)
+    Z_all = np.array(Z_all)    
+        # Add a single color bar for both subplots
+    cbar_ax = figure.add_axes([0.65, 0.3, 0.06, 0.3])
+    cbar_ax.tick_params(which='major', labelsize=numbers_fontsize)
+    cbar = figure.colorbar(contour, cax=cbar_ax, orientation='vertical', pad=0.5)
+    cbar.set_label('Predicted Growthrate', fontsize=label_fontsize)
+    
     # print(type(Z_all), Z_all.shape, Z_all)
     # print('Z_all', Z_all)
     # print('Z all', np.min(Z_all.flatten()), Z_all.flatten().min())
@@ -147,14 +196,15 @@ def plot_2D_of_many(which2, function, bounds, points=None, extra=0, plot_bounds=
             fig = plt.figure(figsize=(2,2), dpi=200)
             ax = fig.add_subplot(111)
         # contour = ax.contourf(X,Y,Z, cmap='viridis', levels=100)
-        contour = ax.contour(X,Y,Z, cmap='viridis')
+        contour = ax.contour(X,Y,Z, cmap='viridis', linewidths=9)
         if type(points)!=type(None):
-            ax.scatter(points_2d[0], points_2d[1], marker='+', color='red')
+            ax.scatter(points_2d[0], points_2d[1], marker='+', color='red', s=400, zorder=10, linewidths=4)
     
     if type(ax) == type(None):
         ax.set_xlabel(f'{which2[0]}')
         ax.set_ylabel(f'{which2[1]}')
         fig.show()
+    # ax.set_aspect('equal')
     return Z, contour
         
 def plot_2d(function, bounds, ax, grid_size=100, onlyContour=False, plot_bounds=None, extra=0, sample_points=None, title=None):

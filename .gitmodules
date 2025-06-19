@@ -1,3 +1,6 @@
 [submodule "GENE_ML"]
 	path = GENE_ML
 	url = git@github.com:DanHarJor/GENE_ML.git
+[submodule "SGpp"]
+	path = SGpp_local
+	url = git@github.com:SGpp/SGpp.git

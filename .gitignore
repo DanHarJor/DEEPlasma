@@ -17,4 +17,7 @@ config.py
 classified/*
 slurm-*
 *notebooks*
+core
+SGpp_local
+.vscode
 

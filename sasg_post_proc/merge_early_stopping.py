@@ -21,21 +21,27 @@ def active_merge_early_stopping(base_run_dir):
     df.to_csv(os.path.join(base_run_dir, 'early_stopping_report.csv'), index=False)
     print('FINISHED MERGING THE EARLY STOPPING FILES FROM run_dirs TO base_run_dir')
     
-def merge_early_stopping(base_run_dir):
-    run_dirs = [os.path.join(base_run_dir,dir) for dir in os.listdir(base_run_dir) if os.path.isdir(os.path.join(base_run_dir,dir))]
-    dfs = []
-    for run_dir in run_dirs:
-        if 'early_stopping_report.csv' in os.listdir(run_dir):
-            df = pd.read_csv(os.path.join(run_dir,'early_stopping_report.csv'), index_col=None)
-            dfs.append(df)
-    if len(dfs)==0:
+def merge_early_stopping(base_run_dir):    
+    def find_files(start_path, target_filename):
+        matches = []
+        for root, _, files in os.walk(start_path):
+            if target_filename in files:
+                matches.append(os.path.join(root, target_filename))
+        return matches
+    
+    result = find_files(base_run_dir, 'early_stopping_report.csv')
+    if len(result)==0:
         warnings.warn('THERE WERE NO early_stopping_report.csv FILES')
     else:
+        dfs=[]
+        for file in result:
+            df = pd.read_csv(file, index_col=None)
+            dfs.append(df)
         df = pd.concat(dfs, axis=0)
         # df["stable"] = df["stable"].astype(bool)
         # Explicitly drop "Unnamed: 0" if it still exists
         df = df.loc[:, ~df.columns.str.contains("Unnamed")]
-        df.to_csv(os.path.join(base_run_dir, 'early_stopping_report.csv'), index=False)
+        df.to_csv(os.path.join(base_run_dir, 'merged_early_stopping_report.csv'), index=False)
 
     
     
