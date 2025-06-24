@@ -22,7 +22,6 @@ sys.path.append('/users/danieljordan/enchanted-surrogates/src')
 # sys.path.append('/users/danieljordan/DEEPlasma')
 print('l')
 print('m')
-import samplers
 
 def sort_strings_by_number(strings):
     return sorted(strings, key=lambda s: int(re.search(r'\d+', s).group()))
@@ -91,6 +90,7 @@ def load_configuration(config_path: str) -> argparse.Namespace:
     return config
 
 def get_sasg(cycle_dir):
+    # import samplers
     from samplers.SpatiallyAdaptiveSparseGrids import SpatiallyAdaptiveSparseGrids
     import pysgpp
 

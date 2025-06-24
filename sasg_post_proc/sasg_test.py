@@ -13,6 +13,7 @@ sys.path.append('/users/danieljordan/DEEPlasma')
 from highD_visualise.highD_visualise import plot_single_slice
 from slice1d_post_proc.slice1d_post_proc import slice1d_post_proc
 
+from tools import get_config
 
 from sklearn.neighbors import KernelDensity
 
@@ -21,9 +22,11 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 plt.rcParams.update({'font.size': 24})  # Adjust number as needed
 
 sys.path.append('/users/danieljordan/enchanted-surrogates2/src')
+sys.path.append('/users/danieljordan/enchanted-surrogates/src')
+
 # sys.path.append('/users/danieljordan/DEEPlasma')
 from samplers.SpatiallyAdaptiveSparseGrids import SpatiallyAdaptiveSparseGrids
-from parsers.GENEparser import GENEparser
+# from parsers.GENEparser import GENEparser
 print('IMPORTS COMPLETE ')
 def find_files(start_path, target_filename):
     matches = []
@@ -63,7 +66,6 @@ def get_parameters_labels(base_run_dir):
     
 
 def get_config_info(base_run_dir):
-    print('STARTING SASG TEST')
     listdir = os.listdir(base_run_dir)
     config_file_name = [name for name in listdir if '.yaml' in name]
     if len(config_file_name) > 1:
@@ -81,6 +83,7 @@ def get_config_info(base_run_dir):
 # def quad_exp_test(base_run_dir):
 
 def weighted_mean_test(base_run_dir):
+    print('PERFROMING WEIGHTED MEAN TEST')
     # there was an issue with the surrogate giving wild predictions and this was throwing off the expectation via quadrature
     # when uniform sampling and taking the mean it converged much faster, this assumes a block type surrogate model
     # to do this for the non uniform sasg sampling method that concentrates at discontinuities we need to weight the mean to account for the non uniform sampling
@@ -150,14 +153,23 @@ def weighted_mean_test(base_run_dir):
     plt.legend()
     figure.tight_layout()
     figure.savefig(os.path.join(save_dir,'weighted_mean_diff.png'))
-
+    print('FINISHED WEIGHTED MEAN TEST')
         
     
 def sasg_test(base_run_dir, cycle_num='all'):
+    print('STARTING SASG TEST')
     parameters, bounds, parent_model, value_of_interest = get_config_info(base_run_dir)
     parameters_labels = get_parameters_labels(base_run_dir)
     cycle_dirs = get_cycle_dirs(base_run_dir)
-    df_cycle_info = pd.read_csv(os.path.join(base_run_dir, 'all_cycle_info.csv'))
+    try:
+        df_cycle_info = pd.read_csv(os.path.join(base_run_dir, 'all_cycle_info.csv'))
+    except:
+        try:
+            df_cycle_info = pd.read_csv(os.path.join(base_run_dir, 'all_post_cycle_info.csv'))
+        except:
+            raise FileNotFoundError('neither',os.path.join(base_run_dir, 'all_cycle_info.csv'), '\n or this was found', os.path.join(base_run_dir, 'all_post_cycle_info.csv'))
+            
+            
     save_dir = os.path.join(base_run_dir, 'sasg_test')
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
@@ -173,6 +185,8 @@ def sasg_test(base_run_dir, cycle_num='all'):
     # Get test points from parent function if they exist
     test_x, test_y = get_test_set(base_run_dir)
     
+    print('debug test x', test_x.shape)
+    
     MAPE=[]
     ME=[]
     RMSE=[]
@@ -186,8 +200,8 @@ def sasg_test(base_run_dir, cycle_num='all'):
     subfig, AX = plt.subplots(nr,nc, figsize=(nc*w,nr*h), sharey=True, sharex=True)
     compare_index2 = np.array([0])
     for i, cycle_dir in enumerate(cycle_dirs):
+        print('='*100, '\n SPARSE GRID TEST','\n CYCLE DIR:',cycle_dir, 'OUT OF:', len(cycle_dirs), '='*100)
         sasg = get_sasg(os.path.join(base_run_dir,cycle_dir))
-        print(cycle_dir)
         if not os.path.exists(os.path.join(base_run_dir,cycle_dir, 'pysgpp_grid.txt')):
             pass
         grid_file_path = os.path.join(base_run_dir,cycle_dir, 'pysgpp_grid.txt')
@@ -207,7 +221,7 @@ def sasg_test(base_run_dir, cycle_num='all'):
         residuals = test_y - test_pred
         squared_error = residuals**2
         percentage_error = np.abs(residuals/test_y)*100
-        sasg_2 = get_sasg(cycle_dir=os.path.join(base_run_dir,cycle_dir))
+        # sasg_2 = get_sasg(cycle_dir=os.path.join(base_run_dir,cycle_dir))
         
         def plot_error(error, name='error'):
             hb_comp=None
@@ -298,6 +312,7 @@ def sasg_test(base_run_dir, cycle_num='all'):
     plot_errorVsamples(ME, 'Mean Err')
     plot_errorVsamples(RMSE, 'Root_Mean_Squared_Error')
     plot_errorVsamples(SURP, 'Mean Surplus')
+    print('FINISHED WEIGHTED MEAN TEST')
     
     
 def parse_run_dir(run_dir, parameters):
@@ -557,15 +572,16 @@ def get_cycle_dirs(base_run_dir):
 
 def get_random_comparison(base_run_dir):
     print('RETRIVING RANDOM COMPARISON FROM', base_run_dir)
-    listdir = os.listdir(base_run_dir)
-    test_dir = None
-    for di in listdir:
-        if 'sobolseq' in di or 'comparison' in di:
-            test_dir = os.path.join(base_run_dir,di)
-            break
-    if test_dir == None:
-        raise FileNotFoundError('NO FOLDERS WITH sosbol_seq OR comparison IN NAME, THAT COULD CONTAIN A TEST SET WERE FOUND')
-        
+    config = get_config(base_run_dir)
+    test_dir = config.sampler['test_dir']    
+    # listdir = os.listdir(base_run_dir)
+    # test_dir = None
+    # for di in listdir:
+    #     if 'sobolseq' in di or 'comparison' in di:
+    #         test_dir = os.path.join(base_run_dir,di)
+    #         break
+    # if test_dir == None:
+    #     raise FileNotFoundError('NO FOLDERS WITH sosbol_seq OR comparison IN NAME, THAT COULD CONTAIN A TEST SET WERE FOUND')
     cycle_dirs = get_cycle_dirs(test_dir)
     means = []
     num_samples = []
@@ -580,15 +596,18 @@ def get_random_comparison(base_run_dir):
 
 def get_test_set(base_run_dir):
     print('RETRIVING TEST SET FROM', base_run_dir)
-    listdir = os.listdir(base_run_dir)
-    test_dir = None
-    for di in listdir:
-        if 'sobolseq' in di or 'testset' in di:
-            test_dir = os.path.join(base_run_dir,di)
-            break
-    if test_dir == None:
-        raise FileNotFoundError('NO FOLDERS WITH sosbol_seq OR testset IN NAME, THAT COULD CONTAIN A TEST SET WERE FOUND')
-    print('FOUND TEST DIR', test_dir)
+    config = get_config(base_run_dir)
+    test_dir = config.sampler['test_dir']    
+    
+    # listdir = os.listdir(base_run_dir)
+    # test_dir = None
+    # for di in listdir:
+    #     if 'sobolseq' in di or 'testset' in di:
+    #         test_dir = os.path.join(base_run_dir,di)
+    #         break
+    # if test_dir == None:
+    #     raise FileNotFoundError('NO FOLDERS WITH sosbol_seq OR testset IN NAME, THAT COULD CONTAIN A TEST SET WERE FOUND')
+    # print('FOUND TEST DIR', test_dir)
     
     file_path = os.path.join(test_dir,'merged_runner_return.csv')
     file_path_txt = os.path.join(test_dir, 'merged_runner_return.txt')
@@ -601,6 +620,15 @@ def get_test_set(base_run_dir):
     # elif os.path.exists(os.path.join(test_dir, 'runner_return.txt')):
     #     df_test = pd.read_csv(os.path.join(test_dir, 'runner_return.txt'))
     #     print('got runner_return.txt')    
+    elif os.path.exists(os.path.join(test_dir, 'active_cycle_0', 'runner_return.txt')):
+        print('MERGING RUNNER RETURNS')
+        test_cycle_dirs = get_cycle_dirs(test_dir)
+        dfs = []
+        for cycle_dir in test_cycle_dirs:
+           df = pd.read_csv(os.path.join(cycle_dir,'runner_return.txt'))
+           dfs.append(df)
+        df_test = pd.concat(dfs)
+        df_test.to_csv(os.path.join(test_dir, 'merged_runner_return.txt')) 
     else:
         print('NO RUNNER RETURN FOUND, BEGINNIGN PARSING')
         finished_result = find_files(test_dir, 'GENE.finished')
@@ -620,7 +648,8 @@ def get_test_set(base_run_dir):
                 lines = [line+'\n' for line in lines]
                 file.writelines(lines)
             df_test = pd.read_csv(os.path.join(test_dir, 'merged_runner_return.txt'))
-            
+    
+    df_test = df_test.loc[:, ~df_test.columns.str.contains('^Unnamed')]
     test_x = np.array(df_test.iloc[:,0:-1].astype('float'))
     test_y = np.array(df_test.iloc[:,-1].astype('float'))
     

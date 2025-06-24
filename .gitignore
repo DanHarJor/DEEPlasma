@@ -21,4 +21,5 @@ core
 SGpp_local
 .vscode
 *out.txt
+*.out
 

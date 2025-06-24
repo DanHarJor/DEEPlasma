@@ -157,16 +157,30 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
         fig.savefig(os.path.join(save_dir, 'approx_sobol_total_order_comparison.png'),dpi=300)
 
 if __name__ == '__main__':
+    # _, base_run_dir = sys.argv
+    # # if compare_dir == 'None':
+    # #     compare_dir = None
+    # num_pro = os.environ.get('num_pro')
+    # compare_dirs = ['/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/sasg_threshold',
+    #                 '/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/sasg_volume',
+    #                 '/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/MMMG_static_grid']
+    #                 # '/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/active_GPyOPT_12D_MMMG']
+    # # print('debug', compare_dir, type(compare_dir))
+    # random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=None, name='')
+    
+
+    # # compare_dirs=None
+    # # random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=True)
+    
     _, base_run_dir = sys.argv
     # if compare_dir == 'None':
     #     compare_dir = None
-    num_pro = os.environ.get('num_pro')
-    compare_dirs = ['/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/sasg_threshold',
-                    '/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/sasg_volume',
-                    '/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/MMMG_static_grid']
-                    # '/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/active_GPyOPT_12D_MMMG']
+    compare_dirs = ['/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_threshold',
+                    '/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_volume',
+                    '/scratch/project_2007848/DANIEL/data_store/full_12D/MMMG_static_grid',
+                    '/scratch/project_2007848/DANIEL/data_store/full_12D/active_GPyOPT_12D_MMMG']
     # print('debug', compare_dir, type(compare_dir))
-    random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=None, name='')
+    random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=700, name='xlim700_')
     
 
     # compare_dirs=None

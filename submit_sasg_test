@@ -1,0 +1,22 @@
+#!/bin/bash
+# Call with `sbatch SLURMrun.bash` and modify below with your relevant SLURM config
+#SBATCH --job-name=SURROGATE_WORKFLOW
+#SBATCH --account=project_2007848 ##project_462000451
+#SBATCH --time=1:00:00
+#SBATCH --partition=test
+#SBATCH --ntasks=1
+#SBATCH --nodes=1
+#SBATCH --mem=0
+#SBATCH --cpus-per-task=128
+#SBATCH --out=./scheduler_run.out
+
+echo PURGING MODULES
+module purge 
+
+echo LOADING PYTHON
+# export PATH="/project/project_462000451/enchanted_container_lumi3/bin:$PATH"                          # changes based on CLUSTER 
+source /scratch/project_2007848/enchanted_venv/bin/activate                      # changes based on CLUSTER 
+
+
+echo RUNNING SASG TEST SURROGATES WITH base_run_dir FILE: $1  # does not change!
+srun python3 -u sasg_post_proc/sasg_test.py $1 > run.out
