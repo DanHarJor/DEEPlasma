@@ -96,6 +96,9 @@ def weighted_mean_test(base_run_dir):
     # x_test, y_test = get_test_set(base_run_dir)
     # truest_mean = np.nanmean(y_test)
     
+    save_dir = os.path.join(base_run_dir,'weighted_mean_test')
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir)
     
     parameters, bounds, parent_model, value_of_interest = get_config_info(base_run_dir)
     
@@ -123,7 +126,7 @@ def weighted_mean_test(base_run_dir):
     plt.ylabel(f'Weighted Mean, {value_of_interest}')
     plt.legend()
     figure.tight_layout()
-    figure.savefig(os.path.join(base_run_dir,'weighted_mean.png'))
+    figure.savefig(os.path.join(save_dir,'weighted_mean.png'))
     
     figure = plt.figure()
     plt.plot(num_samples, np.abs(np.array(weighted_means)-truest_mean), '-o')
@@ -135,7 +138,7 @@ def weighted_mean_test(base_run_dir):
     plt.yscale('log')
     plt.legend()
     figure.tight_layout()
-    figure.savefig(os.path.join(base_run_dir,'weighted_mean_error.png'))
+    figure.savefig(os.path.join(save_dir,'weighted_mean_error.png'))
 
     figure = plt.figure()
     plt.plot(num_samples[1:], np.abs(np.diff(np.array(weighted_means))), '-o')
@@ -146,7 +149,7 @@ def weighted_mean_test(base_run_dir):
     plt.xlim(0,np.max(num_samples))
     plt.legend()
     figure.tight_layout()
-    figure.savefig(os.path.join(base_run_dir,'weighted_mean_diff.png'))
+    figure.savefig(os.path.join(save_dir,'weighted_mean_diff.png'))
 
         
     
@@ -155,6 +158,9 @@ def sasg_test(base_run_dir, cycle_num='all'):
     parameters_labels = get_parameters_labels(base_run_dir)
     cycle_dirs = get_cycle_dirs(base_run_dir)
     df_cycle_info = pd.read_csv(os.path.join(base_run_dir, 'all_cycle_info.csv'))
+    save_dir = os.path.join(base_run_dir, 'sasg_test')
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir)
     
     if cycle_num=='latest':
         cycle_dirs = [cycle_dirs[-1]]
@@ -274,7 +280,7 @@ def sasg_test(base_run_dir, cycle_num='all'):
     subfig.tight_layout()
     
     print('saving subfig:', os.path.join(base_run_dir,'hex_residuals_all.png'))
-    subfig.savefig(os.path.join(base_run_dir,'hex_residuals_all.png'), dpi=200)
+    subfig.savefig(os.path.join(save_dir,'hex_residuals_all.png'), dpi=200)
     plt.close(subfig)
     
     def plot_errorVsamples(error, name):
@@ -284,7 +290,7 @@ def sasg_test(base_run_dir, cycle_num='all'):
         plt.xlabel(f'Number of {parent_model} Evaluations')
         plt.ylabel(f'{value_of_interest}, {name}')
         fig.tight_layout()
-        fig.savefig(os.path.join(base_run_dir, f'{name}.png'),dpi=200)
+        fig.savefig(os.path.join(save_dir, f'{name}.png'),dpi=200)
         plt.close(fig)
     
     
@@ -704,6 +710,9 @@ def hyper_scan_poly_degree(base_run_dir, poly_degrees:list):
     plt.close(fig)
 
 def inspect_outliers(base_run_dir):
+    save_dir = os.path.join(base_run_dir, 'inspect_outliers')
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir)
     parameters, bounds, parent_model, value_of_interest = get_config_info(base_run_dir)
     cycle_dirs = get_cycle_dirs(base_run_dir)
     x_test, y_test = get_test_set(base_run_dir)
@@ -764,12 +773,12 @@ def test_boundary_hypothesis(base_run_dir):
 if __name__ == '__main__':
     _, base_run_dir = sys.argv
     # outlier_investigation(base_run_dir)
-    # weighted_mean_test(base_run_dir)
+    weighted_mean_test(base_run_dir)
     
     sasg_test(base_run_dir)
     
     # hyper_scan_poly_degree(base_run_dir,poly_degrees=[3,4,5,6,7,8,9,10,11,20])
-    # inspect_outliers(base_run_dir)
+    inspect_outliers(base_run_dir)
     
     # test_boundary_hypothesis(base_run_dir)
     

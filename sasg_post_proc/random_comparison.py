@@ -62,12 +62,12 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
     df = pd.read_csv(os.path.join(base_run_dir,'all_post_cycle_info.csv'))        
     # expectation comparison
     fig = plt.figure()
-    plt.plot(df['num_samples'],df['mean'], label='sasg')
-    plt.plot(df_test['num_samples'], df_test['mean'], '--', color='green', label='Sobol sequence')
+    plt.plot(df['num_samples'],df['mean'], label='sasg', marker='o')
+    plt.plot(df_test['num_samples'], df_test['mean'], '--', color='green', label='Sobol sequence', marker='o')
     if do_tree: plt.plot(df_tree['num_samples'], df_tree['mean'], ':', color='cyan', label='sasg tree', marker='x')
     if type(compare_run_dirs) != type(None):
         for i, df_compare, compare_label in zip(range(len(dfs_compare)),dfs_compare, compare_labels):
-            plt.plot(df_compare['num_samples'], df_compare['mean'], ':', color=colors[i], label=compare_label)
+            plt.plot(df_compare['num_samples'], df_compare['mean'], ':', color=colors[i], label=compare_label, marker='o')
 
     plt.ylabel('Expectation')
     plt.xlabel('N. Evaluations')
@@ -82,12 +82,12 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
     
     # std comparison
     fig = plt.figure()
-    plt.plot(df['num_samples'],df['std'], label='sasg')
-    plt.plot(df_test['num_samples'], df_test['std'], '--', color='green', label='Sobol sequence')
+    plt.plot(df['num_samples'],df['std'], label='sasg', marker='o')
+    plt.plot(df_test['num_samples'], df_test['std'], '--', color='green', label='Sobol sequence', marker='o')
     if do_tree: plt.plot(df_tree['num_samples'], df_tree['std'], ':', color='cyan', label='sasg tree', marker='x')
     if type(compare_run_dirs) != type(None):
         for i, df_compare, compare_label in zip(range(len(dfs_compare)),dfs_compare, compare_labels):
-            plt.plot(df_compare['num_samples'], df_compare['std'], ':', color=colors[i], label=compare_label)
+            plt.plot(df_compare['num_samples'], df_compare['std'], ':', color=colors[i], label=compare_label, marker='o')
     
     plt.ylabel('Standart Deviation, sqrt(var)')
     plt.xlabel('N. Evaluations')
@@ -112,11 +112,11 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
         ax_main.set_title("Main Plot")    
         for i in range(dim):
             # ax_main.plot(df['num_samples'], np.abs(df[f'brute_sobol_first_order_{i}'].to_numpy()-df_test[f'brute_sobol_first_order_{i}'].to_numpy()[-1]), label=f'x{i}')
-            ax_main.plot(df['num_samples'], np.abs(df[f'brute_sobol_first_order_{i}']), label=f'x{i}', color=colors[i])
-            ax_main.plot(df_test['num_samples'], np.abs(df_test[f'brute_sobol_first_order_{i}']), '--', color=colors[i])
+            ax_main.plot(df['num_samples'], np.abs(df[f'brute_sobol_first_order_{i}']), label=f'x{i}', color=colors[i], marker='o')
+            ax_main.plot(df_test['num_samples'], np.abs(df_test[f'brute_sobol_first_order_{i}']), '--', color=colors[i], marker='o')
             # ax_main.plot(df_tree['num_samples'], np.abs(df_tree[f'brute_sobol_first_order_{i}']), ':', label=f'x{i}', color=colors[i])
             if compare_run_dir != None:
-                ax_main.plot(df_compare['num_samples'], np.abs(df_compare[f'brute_sobol_first_order_{i}']), ':', color=colors[i])
+                ax_main.plot(df_compare['num_samples'], np.abs(df_compare[f'brute_sobol_first_order_{i}']), ':', color=colors[i], marker='o')
             # ax_main.hlines(df_test[f'brute_sobol_first_order_{i}'].to_numpy()[-1], np.min(df['num_samples']), np.max(df['num_samples']), linestyles='--', color=colors[i])
         # ax_main.set_yscale('log')
         ax_main.set_ylabel('First order sobol indices Error, |sasg_sobol-true_sobol|')
@@ -136,11 +136,11 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
         ax_main = fig.add_axes([0.1, 0.1, 0.6, 0.8])  # Main plot area
         ax_main.set_title("Main Plot")    
         for i in range(dim):
-            ax_main.plot(df['num_samples'], df[f'brute_sobol_total_order_{i}'], label=f'x{i}', color=colors[i])
-            ax_main.plot(df_test['num_samples'], np.abs(df_test[f'brute_sobol_total_order_{i}']), '--', label=f'x{i}', color=colors[i])
+            ax_main.plot(df['num_samples'], df[f'brute_sobol_total_order_{i}'], label=f'x{i}', color=colors[i], marker='o')
+            ax_main.plot(df_test['num_samples'], np.abs(df_test[f'brute_sobol_total_order_{i}']), '--', label=f'x{i}', color=colors[i], marker='o')
             # ax_main.plot(df_tree['num_samples'], np.abs(df_tree[f'brute_sobol_total_order_{i}']), ':', label=f'x{i}', color=colors[i])
             if compare_run_dir != None:
-                ax_main.plot(df_compare['num_samples'], np.abs(df_compare[f'brute_sobol_total_order_{i}']), ':', color=colors[i])
+                ax_main.plot(df_compare['num_samples'], np.abs(df_compare[f'brute_sobol_total_order_{i}']), ':', color=colors[i], marker='o')
 
             # ax_main.plot(df['num_samples'], np.abs(df[f'brute_sobol_total_order_{i}'].to_numpy()-df_test[f'brute_sobol_total_order_{i}'].to_numpy()[-1]), label=f'x{i}')
             # ax_main.hlines(df_test[f'brute_sobol_total_order_{i}'].to_numpy()[-1], np.min(df['num_samples']), np.max(df['num_samples']), linestyles='--', color=colors[i])
@@ -160,12 +160,13 @@ if __name__ == '__main__':
     _, base_run_dir = sys.argv
     # if compare_dir == 'None':
     #     compare_dir = None
-    compare_dirs = ['/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_threshold',
-                    '/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_volume',
-                    '/scratch/project_2007848/DANIEL/data_store/full_12D/MMMG_static_grid',
-                    '/scratch/project_2007848/DANIEL/data_store/full_12D/active_GPyOPT_12D_MMMG']
+    num_pro = os.environ.get('num_pro')
+    compare_dirs = ['/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/sasg_threshold',
+                    '/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/sasg_volume',
+                    '/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/MMMG_static_grid']
+                    # '/scratch/'+num_pro+'/DANIEL/data_store/full_12D_linearGrid/active_GPyOPT_12D_MMMG']
     # print('debug', compare_dir, type(compare_dir))
-    random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=700, name='xlim700_')
+    random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=None, name='')
     
 
     # compare_dirs=None

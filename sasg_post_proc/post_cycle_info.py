@@ -109,6 +109,6 @@ def join_cycle_info(base_run_dir):
     
 if __name__ == '__main__':
     _, base_run_dir = sys.argv
-    join_cycle_info(base_run_dir)
+    # join_cycle_info(base_run_dir)
     # tree_post_cycle_info(base_run_dir, do_sensitivity=False)
-    # post_cycle_info(base_run_dir)
+    post_cycle_info(base_run_dir)
