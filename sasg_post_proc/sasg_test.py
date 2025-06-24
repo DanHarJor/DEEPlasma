@@ -86,6 +86,8 @@ def weighted_mean_test(base_run_dir):
     # to do this for the non uniform sasg sampling method that concentrates at discontinuities we need to weight the mean to account for the non uniform sampling
     # E(fx) = [ sum(fx * px / qx) / sum(px/qx) ] if px is uniform dist then E(fx) = [ sum(fx * 1 / qx) / sum(1/qx) ]. 
     # The /sum(px/qx) is to account for the fact that px and qx usually come from continutous distributions where the integral equals one and for out discrete samples we need the sum of the discrete evaluations to equal one.
+    # Var = E(fx**2) + E(fx)**2 
+        
     
     # doing random comparison
     random_means, random_num_samples = get_random_comparison(base_run_dir)
@@ -107,6 +109,8 @@ def weighted_mean_test(base_run_dir):
         kde = KernelDensity(kernel='gaussian', bandwidth='silverman').fit(samples_x)
         samples_qx = np.exp(kde.score_samples(samples_x))
         weighted_mean = ( np.sum(samples_fx * samples_qx**-1) / sum(samples_qx**-1) )
+        # weighted_var = ( np.sum(samples_fx**2 * samples_qx**-1) / sum(samples_qx**-1) ) + weighted_mean**2
+        
         # non_weighted_mean = (1/len(samples)) * np.sum(samples_fx)
         weighted_means.append(weighted_mean)
         num_samples.append(len(sasg.train))

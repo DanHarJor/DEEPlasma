@@ -20,4 +20,5 @@ slurm-*
 core
 SGpp_local
 .vscode
+*out.txt
 

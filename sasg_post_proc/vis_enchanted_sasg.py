@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 import pysgpp
 import sys, os
-
+import matplotlib.pyplot as plt
 sys.path.append('/users/danieljordan/enchanted-surrogates/src')#Mahti
 # sys.path.append('/users/danieljordan/enchanted-surrogates2/src')#Lumi
 sys.path.append('/users/danieljordan/DEEPlasma')
@@ -71,6 +71,7 @@ def vis_enchanted_sasg(base_run_dir, cycle_num='all'):
     
     sasg = SpatiallyAdaptiveSparseGrids(bounds, parameters)
     cycle_dirs = get_cycle_dirs(base_run_dir)
+    print('CYCLE DIRS:',cycle_dirs)
     
     if cycle_num=='latest':
         cycle_dirs = [cycle_dirs[-1]]
@@ -112,7 +113,7 @@ def vis_enchanted_sasg(base_run_dir, cycle_num='all'):
          
         # train_unit_points = sasg.points_transform_box2unit(train_points)
         print('DOING CONTOURS AND SLICES')
-        indicies_to_do = [4,11,2,10,0]
+        indicies_to_do = None#[4,11,2,10,0]
         fig_contours = plot_matrix_contour(function=eval, bounds=bounds, dimension_labels=parameters, points=train_points, indicies_to_do=indicies_to_do)
         fig_slices = plot_slices(function=eval_many, bounds=bounds, dimension_labels=parameters, ylabel=value_of_interest, parent_model=parent_model, slices=slices)
         fig_contours.tight_layout()
