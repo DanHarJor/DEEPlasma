@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 import time
 
 
-from TPED.projects.GENE_sim_reader.archive.ARCHIVE_GENE_field_data import GeneField as GF
-from TPED.projects.GENE_sim_reader.utils.GENE_filepath_converter import GeneFilepathConverter as GFC
+# from TPED.projects.GENE_sim_reader.archive.ARCHIVE_GENE_field_data import GeneField as GF
+# from TPED.projects.GENE_sim_reader.utils.GENE_filepath_converter import GeneFilepathConverter as GFC
 
 
 from TPED.projects.GENE_sim_reader.src.GENE_field_data import GeneField as GF
