@@ -26,6 +26,8 @@ def post_cycle_info(base_run_dir, do_sensitivity=True):
     for cycle_dir in cycle_dirs:
         print('LOOKING AT CYCLE DIR:',cycle_dir,'OUT OF:', len(cycle_dirs))
         x,y = get_points(cycle_dir)
+        nan_mask = ~np.isnan(y)
+        x,y = x[nan_mask], y[nan_mask]
         x_all_list.append(x)
         x_all = np.vstack(x_all_list)
         y_all = np.append(y_all, y)

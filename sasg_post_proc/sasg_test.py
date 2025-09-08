@@ -191,6 +191,7 @@ def sasg_test(base_run_dir, cycle_num='all'):
     ME=[]
     RMSE=[]
     SURP = []
+    PEARS_COEFF=[]
     nr=1 
     nc=3
     w=5
@@ -288,9 +289,11 @@ def sasg_test(base_run_dir, cycle_num='all'):
         mape = np.mean(np.abs(residuals/test_y)*100)
         me = np.mean(np.abs(residuals))
         rmse = np.sqrt(np.mean(residuals**2))
+        pears_coeff = pearson_r(test_y, test_pred)
         MAPE.append(mape)
         ME.append(me)
         RMSE.append(rmse)
+        PEARS_COEFF.append(pears_coeff)
     subfig.tight_layout()
     
     print('saving subfig:', os.path.join(base_run_dir,'hex_residuals_all.png'))
@@ -312,8 +315,11 @@ def sasg_test(base_run_dir, cycle_num='all'):
     plot_errorVsamples(ME, 'Mean Err')
     plot_errorVsamples(RMSE, 'Root_Mean_Squared_Error')
     plot_errorVsamples(SURP, 'Mean Surplus')
+    plot_errorVsamples(PEARS_COEFF, 'Pearson Correlation Coefficient')
     print('FINISHED WEIGHTED MEAN TEST')
-    
+
+def pearson_r(y_true, y_pred):
+    return np.corrcoef(y_true, y_pred)[0, 1]
     
 def parse_run_dir(run_dir, parameters):
     parser = GENEparser()
@@ -809,7 +815,7 @@ if __name__ == '__main__':
     # hyper_scan_poly_degree(base_run_dir,poly_degrees=[3,4,5,6,7,8,9,10,11,20])
     inspect_outliers(base_run_dir)
     
-    # test_boundary_hypothesis(base_run_dir)
+    test_boundary_hypothesis(base_run_dir)
     
     # get_rmse_boundary(base_run_dir)
     

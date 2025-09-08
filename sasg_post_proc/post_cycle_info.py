@@ -30,7 +30,7 @@ def post_cycle_info(base_run_dir):
             sasg.do_brute_force_sobol_indicies = False
             # sasg.brute_force_sobol_indicies_num_samples = float(2**15)
             print('debug 6')
-            sasg.write_cycle_info(cycle_dir, fname='post_cycle_info.csv', save_grid=False)
+            sasg.write_cycle_info(cycle_dir, name='post_', save_grid=False)
     print('DOING JOIN')
     join_post_cycle_info(base_run_dir)
     
