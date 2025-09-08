@@ -215,21 +215,15 @@ if __name__ == '__main__':
     # # random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=True)
     
     _, base_run_dir = sys.argv
-<<<<<<< HEAD
-=======
     # if compare_dir == 'None':
     #     compare_dir = None
->>>>>>> 4c882275e2797498ee00dd008b47bfe3ec38f1be
     # compare_dirs = ['/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_threshold',
     #                 '/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_volume',
     #                 '/scratch/project_2007848/DANIEL/data_store/full_12D/MMMG_static_grid',
     #                 '/scratch/project_2007848/DANIEL/data_store/full_12D/active_GPyOPT_12D_MMMG']
     # # print('debug', compare_dir, type(compare_dir))
-<<<<<<< HEAD
     random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=700, name='xlim700_')
-=======
     # random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=700, name='xlim700_')
->>>>>>> 4c882275e2797498ee00dd008b47bfe3ec38f1be
     
 
     compare_dirs=None
