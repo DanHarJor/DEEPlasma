@@ -37,6 +37,7 @@ def slice1d_post_proc(base_run_dir):
     fig.tight_layout()
     fig.show()
     fig.savefig(os.path.join(base_run_dir, 'slice1d.png'))
+    plt.close(fig)
     return slices
 
 if __name__ == '__main__':

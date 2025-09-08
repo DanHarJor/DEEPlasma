@@ -29,7 +29,7 @@ fig = plt.figure()
 plt.plot(metrics['phi_z'][1],metrics['phi_z'][0])
 
 fig.savefig(os.path.join('/users/danieljordan/DEEPlasma/early_convergence_post_proc/plots', 'mode_structure3.png'))
-
+plt.close(fig)
 omega = parser.calculate_latest_omega(diagdir=run_dir)
 
 print('omega:',omega)

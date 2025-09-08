@@ -14,10 +14,11 @@ def plot_slices(function=None, dimension_labels=None, ylabel='Function Value', p
 
     if type(nominals) == type(None):
         nominals = [np.mean(b) for b in bounds]
+        
     h=3
     w=4
-    r=4
-    c=3#len(bounds)
+    r=int(np.ceil(np.sqrt(len(bounds))))
+    c=int(np.ceil(np.sqrt(len(bounds))))#len(bounds)
     fig, AX = plt.subplots(r,c,figsize=(w*c, h*r), dpi = 200)
     for i, b in enumerate(bounds):
         p = np.stack([nominals for i in range(grid_size)])
@@ -31,6 +32,7 @@ def plot_slices(function=None, dimension_labels=None, ylabel='Function Value', p
             y = function(p)
         if slices != None: AX.flat[i].plot(*slices[i], label=parent_model, linestyle='--', color='blue')
         AX.flat[i].plot(x,y, color ='black', label='Prediction')
+        AX.flat[i].plot([nominals[i]],0, color ='cyan', marker='o', label='nominal')
         if i==0:
             AX.flat[i].legend(fontsize=18)
         if i==0 or i==c:
@@ -178,12 +180,21 @@ def plot_2D_of_many(which2, function, bounds, points=None, extra=0, plot_bounds=
     
     # print(pos.shape)
     Z = np.zeros(shape=(grid_size,grid_size))
+    points_flat = []
     for i in range(grid_size):
         for j in range(grid_size):
             p = nominals
             p[which2[0]] = X[i,j]
             p[which2[1]] = Y[i,j]
-            Z[i,j] = function(p)
+            points_flat.append(p)
+    
+    Z_flat=function(points_flat)
+    k=0
+    for i in range(grid_size):
+        for j in range(grid_size):
+            Z[i,j]=Z_flat[k]
+            k+=1            
+    
     # print('Z',Z)
     # print(np.max(Z), np.min(Z))
     if style == '3D':
@@ -198,7 +209,8 @@ def plot_2D_of_many(which2, function, bounds, points=None, extra=0, plot_bounds=
         # contour = ax.contourf(X,Y,Z, cmap='viridis', levels=100)
         contour = ax.contour(X,Y,Z, cmap='viridis', linewidths=9)
         if type(points)!=type(None):
-            ax.scatter(points_2d[0], points_2d[1], marker='+', color='red', s=400, zorder=10, linewidths=4)
+            # ax.scatter(points_2d[0], points_2d[1], marker='+', color='red', s=400, zorder=10, linewidths=4)
+            ax.hexbin(points_2d[0], points_2d[1], cmap='plasma', bins=None, mincnt=1, gridsize=50, zorder=10)
     
     if type(ax) == type(None):
         ax.set_xlabel(f'{which2[0]}')

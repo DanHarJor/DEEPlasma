@@ -16,10 +16,10 @@ def mmmg_plot(base_run_dir):
     mmg = runner.mmg
     fig = mmg.plot_matrix_contour()
     fig.savefig(os.path.join(base_run_dir,'parent_contours.png'))
-    
+    plt.close(fig)
     fig = mmg.plot_slices()
     fig.savefig(os.path.join(base_run_dir,'parent_slices.png'))
-
+    plt.close(fig)
 def mmmg_plot_random_forest_compare(base_run_dir):    
     print('RANDOM FOREST COMPARE:',base_run_dir)
     config = get_config(base_run_dir)
@@ -45,7 +45,7 @@ def mmmg_plot_random_forest_compare(base_run_dir):
     forest = lambda x: model.predict(x)
     fig = mmg.plot_slices(compare_function=forest)
     fig.savefig(os.path.join(cycle_dir,'forest_slices.png'))
-
+    plt.close(fig)
         
 
 if __name__ == '__main__':

@@ -3,21 +3,26 @@ from tools import get_cycle_dirs, get_config, get_sasg, get_parameters_bounds
 import pandas as pd
 import numpy as np
 import os, sys
-from tools import get_points_upto
+from tools import get_points_upto, get_sasg_zero_bounds, get_sasg_mod_poly_grid, get_sasg_zero_poly_grid, get_sasg_anchor
 from sklearn.ensemble import HistGradientBoostingRegressor
 from scipy.stats import sobol_indices, uniform
 from scipy.stats.qmc import Sobol
+from plot_cycle_info import plot_post_cycle_info
+
 print('IMPORTS DONE')
 
-def post_cycle_info(base_run_dir):
+def post_cycle_info(base_run_dir, sasg_type='get_sasg', cycle_num='all'):
     print('DOING POST CYCLE INFO')
-    cycle_dirs = get_cycle_dirs(base_run_dir)
+    cycle_dirs = get_cycle_dirs(base_run_dir, cycle_num=cycle_num)
     grid_increase=None
     old_grid_size = 0
+    
+    dir_num = 1
     for cycle_dir in cycle_dirs:
-        print('FOR CYCLE DIR:',cycle_dir,'OUT OF:',len(cycle_dirs))
+        print('FOR CYCLE DIR:',cycle_dir, 'NUM:',dir_num,'OUT OF:',len(cycle_dirs))
+        dir_num+=1
         if os.path.exists(os.path.join(cycle_dir,'pysgpp_grid.txt')):
-            sasg = get_sasg(cycle_dir)
+            sasg = eval(f"{sasg_type}(cycle_dir)")
             print('debug 1')
             grid_size = sasg.gridStorage.getSize()
             print('debug 2')
@@ -30,11 +35,37 @@ def post_cycle_info(base_run_dir):
             sasg.do_brute_force_sobol_indicies = False
             # sasg.brute_force_sobol_indicies_num_samples = float(2**15)
             print('debug 6')
-            sasg.write_cycle_info(cycle_dir, name='post_', save_grid=False)
+            sasg.do_write_cycle_info=True
+            sasg.write_cycle_info(cycle_dir, name=sasg_type+'_post_', save_grid=False)
+    print('DOING JOIN')
+    join_cycle_info(base_run_dir, name=sasg_type+'_post_')
+    
+def post_cycle_info_0_boundary(base_run_dir):
+    print('DOING POST CYCLE INFO')
+    cycle_dirs = get_cycle_dirs(base_run_dir)
+    grid_increase=None
+    old_grid_size = 0
+    for cycle_dir in cycle_dirs:
+        print('FOR CYCLE DIR:',cycle_dir,'OUT OF:',len(cycle_dirs))
+        if os.path.exists(os.path.join(cycle_dir,'pysgpp_grid.txt')):
+            sasg = get_sasg_zero_bounds(cycle_dir)
+            print('debug 1')
+            grid_size = sasg.gridStorage.getSize()
+            print('debug 2')
+            grid_increase = grid_size - old_grid_size
+            print('debug 3')
+            old_grid_size = grid_size
+            print('debug 4')
+            sasg.grid_increase = grid_increase
+            print('debug 5')
+            sasg.do_brute_force_sobol_indicies = False
+            # sasg.brute_force_sobol_indicies_num_samples = float(2**15)
+            print('debug 6')
+            sasg.write_cycle_info(cycle_dir, name='post_0_boundary', save_grid=False)
     print('DOING JOIN')
     join_post_cycle_info(base_run_dir)
     
-def tree_post_cycle_info(base_run_dir, do_sensitivity=True):
+def tree_post_cycle_info(base_run_dir, do_sensitivity=True, every=1):
     parameters, bounds = get_parameters_bounds(base_run_dir)
     bounds = np.array(bounds)
     model = HistGradientBoostingRegressor()
@@ -45,9 +76,11 @@ def tree_post_cycle_info(base_run_dir, do_sensitivity=True):
         
     print('DOING POST CYCLE INFO')
     cycle_dirs = get_cycle_dirs(base_run_dir)
+    cycle_dirs = [cd for i, cd in enumerate(cycle_dirs) if i%every==0]
     dfs = []
     i = 0
     for cycle_dir in cycle_dirs:
+        print('FOR CYCLE DIR:',cycle_dir,'OUT OF:',len(cycle_dirs))
         i+=1
         print('debug',i,i%20)
         if i%20 == 0:
@@ -97,18 +130,52 @@ def join_post_cycle_info(base_run_dir):
     df = pd.concat(dfs)
     df.to_csv(os.path.join(base_run_dir,'all_post_cycle_info.csv'))
 
-def join_cycle_info(base_run_dir):
+def join_cycle_info(base_run_dir, name=''):
     print('JOINING POST CYCLE INFO INTO all_cycle_info.csv')
     cycle_dirs = get_cycle_dirs(base_run_dir)
     dfs = []
     for cycle_dir in cycle_dirs:
-        if os.path.exists(os.path.join(cycle_dir, 'cycle_info.csv')):
-            dfs.append(pd.read_csv(os.path.join(cycle_dir, 'cycle_info.csv')))
+        if os.path.exists(os.path.join(cycle_dir, name+'cycle_info.csv')):
+            dfs.append(pd.read_csv(os.path.join(cycle_dir, name+'cycle_info.csv')))
     df = pd.concat(dfs)
-    df.to_csv(os.path.join(base_run_dir,'all_cycle_info.csv'))
+    df.to_csv(os.path.join(base_run_dir,name+'all_cycle_info.csv'))
+
+def post_boundary_tree_cycle_info(base_run_dir, every=1):
+    cycle_dirs = get_cycle_dirs(base_run_dir)
+    cycle_dirs = [cd for i, cd in enumerate(cycle_dirs) if i%every==0]
     
+    for cycle_dir in cycle_dirs:
+        sasg = get_sasg(cycle_dir)
+        sasg.boundary_threshold_quantile = 0.1
+        sasg.max_boundary_tree_points = 10000
+        sasg.add_boundary_tree(cycle_dir)
+        sasg.write_cycle_info(cycle_dir, name='boundary_tree_')
+    
+    join_cycle_info(base_run_dir, name='boundary_tree_')
+    
+def post_boundary_anchors_cycle_info(base_run_dir, every=1):
+    cycle_dirs = get_cycle_dirs(base_run_dir)
+    cycle_dirs = [cd for i, cd in enumerate(cycle_dirs) if i%every==0]
+    
+    for cycle_dir in cycle_dirs:
+        print('CYCLE DIR:',cycle_dir, 'OUT OF:', len(cycle_dirs))
+        sasg = get_sasg(cycle_dir)
+        # sasg.boundary_threshold_quantile = 0.1
+        # sasg.max_boundary_tree_points = 10000
+        sasg.add_boundary_anchors()
+        sasg.write_cycle_info(cycle_dir, name='boundary_anchors_')
+    
+    join_cycle_info(base_run_dir, name='boundary_anchors_')
+
 if __name__ == '__main__':
     _, base_run_dir = sys.argv
+    
+    # post_cycle_info_0_boundary(base_run_dir)
+    # post_boundary_anchors_cycle_info(base_run_dir, every=20)
+    
     # join_cycle_info(base_run_dir)
     # tree_post_cycle_info(base_run_dir, do_sensitivity=False)
     post_cycle_info(base_run_dir)
+    # plot_post_cycle_info(base_run_dir)
+    
+    # post_boundary_tree_cycle_info(base_run_dir, every=30)
