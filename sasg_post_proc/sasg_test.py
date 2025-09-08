@@ -563,13 +563,11 @@ def sasg_test(base_run_dir, cycle_num='all', isMMMG=False, name='', sasg_type='g
     plot_errorVsamples(ME, 'Mean Err')
     plot_errorVsamples(RMSE, 'Root_Mean_Squared_Error')
     plot_errorVsamples(SURP, 'Mean Surplus')
-<<<<<<< HEAD
     plot_errorVsamples(PEARS_COEFF, 'Pearson Correlation Coefficient')
     print('FINISHED WEIGHTED MEAN TEST')
 
 def pearson_r(y_true, y_pred):
     return np.corrcoef(y_true, y_pred)[0, 1]
-=======
     
     if isMMMG:
         plot_outlier_slices_MMMG(base_run_dir, key_outliers, x_outliers=x_outlier, cycle_dirs=np.array(cycle_dirs)[compare_index], base_save_dir=save_dir, sasg_type=sasg_type)
@@ -582,7 +580,6 @@ def pearson_r(y_true, y_pred):
     
     print('FINISHED SASG TEST')
     
->>>>>>> 4c882275e2797498ee00dd008b47bfe3ec38f1be
     
 def parse_run_dir(run_dir, parameters):
     parser = GENEparser()
