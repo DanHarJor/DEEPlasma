@@ -51,6 +51,7 @@ def comparison_plots(base_run_dir):
     ax.set_title(f'{np.round((1-(early_time/gene_time))*100,1)}% faster\nN runs: {len(df)} Saved: {np.round(gene_time - early_time, 1)}s | {np.round((gene_time - early_time)*128/(60*60),1)} cpuh\nSaved: {np.round((gene_time - early_time)/len(df),1)}s/run | {np.round(((gene_time - early_time)*128/(60*60))/len(df),1)} cpuh/run')
     fig.tight_layout()
     fig.savefig(os.path.join(save_dir,'time_hist_early_stopping.png'))
+    plt.close(fig)
     print(len(df))
     print(len(df['time_to_GENE_finnish'].to_numpy()) + len(df['time_to_EARLY_convergence'].to_numpy()))
 
@@ -66,7 +67,7 @@ def comparison_plots(base_run_dir):
     fig.tight_layout()
     # fig.savefig(f'early_convergence_post_proc/plots/early_growthrate_vs_gene_growthrate_{os.path.basename(base_run_dir)}.png')
     fig.savefig(os.path.join(save_dir,'early_growthrate_vs_gene_growthrate.png'))
-    
+    plt.close(fig)
     # early convergence vs gene convergence residuals
     fig, ax, = plt.subplots()
     nan_mask = df['early_growthrate'].isna().to_numpy()
@@ -80,7 +81,7 @@ def comparison_plots(base_run_dir):
     fig.tight_layout()
     # fig.savefig(f'early_convergence_post_proc/plots/early_growthrate_residuals_vs_gene_growthrate_{os.path.basename(base_run_dir)}.png')
     fig.savefig(os.path.join(save_dir,'early_growthrate_residuals_vs_gene_growthrate.png'))
-
+    plt.close(fig)
 def debug_plots(base_run_dir):
     save_dir = os.path.join('./early_convergence_post_proc/plots', os.path.basename(os.path.dirname(base_run_dir))+'_plots')
     df = pd.read_csv(os.path.join(base_run_dir,'merged_early_stopping_report.csv'))
@@ -94,7 +95,7 @@ def debug_plots(base_run_dir):
     fig.tight_layout()
     # fig.savefig(f'early_convergence_post_proc/plots/early_growthrate_residuals_vs_gene_growthrate_{os.path.basename(base_run_dir)}.png')
     fig.savefig(os.path.join(save_dir,'sim_time_window_hist.png'))
-
+    plt.close(fig)
 def plot_eq_history(run_dir):
     save_dir = os.path.join('./early_convergence_post_proc/plots', os.path.basename(run_dir)+'_plots')
     os.makedirs(save_dir, exist_ok=True)
@@ -106,7 +107,7 @@ def plot_eq_history(run_dir):
     ax.set_xlim(0,100)
     ax.set_ylim(-10,10)
     fig.savefig(os.path.join(save_dir, 'eQ_history.png'))
-    
+    plt.close(fig)
 
 
 if __name__ == '__main__':

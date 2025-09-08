@@ -76,18 +76,21 @@ def plot_post_cycle_info(base_run_dir):
     plt.xlabel('N. Samples')
     plt.ylabel('Expected Value')
     figure.savefig(os.path.join(base_run_dir,'comparison_random_mean_std.png'))
-
+    plt.close(figure)
+    
     figure = plt.figure()
     plt.plot(df['num_samples'], df['mean'])
     plt.xlabel('N. Samples')
     plt.ylabel('Expected Value')
     figure.savefig(os.path.join(base_run_dir,'comparison_random_mean.png'))
+    plt.close(figure)
 
     figure = plt.figure()
     plt.plot(df['num_samples'], df['std'])
     plt.xlabel('N. Samples')
     plt.ylabel('Std')
     figure.savefig(os.path.join(base_run_dir,'comparison_random_std.png'))
+    plt.close(figure)
 
     # sobol plot
     fig = plt.figure()
@@ -105,7 +108,7 @@ def plot_post_cycle_info(base_run_dir):
     ax_legend.axis("off")  # Hide axes
     ax_legend.legend(*ax_main.get_legend_handles_labels(), loc="center")
     fig.savefig(os.path.join(base_run_dir, 'approx_sobol_first_order.png'),dpi=300)
-
+    plt.close(figure)
 
     # sobol plot
     fig = plt.figure()
@@ -123,7 +126,7 @@ def plot_post_cycle_info(base_run_dir):
     ax_legend.axis("off")  # Hide axes
     ax_legend.legend(*ax_main.get_legend_handles_labels(), loc="center")
     fig.savefig(os.path.join(base_run_dir, 'approx_sobol_total_order.png'),dpi=300)
-    
+    plt.close(figure)
     
     # fig = plt.figure()
     # for i in range(dim):

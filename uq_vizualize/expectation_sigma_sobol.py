@@ -265,7 +265,7 @@ def plot_sobols(base_run_dir, xlabel=None):
 
     fig.tight_layout()
     fig.savefig(os.path.join(base_run_dir, 'sobol_bar_last.png'))
-    
+    plt.close(fig)
 def plot_cycle_info(base_run_dir):
     plot_expectation(base_run_dir)
     # plot_sigma(base_run_dir)

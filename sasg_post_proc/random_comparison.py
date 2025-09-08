@@ -5,7 +5,7 @@ import pandas as pd
 print('1')
 import matplotlib.pyplot as plt
 print('2')
-from tools import get_cycle_dirs, get_points, get_parameters_bounds, get_config
+from tools import get_cycle_dirs, get_points, get_parameters_bounds, get_config, get_MMMGrunner, get_test_points, get_test_points_brd
 print('3')
 import os, sys
 # from scipy.stats import sobol_indices, uniform
@@ -16,9 +16,11 @@ import shutil
 print('6')
 pfd = os.path.dirname(__file__)
 #base_run_dir should be for a random dataset like batch sobol sequence
+from sobol_batch_post_proc.sobol_batch_post_proc import post_cycle_info as sobol_batch_post_proc
+
 print('IMPORTS DONE')
 
-def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, do_tree=False, xlim=None, name=''):
+def random_comparison(base_run_dir, fname='all_post_cycle_info.csv', compare_run_dirs=None, do_sensitivity=True, do_tree=False, xlim=None, name='', isMMMG=False, gaussian_input_uncertanties=False):
     colors = [u'#a06010', u'#d62728', u'#e377c2', u'#2ca02c', u'#ff7f0e', u'#9467bd', u'#17becf', u'#7f7f7f',
             u'#bcbd22', u'#1f77b4', u'#8c564b', u'#e377c2']
         
@@ -27,7 +29,12 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
     test_dir = config.sampler['test_dir']
     # test_dir = os.path.join('/users/danieljordan/enchanted-surrogates/', test_dir)
     
-    df_test = pd.read_csv(os.path.join(test_dir,'all_post_cycle_info.csv'))
+    if os.path.exists(os.path.join(test_dir,'all_post_cycle_info.csv')):
+        df_test = pd.read_csv(os.path.join(test_dir,'all_post_cycle_info.csv'))
+    else:
+        sobol_batch_post_proc(os.path.join(test_dir), do_sensitivity=False)
+        df_test = pd.read_csv(os.path.join(test_dir,'all_post_cycle_info.csv'))
+
     print('TEST DIR IS:',test_dir, len(df_test))
     print('debug', df_test['num_samples'])
     dfs_compare = []
@@ -59,10 +66,19 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
     if do_tree:
         df_tree = pd.read_csv(os.path.join(base_run_dir,'all_tree_post_cycle_info.csv'))
     
-    df = pd.read_csv(os.path.join(base_run_dir,'all_post_cycle_info.csv'))        
+    df = pd.read_csv(os.path.join(base_run_dir,fname))        
     # expectation comparison
+    
     fig = plt.figure()
-    plt.plot(df['num_samples'],df['mean'], label='sasg', marker='o')
+    if isMMMG:
+        runner = get_MMMGrunner(base_run_dir)
+        true_mean = runner.mmg.get_expectation(do_gaussian=gaussian_input_uncertanties)
+        # plt.hlines(true_mean, np.min(df['num_samples']), np.max(df['num_samples']), label='mmg expectation')
+    else:
+        x_test, y_test = get_test_points_brd(base_run_dir)
+        true_mean = np.mean(y_test)
+    plt.hlines(true_mean, np.min(df['num_samples']), np.max(df['num_samples']), label='truest expectation')
+    plt.plot(df['num_samples'].to_numpy()+df['num_anchor_points'] ,df['mean'], label='sasg', marker='o')
     plt.plot(df_test['num_samples'], df_test['mean'], '--', color='green', label='Sobol sequence', marker='o')
     if do_tree: plt.plot(df_tree['num_samples'], df_tree['mean'], ':', color='cyan', label='sasg tree', marker='x')
     if type(compare_run_dirs) != type(None):
@@ -71,13 +87,39 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
 
     plt.ylabel('Expectation')
     plt.xlabel('N. Evaluations')
+    plt.yscale('log')
+    fig.tight_layout()
+    plt.legend()
+    print('debug xlim', xlim)
+    ax = fig.gca()
+    ax.set_xlim(250, 4000)
+    # plt.xlim(0,xlim)
+    fig.savefig(os.path.join(save_dir, 'expectation_comparison.png'))
+    plt.close(fig)
+    
+    # find num cycle for cycle dir 13 where the crossover from varince to surplus happens
+    
+    
+    # Expectation error
+    fig = plt.figure()
+    plt.plot(df['num_samples'].to_numpy(),np.abs(df['mean']-true_mean), label='sasg', marker='o')
+    plt.vlines(df['num_samples'], np.min(np.abs(df['mean']-true_mean)), np.max(np.abs(df['mean']-true_mean)))
+    plt.plot(df_test['num_samples'], np.abs(df_test['mean']-true_mean), '--', color='green', label='Sobol sequence', marker='o')
+    if do_tree: plt.plot(df_tree['num_samples'], np.abs(df_tree['mean']-true_mean), ':', color='cyan', label='sasg tree', marker='x')
+    if type(compare_run_dirs) != type(None):
+        for i, df_compare, compare_label in zip(range(len(dfs_compare)),dfs_compare, compare_labels):
+            plt.plot(df_compare['num_samples'], np.abs(df_compare['mean']-true_mean), ':', color=colors[i], label=compare_label, marker='o')
+
+    plt.ylabel('Expectation Error')
+    plt.xlabel('N. Evaluations')
+    plt.yscale('log')
     fig.tight_layout()
     plt.legend()
     print('debug xlim', xlim)
     ax = fig.gca()
     ax.set_xlim(0, xlim)
     # plt.xlim(0,xlim)
-    fig.savefig(os.path.join(save_dir, 'expectation_comparison.png'))
+    fig.savefig(os.path.join(save_dir, 'expectation_error_comparison.png'))
     plt.close(fig)
     
     # std comparison
@@ -128,7 +170,7 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
         ax_legend.legend(*ax_main.get_legend_handles_labels(), loc="center")
         ax_main.set_xlim(0,xlim)
         fig.savefig(os.path.join(save_dir, 'approx_sobol_first_order_comparison.png'),dpi=300)
-
+        plt.close(fig)
         # mean total order sobol error
         # sobol plot
         fig = plt.figure()
@@ -155,7 +197,7 @@ def random_comparison(base_run_dir, compare_run_dirs=None, do_sensitivity=True, 
         ax_legend.legend(*ax_main.get_legend_handles_labels(), loc="center")
         ax_main.set_xlim(0,xlim)
         fig.savefig(os.path.join(save_dir, 'approx_sobol_total_order_comparison.png'),dpi=300)
-
+        plt.close(fig)
 if __name__ == '__main__':
     # _, base_run_dir = sys.argv
     # # if compare_dir == 'None':
@@ -175,13 +217,13 @@ if __name__ == '__main__':
     _, base_run_dir = sys.argv
     # if compare_dir == 'None':
     #     compare_dir = None
-    compare_dirs = ['/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_threshold',
-                    '/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_volume',
-                    '/scratch/project_2007848/DANIEL/data_store/full_12D/MMMG_static_grid',
-                    '/scratch/project_2007848/DANIEL/data_store/full_12D/active_GPyOPT_12D_MMMG']
-    # print('debug', compare_dir, type(compare_dir))
-    random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=700, name='xlim700_')
+    # compare_dirs = ['/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_threshold',
+    #                 '/scratch/project_2007848/DANIEL/data_store/full_12D/sasg_volume',
+    #                 '/scratch/project_2007848/DANIEL/data_store/full_12D/MMMG_static_grid',
+    #                 '/scratch/project_2007848/DANIEL/data_store/full_12D/active_GPyOPT_12D_MMMG']
+    # # print('debug', compare_dir, type(compare_dir))
+    # random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=700, name='xlim700_')
     
 
-    # compare_dirs=None
-    # random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=True)
+    compare_dirs=None
+    random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False)

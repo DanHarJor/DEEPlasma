@@ -39,7 +39,7 @@ def plot_beta_scan(base_run_dir):
     ax.set_title('ky=0.09 | x0=0.95 | JET #97781')
     fig.legend()
     fig.savefig('./beta_scan.png')
-    
+    plt.close(fig)
     to_plot = ['growthrate','frequency', 'chi_ratio', 'D_ratio_i', 'D_ratio_e']
     figa, AX = plt.subplots(len(to_plot),1, figsize=(5,5*len(to_plot)))
     for ind, ax in zip(to_plot, AX):
@@ -48,7 +48,7 @@ def plot_beta_scan(base_run_dir):
         ax.set_ylabel(ind)
         
     figa.savefig('./fingerprints.png')
-        
+    plt.close(figa)
     
     # figure, AX = plt.subplots(1,len(dfs), figsize=(5*len(dfs),5))
     # for ax, dfi in zip(AX, dfs):

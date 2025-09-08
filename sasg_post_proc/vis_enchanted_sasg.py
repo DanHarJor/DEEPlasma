@@ -14,6 +14,9 @@ from samplers.SpatiallyAdaptiveSparseGrids import SpatiallyAdaptiveSparseGrids
 from highD_visualise.highD_visualise import plot_matrix_contour, plot_slices
 from slice1d_post_proc.slice1d_post_proc import slice1d_post_proc
 
+from tools import get_MMMGrunner
+from tools import get_sasg, get_sasg_zero_bounds, get_sasg_mod_poly_grid, get_sasg_zero_poly_grid, get_sasg_anchor
+
 import argparse
 import os
 import yaml
@@ -47,7 +50,7 @@ def get_cycle_dirs(base_run_dir):
     # print('debug cycle dirs',cycle_dirs)
     return cycle_dirs
 
-def vis_enchanted_sasg(base_run_dir, cycle_num='all'):
+def vis_enchanted_sasg(base_run_dir, cycle_num='all', isMMMG=False, slice_point=None, name='', sasg_type='get_sasg'):
     '''
     cycle_num, int, str: The active cycle to perform plot for, can also be a string, 'latest' or 'all'
     '''
@@ -68,11 +71,8 @@ def vis_enchanted_sasg(base_run_dir, cycle_num='all'):
     
     value_of_interest = config.general.get('value_of_interest', 'function value')
     parent_model = config.general.get('simulation_name', 'Parent Model')
-    
-    sasg = SpatiallyAdaptiveSparseGrids(bounds, parameters)
+
     cycle_dirs = get_cycle_dirs(base_run_dir)
-    print('CYCLE DIRS:',cycle_dirs)
-    
     if cycle_num=='latest':
         cycle_dirs = [cycle_dirs[-1]]
     elif type(cycle_num)==type(1):
@@ -88,39 +88,41 @@ def vis_enchanted_sasg(base_run_dir, cycle_num='all'):
     if slice1d_dir != None:
         print('slice1d_dir found getting parent function slices')
         slices = slice1d_post_proc(slice1d_dir)
+    elif isMMMG:
+        from runners.MMMGrunner import MMMGrunner
+        runner = MMMGrunner(**config.executor['static_executor']['runner'])
+        slices = runner.mmg.get_slices(nominals=slice_point)
     
     for cycle_dir in cycle_dirs:
         print('VISUALISING:',cycle_dir)
-        if not os.path.exists(os.path.join(cycle_dir, 'pysgpp_grid.txt')):
-            pass
-        grid_file_path = os.path.join(cycle_dir, 'pysgpp_grid.txt')
-        surpluses_file_path = os.path.join(cycle_dir, 'surpluses.mat')
-        train_points_file = os.path.join(cycle_dir, 'train_points.pkl')
-        with open(grid_file_path, 'r') as file:
-            serialized_grid = file.read()
-            sasg.grid = pysgpp.Grid.unserialize(serialized_grid)
-            surpluses = pysgpp.DataVector.fromFile(surpluses_file_path)
-            sasg.alpha = surpluses
+        sasg = eval(f"{sasg_type}(cycle_dir)")
         
-        eval = lambda point: sasg.surrogate_predict([tuple(point)])[0]
-        eval_many = lambda points: sasg.surrogate_predict(points)
+        # eval = lambda point: sasg.surrogate_predict([tuple(point)],n_jobs=0)[0]
+        eval_many = lambda points: sasg.surrogate_predict(points, n_jobs=0)
         # eval = create_eval(grid_file_path, surpluses_file_path)
         # eval_many = create_eval_many(grid_file_path, surpluses_file_path)
         
-        with open(train_points_file, 'rb') as file:
-            train_points_dict = pickle.load(file)
-        train_points = np.array(list(train_points_dict.keys()))
+        train_points = np.array(list(sasg.train.keys()))
          
         # train_unit_points = sasg.points_transform_box2unit(train_points)
         print('DOING CONTOURS AND SLICES')
         indicies_to_do = None#[4,11,2,10,0]
-        fig_contours = plot_matrix_contour(function=eval, bounds=bounds, dimension_labels=parameters, points=train_points, indicies_to_do=indicies_to_do)
-        fig_slices = plot_slices(function=eval_many, bounds=bounds, dimension_labels=parameters, ylabel=value_of_interest, parent_model=parent_model, slices=slices)
+        fig_contours = plot_matrix_contour(function=eval_many, bounds=bounds, dimension_labels=parameters, points=train_points, indicies_to_do=indicies_to_do)
+        
+        if isMMMG:
+            fig_true_contours = runner.mmg.plot_matrix_contour(points=train_points) 
+            fig_true_contours.savefig(os.path.join(cycle_dir, name+'true_contour_plots.png'), dpi=300)
+            plt.close(fig_true_contours)
+        fig_slices = plot_slices(function=eval_many, bounds=bounds, dimension_labels=parameters, ylabel=value_of_interest, parent_model=parent_model, slices=slices, nominals=slice_point)
         fig_contours.tight_layout()
         fig_slices.tight_layout()
-        fig_contours.savefig(os.path.join(cycle_dir, 'contour_plots.png'), dpi=200)
-        fig_slices.savefig(os.path.join(cycle_dir, 'slice_plots.png'), dpi=200)
+        fig_contours.savefig(os.path.join(cycle_dir, sasg_type+name+'_contour_plots.png'), dpi=300)
         plt.close(fig_contours)
+        if type(slice_point)!=type(None):
+            slice_name = sasg_type+name+str(slice_point)+'_slice_plots.png'
+        else:
+            slice_name = sasg_type+name+'_slice_plots.png'
+        fig_slices.savefig(os.path.join(cycle_dir, slice_name), dpi=300)
         plt.close(fig_slices)
 
 # def vis_enchanted_sasg_unit(base_run_dir, cycle_num='latest'):
@@ -202,7 +204,7 @@ def vis_enchanted_sasg(base_run_dir, cycle_num='all'):
 
 if __name__ == '__main__':
     _, base_run_dir = sys.argv
-    vis_enchanted_sasg(base_run_dir, cycle_num='latest')
+    vis_enchanted_sasg(base_run_dir, cycle_num='latest', isMMMG=True)
     
 # bounds=[[4,6.7], [2.1,3.5], [0.16,2.9]]
 # parameters=['omt1','omt2','omn']

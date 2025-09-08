@@ -338,7 +338,7 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
             plt.ylabel('Linear Electron Heat Flux')
             plt.legend()
             fig.savefig(os.path.join(scanfiles_dir,f'linear_heat_flux_{suffix}.png'))
-            
+            plt.close(fig)
             if os.path.exists(points_path):
                 fig = plt.figure()
                 plt.plot(points.T[0], points.T[1], '.', color='red',label='time period calc points')
@@ -347,7 +347,7 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
                 plt.ylabel('Linear Electron Heat Flux')
                 plt.legend()
                 fig.savefig(os.path.join(scanfiles_dir,f'linear_heat_flux_time_period_calc_{suffix}.png'))
-
+                plt.close(fig)
             fig = plt.figure()
             time_window = df.loc[suffix, 'sim_time_window']
             if not np.isnan(time_window):
@@ -359,7 +359,7 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
             plt.xlabel('simulation time, cref/Lref')
             plt.ylabel('Growthrate, phi')
             fig.savefig(os.path.join(scanfiles_dir,f'growthrate_{suffix}.png'))
-            
+            plt.close(fig)
             if not np.isnan(time_window) and df.loc[suffix, 'converged_early?']:
                 fig = plt.figure()
                 growthrate_window_mean, growthrate_window_sigma, growthrate_window_mean_time, growthrate, growthrate_time = get_growthrate_mean_window(scanfiles_dir, suffix, window_time_span=time_window)
@@ -383,6 +383,7 @@ def begin_early_convergence_monitor(problem_dir, diagdir, early_convergence_2sig
                 plt.xlabel('simulation time, cref/Lref')
                 plt.ylabel('Growthrate, phi')
                 fig.savefig(os.path.join(scanfiles_dir,f'growthrate_window_{suffix}.png'))
+                plt.close(fig)
         # do plots in paralell
         with concurrent.futures.ThreadPoolExecutor(max_workers=len(suffix_s)) as executor:
             results = list(executor.map(plot_suffix, suffix_s))    

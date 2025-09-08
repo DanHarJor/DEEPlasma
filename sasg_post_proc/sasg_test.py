@@ -10,10 +10,14 @@ import matplotlib.pyplot as plt
 import sys
 import f90nml
 sys.path.append('/users/danieljordan/DEEPlasma')
-from highD_visualise.highD_visualise import plot_single_slice
+from highD_visualise.highD_visualise import plot_single_slice, plot_slices, plot_matrix_contour
 from slice1d_post_proc.slice1d_post_proc import slice1d_post_proc
 
-from tools import get_config
+from tools import get_config, get_parameters_bounds, get_MMMGrunner
+from tools import get_sasg, get_MMMGrunner
+from tools import get_sasg_zero_bounds, get_sasg_mod_poly_grid, get_sasg_zero_poly_grid, get_sasg_anchor
+# get_sasg = get_sasg_zero_bounds
+
 
 from sklearn.neighbors import KernelDensity
 
@@ -82,7 +86,223 @@ def get_config_info(base_run_dir):
 
 # def quad_exp_test(base_run_dir):
 
-def weighted_mean_test(base_run_dir):
+def sample_shell_between_cubes(dim, dist, index, n_samples):
+    center = 0.5
+    # half_inner = s_inner / 2
+    # half_outer = s_outer / 2
+
+    lower_outer = center - (index+1)*dist
+    upper_outer = center + (index+1)*dist
+
+    lower_inner = center - index*dist
+    upper_inner = center + index*dist
+
+    samples = []
+    while len(samples) < n_samples:
+        x = np.random.uniform(lower_outer, upper_outer, size=(dim,))
+        if np.any(x < lower_inner) or np.any(x > upper_inner):
+            samples.append(x)
+
+    return np.array(samples)
+
+def MCvsQUAD(base_run_dir, sasg_type='get_sasg'):
+    # Define a simple function
+    cycle_dirs = get_cycle_dirs(base_run_dir)
+    cycle_dir = cycle_dirs[-1]
+    
+    sasg = eval(f"{sasg_type}(cycle_dir)")
+    runner = get_MMMGrunner(base_run_dir)
+    def f(x): 
+        # return sasg.unit_truncnorm_pdf(x)
+        return runner.mmg.evaluate(x)
+    dim = 12
+    level=5
+    # Build grid and interpolant
+    grid = sasg.grid #
+    # grid = pysgpp.Grid.createLinearGrid(dim)
+    # grid.getGenerator().regular(level)
+    storage = grid.getStorage()
+    alpha = pysgpp.DataVector(storage.getSize())
+    print('level:',level, '| size:', storage.getSize())
+    for i in range(storage.getSize()):
+        p = storage.getPoint(i)
+        x = [p.getStandardCoordinate(j) for j in range(dim)]
+        alpha[i] = float(f(x))
+    pysgpp.createOperationHierarchisation(grid).doHierarchisation(alpha)
+
+    # SG++ quadrature
+    op_quad = pysgpp.createOperationQuadrature(grid)
+    sgpp_integral = op_quad.doQuadrature(alpha)
+
+    # Monte Carlo
+    # samples = np.random.rand(100000, dim)
+    samples = np.random.uniform(size=(1000,12))
+
+    op_eval = pysgpp.createOperationEval(grid)
+    mc_values = [op_eval.eval(alpha, pysgpp.DataVector(x)) for x in samples]
+    mc_integral = np.mean(mc_values)
+    
+    mc_actual_integral = np.mean([f(x) for x in samples])
+
+    print("SG++:", sgpp_integral)
+    print("Monte Carlo Interpolant:", mc_integral)
+    print("Monte Carlo Actual:", mc_actual_integral)
+    
+    print("Gradual increase of hypercube from center at 0.5 to edge at 0 and 1, to see where the true deviates from the interpolant integral")
+    dist_ = []
+    mc_integral_ = []
+    mc_actual_integral_ = []
+    mean_error_ = []
+    mean_values_ = []
+    mean_actual_values_ = []
+    integral_ratio_ = []
+    # for dist in np.linspace(0.01, 0.5, 20):
+    num_shells = 20
+    thickness=0.5/num_shells
+    for i in range(num_shells):
+        # samples = sample_shell_between_cubes(dim, dist=0.5/num_shells, index=i, n_samples=1000)
+        samples = np.random.uniform(0.5+i*thickness, 0.5+(i+1)*thickness,size=(10000,12))
+        mc_values = [op_eval.eval(alpha, pysgpp.DataVector(x)) for x in samples]
+        mean_values_.append(np.mean(mc_values)) 
+        mc_integral = np.mean(mc_values)
+        mc_actual_values = [f(x) for x in samples]
+        mean_actual_values_.append(np.mean(mc_actual_integral))
+        mc_actual_integral = np.mean(mc_actual_values)
+        mean_error = np.mean(np.abs(np.array(mc_values)-np.array(mc_actual_values)))
+        dist = thickness*i
+        print(f'dist: {dist}, interp integral:{mc_integral}, truest integral:{mc_actual_integral}')        
+        dist_.append(dist)
+        mc_actual_integral_.append(mc_actual_integral)
+        mc_integral_.append(mc_integral)
+        mean_error_.append(mean_error)
+        if mc_integral < mc_actual_integral:
+            integral_ratio_.append(mc_integral/mc_actual_integral)
+        elif mc_actual_integral < mc_integral:
+            integral_ratio_.append(mc_integral/mc_actual_integral)
+        else:
+            integral_ratio_.append(1)
+
+    fig = plt.figure()
+    plt.plot(dist_, mc_integral_, label='MC Interpolation Integral')
+    plt.plot(dist_, mc_actual_integral_, label='MC Truest Integral')
+    plt.yscale('symlog')
+    plt.xlabel('hypercube with distance from center, 0.5')
+    plt.ylabel('integral')
+    plt.legend()
+    plt.tight_layout()
+    fig.savefig(os.path.join(cycle_dir, sasg_type+'_integral_different_cube_size.png'), dpi=300)
+
+    fig = plt.figure()
+    plt.plot(dist_, mean_error_, label='mean error')
+    plt.plot(dist_, mean_values_, label='mean values')
+    plt.plot(dist_, mean_actual_values_, label='mean actual values')
+    
+    plt.yscale('symlog')
+    plt.xlabel('hypercube with distance from center, 0.5')
+    plt.ylabel('mean error')
+    plt.legend()
+    plt.tight_layout()
+    fig.savefig(os.path.join(cycle_dir, sasg_type+'_mean_error_different_cube_size.png'), dpi=300)
+
+    fig = plt.figure()
+    plt.plot(dist_, integral_ratio_)
+    plt.ylabel('intepolant integral / true integral')
+    plt.xlabel('hypercube with distance from center, 0.5')
+    plt.tight_layout()
+    fig.savefig(os.path.join(cycle_dir, sasg_type+'_integral_ratio_different_cube_size.png'), dpi=300)
+
+def montecarlo_UQ_test(base_run_dir, sasg_type='get_sasg'):
+    # When adding the gaussian Px to the expectation very large expectations were gained, x10⁹ when only order 1 should found.
+    # to test the expectations of Px and fx I will use monte carlo techniques.
+    # I will check the values of the functions used to get the integral to see if there are any large ones, I do this with a histogram
+    
+    cycle_dirs = get_cycle_dirs(base_run_dir)
+    cycle_dir = cycle_dirs[-1]
+    
+    sasg = eval(f"{sasg_type}(cycle_dir)")
+    
+    fxu = lambda unit_point: sasg.lookup_function(unit_point, unit_or_box='unit')
+    fxu_ans = []
+    for i in range(sasg.gridStorage.getSize()):
+        gp = sasg.gridStorage.getPoint(i)
+        unit_point = ()
+        for j in range(sasg.dim):
+            unit_point = unit_point + (gp.getStandardCoordinate(j),)
+        fxu_ans.append(float(fxu(unit_point)))
+        
+    
+    fxp = lambda unit_points: sasg.surrogate_predict(sasg.points_transform_unit2box(unit_points))
+    
+    unit_points = np.random.uniform(size=(100000,12))
+    # from scipy.stats import norm, truncnorm
+    # trunc = truncnorm(a=-2, b=2, loc=0.5, scale=0.25)
+    # unit_points = trunc.rvs(size=(100000,12))
+    print('debug unit points shape', unit_points.shape)
+    box_points = sasg.points_transform_unit2box(unit_points)
+    print('debug box_points shape', box_points.shape)
+    
+    Px = sasg.unit_truncnorm_pdf
+    Px_ans=[Px(x) for x in unit_points]
+    
+    nc, nr, w, h = 4, 1, 5, 5
+    fig, AX = plt.subplots(nr,nc, figsize=(w*nc,h*nr))
+    integral_approx = np.mean(Px_ans)
+    quad_integral_approx = sasg.quadrature_function_integral(Px, acted_on='unit_point')
+    AX[0].hist(Px_ans, bins=20, density=True)
+    AX[0].set_yscale('log')
+    AX[0].set_title(f'Px: mean:{np.round(integral_approx,2)}, \nquad_int:{np.round(quad_integral_approx,2)}')
+    
+    fxp_ans = sasg.surrogate_predict(box_points)
+    AX[1].hist(fxp_ans, bins=20, density=True)
+    AX[1].set_yscale('log')
+    AX[1].set_title(f'fxp, mean:{np.round(np.mean(fxp_ans),2)}, \nquad_int:{np.round(sasg.quadrature_function_integral(sasg.lookup_function))}')
+
+    # MMMGrunner = get_MMMGrunner(base_run_dir)
+    # true_mean = MMMGrunner.get_expectation(do_gaussian=True)
+    AX[2].hist(Px_ans*fxp_ans, bins=20, density=True)
+    def pxfx(unit_point):
+        box_point = sasg.point_transform_unit2box(unit_point)
+        return Px(unit_point)*sasg.lookup_function(box_point)
+    AX[2].set_title(f"Px*fxp, mean:{np.round(np.mean(Px_ans*fxp_ans),2)}, \nquad int: {np.round(sasg.quadrature_function_integral(pxfx, acted_on='unit_point'))}")
+    AX[2].set_yscale('log')
+    
+    AX[3].hist(fxu_ans, bins=20, density=True)
+    AX[3].set_title(f'fxu, mean:{np.round(np.mean(fxu_ans),2)}')
+    fig.tight_layout()
+    fig.savefig(os.path.join(cycle_dir, sasg_type+'_montecarlo_UQ_test.png'))
+    
+    # look at the trunc norm as I am getting pdf values of most of the time
+    nominal = np.repeat(0.5,12)
+    # print(nominal, nominal.shape)
+    x = np.stack([nominal for i in range(1000)])
+    xi = np.linspace(0,1,1000)
+    x.T[0] = xi
+    # print(x.T[0])
+    fig = plt.figure()
+    # print(x, x.shape)
+    
+    plt.plot(x.T[0],[Px(xi) for xi in x])
+    plt.title('truncnorm')
+    plt.tight_layout()
+    fig.savefig(os.path.join(cycle_dir,sasg_type+'_truncnorm.png'), dpi=300)
+
+def trunc1d(base_run_dir):
+    
+    cycle_dirs = get_cycle_dirs(base_run_dir)
+    cycle_dir = cycle_dirs[-1]
+    
+    # Trunc norm looks weird, mostly 0 then goes up to 10**8 for a half gaussian truncated at 0.5 and 0.75
+    # trunc_gaussian = truncnorm(a=np.zeros(self.dim), b=np.ones(self.dim), loc=np.repeat(0.5,self.dim), scale=np.repeat(0.25,self.dim))
+    # np.prod(trunc_gaussian.pdf(unit_point))
+    from scipy.stats import norm, truncnorm
+    trunc = truncnorm(a=-3, b=3, loc=0.5, scale=0.5/3)
+    x1 = np.linspace(0,1,100)
+    pdf = trunc.pdf(x1)
+    fig = plt.figure()
+    plt.plot(x1,pdf)
+    fig.savefig(os.path.join(cycle_dir, 'trunc1d.png'))
+
+def weighted_mean_test(base_run_dir, sasg_type='get_sasg', gaussian_input_uncertanties=False):
     print('PERFROMING WEIGHTED MEAN TEST')
     # there was an issue with the surrogate giving wild predictions and this was throwing off the expectation via quadrature
     # when uniform sampling and taking the mean it converged much faster, this assumes a block type surrogate model
@@ -90,7 +310,13 @@ def weighted_mean_test(base_run_dir):
     # E(fx) = [ sum(fx * px / qx) / sum(px/qx) ] if px is uniform dist then E(fx) = [ sum(fx * 1 / qx) / sum(1/qx) ]. 
     # The /sum(px/qx) is to account for the fact that px and qx usually come from continutous distributions where the integral equals one and for out discrete samples we need the sum of the discrete evaluations to equal one.
     # Var = E(fx**2) + E(fx)**2 
-        
+    
+    if gaussian_input_uncertanties:
+        trunc_gaussian = truncnorm(a=0, b=1, loc=0.5, scale=0.25)
+        unit_points = sasg.points_transform_box2unit(list(sasg.train.values()))
+        px = trunc_gaussian.pdf(unit_points)
+    else:
+        px=1
     
     # doing random comparison
     random_means, random_num_samples = get_random_comparison(base_run_dir)
@@ -99,7 +325,7 @@ def weighted_mean_test(base_run_dir):
     # x_test, y_test = get_test_set(base_run_dir)
     # truest_mean = np.nanmean(y_test)
     
-    save_dir = os.path.join(base_run_dir,'weighted_mean_test')
+    save_dir = os.path.join(base_run_dir,sasg_type+'_weighted_mean_test')
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
     
@@ -109,12 +335,12 @@ def weighted_mean_test(base_run_dir):
     weighted_means = []
     num_samples = []
     for cycle_dir in cycle_dirs:
-        sasg = get_sasg(cycle_dir)
+        sasg = eval(f"{sasg_type}(cycle_dir)")
         samples_x = np.array(list(sasg.train.keys()))
         samples_fx = np.array(list(sasg.train.values()))
         kde = KernelDensity(kernel='gaussian', bandwidth='silverman').fit(samples_x)
         samples_qx = np.exp(kde.score_samples(samples_x))
-        weighted_mean = ( np.sum(samples_fx * samples_qx**-1) / sum(samples_qx**-1) )
+        weighted_mean = ( np.sum(samples_fx * (px/samples_qx)) / sum((px/samples_qx)) )
         # weighted_var = ( np.sum(samples_fx**2 * samples_qx**-1) / sum(samples_qx**-1) ) + weighted_mean**2
         
         # non_weighted_mean = (1/len(samples)) * np.sum(samples_fx)
@@ -130,6 +356,7 @@ def weighted_mean_test(base_run_dir):
     plt.legend()
     figure.tight_layout()
     figure.savefig(os.path.join(save_dir,'weighted_mean.png'))
+    plt.close(figure)
     
     figure = plt.figure()
     plt.plot(num_samples, np.abs(np.array(weighted_means)-truest_mean), '-o')
@@ -142,6 +369,7 @@ def weighted_mean_test(base_run_dir):
     plt.legend()
     figure.tight_layout()
     figure.savefig(os.path.join(save_dir,'weighted_mean_error.png'))
+    plt.close(figure)
 
     figure = plt.figure()
     plt.plot(num_samples[1:], np.abs(np.diff(np.array(weighted_means))), '-o')
@@ -153,24 +381,31 @@ def weighted_mean_test(base_run_dir):
     plt.legend()
     figure.tight_layout()
     figure.savefig(os.path.join(save_dir,'weighted_mean_diff.png'))
+    plt.close(figure)
     print('FINISHED WEIGHTED MEAN TEST')
         
     
-def sasg_test(base_run_dir, cycle_num='all'):
+def sasg_test(base_run_dir, cycle_num='all', isMMMG=False, name='', sasg_type='get_sasg'):
     print('STARTING SASG TEST')
     parameters, bounds, parent_model, value_of_interest = get_config_info(base_run_dir)
     parameters_labels = get_parameters_labels(base_run_dir)
     cycle_dirs = get_cycle_dirs(base_run_dir)
-    try:
-        df_cycle_info = pd.read_csv(os.path.join(base_run_dir, 'all_cycle_info.csv'))
-    except:
-        try:
-            df_cycle_info = pd.read_csv(os.path.join(base_run_dir, 'all_post_cycle_info.csv'))
-        except:
-            raise FileNotFoundError('neither',os.path.join(base_run_dir, 'all_cycle_info.csv'), '\n or this was found', os.path.join(base_run_dir, 'all_post_cycle_info.csv'))
+    num_cycle_dirs = len(cycle_dirs)
+    # try:
+    #     if name=='boundary_tree_':
+    #         df_cycle_info = pd.read_csv(os.path.join(base_run_dir, name+'all_cycle_info.csv'))
+    #     else:
+    #         df_cycle_info = pd.read_csv(os.path.join(base_run_dir, 'all_cycle_info.csv'))
+    # except:
+    #     try:
+    #         if name=='boundary_tree_':
+    #             df_cycle_info = pd.read_csv(os.path.join(base_run_dir, name+'all_post_cycle_info.csv'))
+    #         else:
+    #             df_cycle_info = pd.read_csv(os.path.join(base_run_dir, 'all_post_cycle_info.csv'))
+    #     except:
+    #         raise FileNotFoundError('neither',os.path.join(base_run_dir, 'all_cycle_info.csv'), '\n or this was found', os.path.join(base_run_dir, 'all_post_cycle_info.csv'))
             
-            
-    save_dir = os.path.join(base_run_dir, 'sasg_test')
+    save_dir = os.path.join(base_run_dir, name+'sasg_test')
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
     
@@ -179,41 +414,38 @@ def sasg_test(base_run_dir, cycle_num='all'):
     elif type(cycle_num)==type(1):
         # cycle_dirs = [f'active_cycle_{cycle_num}']
         cycle_dirs = cycle_dirs[-cycle_num:]
+    elif 'every' in cycle_num:
+        every_int = int(cycle_num.split('-')[-1])
+        cycle_dirs = [cd for i,cd in enumerate(cycle_dirs) if i%every_int==0]
     if type(cycle_num)==type([]):
         cycle_dirs = cycle_dirs[cycle_num]
 
     # Get test points from parent function if they exist
     test_x, test_y = get_test_set(base_run_dir)
-    
-    print('debug test x', test_x.shape)
-    
+        
     MAPE=[]
     ME=[]
     RMSE=[]
     SURP = []
     nr=1 
-    nc=3
+    nc=6
     w=5
     h=4.8
     compare_index = np.linspace(0,len(cycle_dirs), nc*nr).astype('int')
     compare_index[-1] -= 1
     subfig, AX = plt.subplots(nr,nc, figsize=(nc*w,nr*h), sharey=True, sharex=True)
     compare_index2 = np.array([0])
+    key_outliers = np.empty((3,len(parameters)))
+    num_samples = []
     for i, cycle_dir in enumerate(cycle_dirs):
-        print('='*100, '\n SPARSE GRID TEST','\n CYCLE DIR:',cycle_dir, 'OUT OF:', len(cycle_dirs), '='*100)
-        sasg = get_sasg(os.path.join(base_run_dir,cycle_dir))
+        print('='*100, '\n SPARSE GRID TEST','\n CYCLE DIR:',cycle_dir, '||', i, 'OUT OF:', len(cycle_dirs), '='*100)
+        # sasg = get_sasg(os.path.join(base_run_dir,cycle_dir), name=name)
+        sasg=eval(f"{sasg_type}('{os.path.join(base_run_dir,cycle_dir)}')")
+        num_samples.append(len(sasg.train))
         if not os.path.exists(os.path.join(base_run_dir,cycle_dir, 'pysgpp_grid.txt')):
             pass
-        grid_file_path = os.path.join(base_run_dir,cycle_dir, 'pysgpp_grid.txt')
-        surpluses_file_path = os.path.join(base_run_dir,cycle_dir, 'surpluses.mat')
-        train_points_file = os.path.join(base_run_dir,cycle_dir, 'train_points.pkl')
-        with open(grid_file_path, 'r') as file:
-            serialized_grid = file.read()
-            sasg.grid = pysgpp.Grid.unserialize(serialized_grid)
-            surpluses = pysgpp.DataVector.fromFile(surpluses_file_path)
-            sasg.alpha = surpluses
-            print('sg size:',sasg.grid.getStorage().getSize())
-        SURP.append(np.mean(np.abs(np.array(surpluses.array()))))
+        
+        SURP.append(np.mean(np.abs(np.array(sasg.alpha.array()))))
         # eval = lambda point: sasg.surrogate_predict([tuple(point)])[0]
         eval_many = lambda points: sasg.surrogate_predict(points)
         
@@ -221,11 +453,11 @@ def sasg_test(base_run_dir, cycle_num='all'):
         residuals = test_y - test_pred
         squared_error = residuals**2
         percentage_error = np.abs(residuals/test_y)*100
-        # sasg_2 = get_sasg(cycle_dir=os.path.join(base_run_dir,cycle_dir))
         
         def plot_error(error, name='error'):
+            out = []
             hb_comp=None
-            x_test, y_test = get_test_set(base_run_dir)      
+            x_test, y_test = get_test_set(base_run_dir)
             fig = plt.figure()
             hb = plt.hexbin(test_y, error, gridsize=50, cmap='plasma', bins=None, mincnt=1)
             error = np.abs(error)
@@ -233,8 +465,8 @@ def sasg_test(base_run_dir, cycle_num='all'):
                         
             if name=='Residuals':
                 indexes=np.arange(len(test_y))
-                
-                x_outlier = np.array(x_test[error>2*error_std])#error_std])
+                x_outlier = np.array(x_test[error>2*error_std])#error_std]) 
+                out.append(x_outlier)
                 fig_ph, AX_ph = plt.subplots(1,len(parameters), figsize=(5*len(parameters),5))
                 for k, p in enumerate(parameters_labels):
                     AX_ph[k].hist(x_outlier.T[k])
@@ -242,15 +474,30 @@ def sasg_test(base_run_dir, cycle_num='all'):
                     AX_ph[k].set_xlabel(p)
                     AX_ph[k].set_title(f'N. outliers: {len(x_outlier)}')
                 fig_ph.tight_layout()
-                fig_ph.savefig(os.path.join(base_run_dir,cycle_dir, name+'_outliers_hist.png'),dpi=200)
-                
+                fig_ph.savefig(os.path.join(base_run_dir,cycle_dir, sasg_type+'_'+name+'_outliers_hist.png'),dpi=200)
+                plt.close(fig_ph)
                 if i in compare_index:
+                    print('COMPARING CYCLE DIR:',cycle_dir)
                     hb_comp = AX.flat[compare_index2[0]].hexbin(test_y, error, gridsize=50, cmap='plasma', bins=None, mincnt=1)
+                    # AX.flat[compare_index2[0]].scatter(test_y[error>2*error_std], error[error>2*error_std], color = 'black')
                     if compare_index2[0]==0:
                         AX.flat[compare_index2[0]].set_ylabel(f'{name}, {value_of_interest}')
                     AX.flat[compare_index2[0]].set_xlabel(f'{parent_model}, {value_of_interest}')
-                    AX.flat[compare_index2[0]].set_title(f"N. GENE Eval: {df_cycle_info['num_samples'].loc[i]}")
+                    AX.flat[compare_index2[0]].set_title(f"N. GENE Eval: {len(sasg.train)}")
                     if i == compare_index[-1]:
+                        y_outlier = np.array(y_test[error>2*error_std])
+                        figy = plt.figure()
+                        plt.hist(y_outlier)
+                        plt.xlabel(value_of_interest)
+                        plt.ylabel('frequency of outliers')
+                        figy.tight_layout()
+                        figy.savefig(os.path.join(save_dir, f'{value_of_interest}_outlier_hist.png'), dpi=300)
+                        plt.close(figy)
+                        
+                        key_outliers_indexes = [np.argmax(error[error>2*error_std]), np.argsort(error[error>2*error_std])[len(error[error>2*error_std])//2], np.argmin(error[error>2*error_std])]
+                        key_outliers = x_outlier[key_outliers_indexes]
+                        out.append(key_outliers)
+                        AX.flat[compare_index2[0]].scatter(test_y[error>2*error_std][key_outliers_indexes], error[error>2*error_std][key_outliers_indexes], marker='x', color='black', label='key outliers')
                         AX.flat[compare_index2[0]].hlines(2*error_std, np.min(test_y), np.max(test_y), linewidths=6)
                         # Create a divider for the existing axes instance
                         divider = make_axes_locatable(AX.flat[compare_index2[0]])
@@ -258,7 +505,6 @@ def sasg_test(base_run_dir, cycle_num='all'):
                         cax = divider.append_axes("right", size="5%", pad=0.05)
                         # Create the colorbar in the new axes
                         plt.colorbar(hb_comp, cax=cax)
-
                     compare_index2[0] += 1
             plt.ylabel(f'{name}, {value_of_interest}')
             plt.xlabel(f'{parent_model}, {value_of_interest}')
@@ -267,7 +513,7 @@ def sasg_test(base_run_dir, cycle_num='all'):
             cb.set_label('Test Point Density')
             
             fig.tight_layout()
-            fig.savefig(os.path.join(base_run_dir, cycle_dir, f'{name}_plot_hexbin.png'), dpi=200)
+            fig.savefig(os.path.join(base_run_dir, cycle_dir, f'{sasg_type}_{name}_plot_hexbin.png'), dpi=200)
             plt.close(fig)
 
             fig = plt.figure()
@@ -276,15 +522,18 @@ def sasg_test(base_run_dir, cycle_num='all'):
             plt.hlines(error_std, np.min(test_y), np.max(test_y))
             plt.xlabel(f'{parent_model}, {value_of_interest}')
             fig.tight_layout()
-            fig.savefig(os.path.join(base_run_dir, cycle_dir, f'{name}_plot_scatter.png'), dpi=200)
+            fig.savefig(os.path.join(base_run_dir, cycle_dir, f'{sasg_type}_{name}_plot_scatter.png'), dpi=200)
             plt.close(fig)
-            
-            return hb_comp
+            return out
         
         plot_error(squared_error, name='Squared_Error')
         plot_error(percentage_error, name='Percentage_Error')
-        hb_comp = plot_error(residuals, name='Residuals')
-
+        out = plot_error(residuals, name='Residuals')
+        if len(out)>1:
+            x_outlier, key_outliers = out[0], out[1]
+        else:
+            x_outlier = out[0]
+            
         mape = np.mean(np.abs(residuals/test_y)*100)
         me = np.mean(np.abs(residuals))
         rmse = np.sqrt(np.mean(residuals**2))
@@ -299,8 +548,7 @@ def sasg_test(base_run_dir, cycle_num='all'):
     
     def plot_errorVsamples(error, name):
         fig = plt.figure()
-        print('debug cycle info num samples', df_cycle_info['num_samples'])
-        plt.plot(df_cycle_info['num_samples'], error, '-o')
+        plt.plot(num_samples, error, '-o')
         plt.xlabel(f'Number of {parent_model} Evaluations')
         plt.ylabel(f'{value_of_interest}, {name}')
         fig.tight_layout()
@@ -312,7 +560,17 @@ def sasg_test(base_run_dir, cycle_num='all'):
     plot_errorVsamples(ME, 'Mean Err')
     plot_errorVsamples(RMSE, 'Root_Mean_Squared_Error')
     plot_errorVsamples(SURP, 'Mean Surplus')
-    print('FINISHED WEIGHTED MEAN TEST')
+    
+    if isMMMG:
+        plot_outlier_slices_MMMG(base_run_dir, key_outliers, x_outliers=x_outlier, cycle_dirs=np.array(cycle_dirs)[compare_index], base_save_dir=save_dir, sasg_type=sasg_type)
+    
+    if len(sasg.anchor_boundary_points) > 0:
+        dif = []
+        for box_point, value in sasg.anchor_boundary_points:
+            dif.append(sasg.predict(box_point))
+        print('BOUNDARY INFERENCE TEST, should be 0',dif[0], np.sum(dif))
+    
+    print('FINISHED SASG TEST')
     
     
 def parse_run_dir(run_dir, parameters):
@@ -375,8 +633,8 @@ def parse_run_dir(run_dir, parameters):
     # print('output', output)
     return ','.join(return_list)
 
-def get_predict_from_cycle_dir(cycle_dir):
-    sasg = get_sasg(cycle_dir)
+def get_predict_from_cycle_dir(cycle_dir, sasg_type='get_sasg'):
+    sasg = eval(f"{sasg_type}(cycle_dir)")
     grid_file_path = os.path.join(base_run_dir,cycle_dir, 'pysgpp_grid.txt')
     surpluses_file_path = os.path.join(base_run_dir,cycle_dir, 'surpluses.mat')
     train_points_file = os.path.join(base_run_dir,cycle_dir, 'train_points.pkl')
@@ -388,33 +646,34 @@ def get_predict_from_cycle_dir(cycle_dir):
     # eval = lambda point: sasg.surrogate_predict([tuple(point)])[0]
     return sasg.surrogate_predict
 
-def get_sasg(cycle_dir):
-    # print('GETTING sasg FROM:', cycle_dir)
-    base_run_dir = os.path.dirname(cycle_dir)
-    listdir = os.listdir(base_run_dir)
-    config_file_name = [name for name in listdir if '.yaml' in name]
-    if len(config_file_name) > 1:
-        raise FileNotFoundError('More than one .yaml file in base_run_dir, not sure which to use as config file')
-    config_file_name = config_file_name[0]
-    config = load_configuration(os.path.join(base_run_dir, config_file_name))
-    bounds=np.array(config.sampler['bounds'])
-    parameters = config.sampler['parameters']
+# def get_sasg(cycle_dir):
+#     # print('GETTING sasg FROM:', cycle_dir)
     
-    sasg = SpatiallyAdaptiveSparseGrids(bounds, parameters)
+#     base_run_dir = os.path.dirname(cycle_dir)
+#     listdir = os.listdir(base_run_dir)
+#     config_file_name = [name for name in listdir if '.yaml' in name]
+#     if len(config_file_name) > 1:
+#         raise FileNotFoundError('More than one .yaml file in base_run_dir, not sure which to use as config file')
+#     config_file_name = config_file_name[0]
+#     config = load_configuration(os.path.join(base_run_dir, config_file_name))
+#     bounds=np.array(config.sampler['bounds'])
+#     parameters = config.sampler['parameters']
     
-    grid_file_path = os.path.join(cycle_dir, 'pysgpp_grid.txt')
-    surpluses_file_path = os.path.join(cycle_dir, 'surpluses.mat')
-    train_points_file = os.path.join(cycle_dir, 'train_points.pkl')
-    with open(grid_file_path, 'r') as file:
-        serialized_grid = file.read()
-        sasg.grid = pysgpp.Grid.unserialize(serialized_grid)
-        sasg.gridStorage = sasg.grid.getStorage()
-        sasg.gridGen = sasg.grid.getGenerator()
-        surpluses = pysgpp.DataVector.fromFile(surpluses_file_path)
-        sasg.alpha = surpluses
-    with open(train_points_file, 'rb') as file:
-        sasg.train = pickle.load(file)
-    return sasg
+#     sasg = SpatiallyAdaptiveSparseGrids(bounds, parameters)
+    
+#     grid_file_path = os.path.join(cycle_dir, 'pysgpp_grid.txt')
+#     surpluses_file_path = os.path.join(cycle_dir, 'surpluses.mat')
+#     train_points_file = os.path.join(cycle_dir, 'train_points.pkl')
+#     with open(grid_file_path, 'r') as file:
+#         serialized_grid = file.read()
+#         sasg.grid = pysgpp.Grid.unserialize(serialized_grid)
+#         sasg.gridStorage = sasg.grid.getStorage()
+#         sasg.gridGen = sasg.grid.getGenerator()
+#         surpluses = pysgpp.DataVector.fromFile(surpluses_file_path)
+#         sasg.alpha = surpluses
+#     with open(train_points_file, 'rb') as file:
+#         sasg.train = pickle.load(file)
+#     return sasg
 
 import pickle
 def get_predict_new_poly_degree(cycle_dir, new_poly_degree):
@@ -436,6 +695,7 @@ def get_predict_new_poly_degree(cycle_dir, new_poly_degree):
     sasg.alpha = new_alpha
     print('sasg degree',sasg.grid.getDegree())
     return sasg.surrogate_predict
+
 
 def get_predict_with_bounds(cycle_dir):
     sasg = get_sasg(cycle_dir) 
@@ -492,7 +752,7 @@ def get_predict_with_bounds(cycle_dir):
     sasg.alpha = new_alpha
     return sasg.surrogate_predict
 
-def outlier_investigation(base_run_dir):
+def outlier_investigation(base_run_dir, sasg_type='get_sasg'):
     parameters, bounds, parent_model, value_of_interest = get_config_info(base_run_dir)
     parameters_labels = get_parameters_labels(base_run_dir)
     df_cycle_info = pd.read_csv(os.path.join(base_run_dir, 'all_cycle_info.csv'))
@@ -507,7 +767,7 @@ def outlier_investigation(base_run_dir):
     figure, AX = plt.subplots(1,5, figsize=(5*5,4.8), )
     
     for i, cycle_dir in enumerate(cycle_dirs):
-        sasg = get_sasg(cycle_dir)
+        sasg = eval(f"{sasg_type}(cycle_dir)")
         pred_y = sasg.surrogate_predict(test_x)
         error = np.abs(pred_y-test_y)
         error_std = np.sqrt(np.nanvar(error))
@@ -555,7 +815,7 @@ def outlier_investigation(base_run_dir):
     
     figure.tight_layout()
     figure.savefig(os.path.join(base_run_dir, 'outlier_investigation.png'), dpi = 200)
-    
+    plt.close(figure)
     
     
 def get_cycle_dirs(base_run_dir):
@@ -563,11 +823,9 @@ def get_cycle_dirs(base_run_dir):
     cycle_dirs = [d for d in listdir if 'active_cycle_' in d]
     
     ordinal = [int(d.split('_')[-1]) for d in cycle_dirs]
-    # print('='*100,'debug ordinal', ordinal, np.argsort(ordinal))
     
     cycle_dirs = np.array(cycle_dirs)[np.argsort(ordinal)]
     cycle_dirs = [os.path.join(base_run_dir,cycle_dir) for cycle_dir in cycle_dirs]
-    # print('debug cycle dirs',cycle_dirs)
     return cycle_dirs
 
 def get_random_comparison(base_run_dir):
@@ -597,7 +855,8 @@ def get_random_comparison(base_run_dir):
 def get_test_set(base_run_dir):
     print('RETRIVING TEST SET FROM', base_run_dir)
     config = get_config(base_run_dir)
-    test_dir = config.sampler['test_dir']    
+    test_dir = config.sampler['test_dir']
+    print('USING TEST DIR:',test_dir)
     
     # listdir = os.listdir(base_run_dir)
     # test_dir = None
@@ -685,7 +944,7 @@ def get_rmse_boundary(base_run_dir, cycle_dir_index=None):
         cycle_dirs = [cycle_dirs[cycle_dir_index]]
         
     for cycle_dir in cycle_dirs:
-        print('CYCLE DIR', cycle_dir)
+        print('get_rmse_boundary: CYCLE DIR', cycle_dir)
         eval_many = get_predict_with_bounds(cycle_dir)
         pred_y = eval_many(test_x)
         # max_residuals.append(np.max(np.abs(test_y - pred_y)))
@@ -738,6 +997,46 @@ def hyper_scan_poly_degree(base_run_dir, poly_degrees:list):
     fig.savefig(os.path.join(base_run_dir,'hyper_scan_poly_degree.png'),dpi=200)
     plt.close(fig)
 
+def plot_outlier_slices_MMMG(base_run_dir, key_outliers, x_outliers, cycle_dirs=None, base_save_dir=None, sasg_type='get_sasg'):
+    print('PLOTTING OUTLIER SLICES')
+    if base_save_dir == None: 
+        save_dir = os.path.join(base_run_dir,'outlier_slices')
+    else:
+        save_dir = os.path.join(base_save_dir,'outlier_slices')
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir)
+    
+    if type(cycle_dirs) == type(None):    
+        cycle_dirs = get_cycle_dirs(base_run_dir)
+        
+    config = get_config(base_run_dir)
+    value_of_interest = config.general.get('value_of_interest', 'function value')
+    parent_model = config.general.get('simulation_name', 'Parent Model')
+    parameters, bounds = get_parameters_bounds(base_run_dir)
+    from runners.MMMGrunner import MMMGrunner
+    runner = MMMGrunner(**config.executor['static_executor']['runner'])
+    
+    cycle_dirs = list(set(cycle_dirs))
+    for cycle_dir in cycle_dirs:
+        print('plot_outlier_slices_MMMG, CYCLE DIR:', cycle_dir)
+        sasg = eval(f"{sasg_type}(cycle_dir)")
+        eval_many = lambda points: sasg.surrogate_predict(points)
+        # eval_single = lambda point: sasg.surrogate_predict([tuple(point)])[0]
+        fig_contours = plot_matrix_contour(function=eval_many, bounds=bounds, dimension_labels=parameters, points=x_outliers, indicies_to_do=None)
+        fig_contours.suptitle(f"N_Evals_{len(sasg.train)}")
+        fig_contours.tight_layout()
+        fig_contours.savefig(os.path.join(save_dir,'contours_outliers.png'), dpi=300)
+        plt.close(fig_contours)
+        for i, outlier in enumerate(key_outliers):
+            slices = runner.mmg.get_slices(nominals=outlier)
+            fig_slices = plot_slices(function=eval_many, bounds=bounds, dimension_labels=parameters, ylabel=value_of_interest, parent_model=parent_model, slices=slices, nominals=outlier)
+            
+            title = f"N_Evals_{len(sasg.train)}_outlier_{i}"
+            fig_slices.suptitle(title)
+            fig_slices.tight_layout()
+            fig_slices.savefig(os.path.join(save_dir, title))
+            plt.close(fig_slices)
+
 def inspect_outliers(base_run_dir):
     save_dir = os.path.join(base_run_dir, 'inspect_outliers')
     if not os.path.exists(save_dir):
@@ -763,12 +1062,12 @@ def inspect_outliers(base_run_dir):
             for j, p in enumerate(parameters):
                 print(p, x_test[i][j])
     
-def test_boundary_hypothesis(base_run_dir):
+def test_boundary_hypothesis(base_run_dir, sasg_type='get_sasg'):
     cycle_dirs = get_cycle_dirs(base_run_dir)
     # cycle_dir = cycle_dirs[-1]
     
-    for cycle_dir in cycle_dirs:
-        sasg = get_sasg(cycle_dir)
+    for cycle_dir in [cycle_dirs[-1]]:
+        sasg = eval(f"{sasg_type}(cycle_dir)")
         
         test_x, test_y = get_test_set(base_run_dir)
         unit_test_x = sasg.points_transform_box2unit(test_x)
@@ -778,36 +1077,54 @@ def test_boundary_hypothesis(base_run_dir):
         parameters, bounds, parent_model, value_of_interest = get_config_info(base_run_dir)
         
         closest_boarder_distance = []
+        average_boarder_distance = []
         for tx in unit_test_x:
             lower = np.abs(tx-bounds.T[0])
             upper = np.abs(tx-bounds.T[1])
             closest_boarder_distance.append(np.min([lower,upper]))
+            average_boarder_distance.append(np.mean([np.mean(lower), np.mean(upper)]))
         
         fig = plt.figure()
         plt.hexbin(closest_boarder_distance, residuals, gridsize=50, cmap='plasma', bins=None, mincnt=1)
         plt.xlabel('Closest Boarder Distance')
         plt.ylabel('|Residual|')
         fig.tight_layout()
-        fig.savefig(os.path.join(cycle_dir,'boundary_hypothesis_hexbin.png'),dpi=200)
+        fig.savefig(os.path.join(cycle_dir,sasg_type+'_boundary_hypothesis_hexbin.png'),dpi=200)
         plt.close(fig)
+
+        # fig = plt.figure()
+        # plt.hexbin(average_boarder_distance, residuals, gridsize=50, cmap='plasma', bins=None, mincnt=1)
+        # plt.xlabel('Average Boarder Distance')
+        # plt.ylabel('|Residual|')
+        # fig.tight_layout()
+        # fig.savefig(os.path.join(cycle_dir,sasg_type+'_avbd_boundary_hypothesis_hexbin.png'),dpi=200)
+        # plt.close(fig)
         
-        fig = plt.figure()
-        plt.scatter(closest_boarder_distance, residuals)
-        plt.xlabel('Closest Boarder Distance')
-        plt.ylabel('|Residual|')
-        fig.tight_layout()
-        fig.savefig(os.path.join(cycle_dir,'boundary_hypothesis_scatter.png'),dpi=200)
-        plt.close(fig)
+        # fig = plt.figure()
+        # plt.scatter(closest_boarder_distance, residuals)
+        # plt.xlabel('Closest Boarder Distance')
+        # plt.ylabel('|Residual|')
+        # fig.tight_layout()
+        # fig.savefig(os.path.join(cycle_dir,'boundary_hypothesis_scatter.png'),dpi=200)
+        # plt.close(fig)
 
 if __name__ == '__main__':
     _, base_run_dir = sys.argv
     # outlier_investigation(base_run_dir)
-    weighted_mean_test(base_run_dir)
+    # weighted_mean_test(base_run_dir)
     
-    sasg_test(base_run_dir)
+    # sasg_test(base_run_dir, cycle_num='every-30', isMMMG=True, name='boundary_tree_')
+    # sasg_test(base_run_dir, cycle_num='every-30', isMMMG=True, name='_0_boundary')
+    # sasg_test(base_run_dir, cycle_num='every-20', isMMMG=True, name='boundary_anchors_')
+
+    # sasg_test(base_run_dir, cycle_num='every-4', isMMMG=True, name='')
+
+    # montecarlo_UQ_test(base_run_dir, sasg_type='get_sasg_zero_bounds')
+    # trunc1d(base_run_dir)
     
+    MCvsQUAD(base_run_dir, sasg_type='get_sasg')
     # hyper_scan_poly_degree(base_run_dir,poly_degrees=[3,4,5,6,7,8,9,10,11,20])
-    inspect_outliers(base_run_dir)
+    # inspect_outliers(base_run_dir)
     
     # test_boundary_hypothesis(base_run_dir)
     
