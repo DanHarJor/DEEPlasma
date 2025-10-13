@@ -1124,16 +1124,16 @@ if __name__ == '__main__':
     # sasg_test(base_run_dir, cycle_num='every-30', isMMMG=True, name='_0_boundary')
     # sasg_test(base_run_dir, cycle_num='every-20', isMMMG=True, name='boundary_anchors_')
 
-    # sasg_test(base_run_dir, cycle_num='every-4', isMMMG=True, name='')
+    sasg_test(base_run_dir, cycle_num='every-1', isMMMG=False, name='larger_set')
 
     # montecarlo_UQ_test(base_run_dir, sasg_type='get_sasg_zero_bounds')
     # trunc1d(base_run_dir)
     
-    MCvsQUAD(base_run_dir, sasg_type='get_sasg')
+    # MCvsQUAD(base_run_dir, sasg_type='get_sasg')
     # hyper_scan_poly_degree(base_run_dir,poly_degrees=[3,4,5,6,7,8,9,10,11,20])
     # inspect_outliers(base_run_dir)
     
-    test_boundary_hypothesis(base_run_dir)
+    # test_boundary_hypothesis(base_run_dir)
     
     # get_rmse_boundary(base_run_dir)
     

@@ -76,7 +76,7 @@ def random_comparison(base_run_dir, fname='all_post_cycle_info.csv', compare_run
         # plt.hlines(true_mean, np.min(df['num_samples']), np.max(df['num_samples']), label='mmg expectation')
     else:
         x_test, y_test = get_test_points_brd(base_run_dir)
-        true_mean = np.mean(y_test)
+        true_mean = np.nanmean(y_test)
     plt.hlines(true_mean, np.min(df['num_samples']), np.max(df['num_samples']), label='truest expectation')
     plt.plot(df['num_samples'].to_numpy()+df['num_anchor_points'] ,df['mean'], label='sasg', marker='o')
     plt.plot(df_test['num_samples'], df_test['mean'], '--', color='green', label='Sobol sequence', marker='o')
@@ -222,7 +222,7 @@ if __name__ == '__main__':
     #                 '/scratch/project_2007848/DANIEL/data_store/full_12D/MMMG_static_grid',
     #                 '/scratch/project_2007848/DANIEL/data_store/full_12D/active_GPyOPT_12D_MMMG']
     # # print('debug', compare_dir, type(compare_dir))
-    random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=700, name='xlim700_')
+    # random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=700, name='xlim700_')
     # random_comparison(base_run_dir, compare_run_dirs=compare_dirs, do_sensitivity=False, do_tree=False, xlim=700, name='xlim700_')
     
 
