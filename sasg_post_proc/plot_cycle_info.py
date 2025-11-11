@@ -10,8 +10,13 @@ def plot_cycle_info(base_run_dir):
     dfs = []
     for cycle_dir in cycle_dirs:
         print('CYCLE DIR:',cycle_dir)
-        dfs.append(pd.read_csv(os.path.join(cycle_dir, 'cycle_info.csv')))
-    
+        print('debug batch in cycle dir', 'batch' in cycle_dir)
+        if 'cycle' in cycle_dir:
+            dfs.append(pd.read_csv(os.path.join(cycle_dir, 'cycle_info.csv')))
+        elif 'batch' in cycle_dir:
+            dfi = pd.read_csv(os.path.join(cycle_dir, 'batch_info.csv'))
+            print('debug dfi',dfi)
+            dfs.append(dfi)
     df = pd.concat(dfs)
     
 
@@ -24,6 +29,7 @@ def plot_cycle_info(base_run_dir):
         plt.ylabel(col)
         fig.savefig(os.path.join(base_run_dir,col+'_cycle_info.png'))
         plt.close(fig)
+        
 def plot_post_cycle_info(base_run_dir, name='post_cycle_info_plots', fname='post_cycle_info.csv'):
     print('plotting cycle infor for:', base_run_dir)
     cycle_dirs = get_cycle_dirs(base_run_dir)
@@ -58,5 +64,5 @@ def plot_post_cycle_info(base_run_dir, name='post_cycle_info_plots', fname='post
 
 if __name__ == '__main__':
     _, base_run_dir = sys.argv
-    plot_post_cycle_info(base_run_dir)
+    plot_cycle_info(base_run_dir)
     # plot_post_cycle_info(base_run_dir, fname='boundary_anchors_cycle_info.csv', name='boundary_anchors_cycle_info_plots')

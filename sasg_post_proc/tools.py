@@ -19,16 +19,31 @@ print('j')
 import importlib
 print('k')
 sys.path.append('/users/danieljordan/enchanted-surrogates/src')
+sys.path.append('/users/danieljordan/enchanted_plugins/enchanted-surrogates/src/')
 # sys.path.append('/users/danieljordan/DEEPlasma')
 print('l')
 print('m')
 
+import re
+
 def sort_strings_by_number(strings):
-    return sorted(strings, key=lambda s: int(re.search(r'\d+', s).group()))
+    def extract_number(s):
+        match = re.search(r'\d+', s)
+        if match:
+            num = int(match.group())
+            return num if num != 0 else None  # Exclude '00' or '0'
+        return None  # Exclude strings with no number
+
+    # Filter out invalid entries
+    filtered = [s for s in strings if extract_number(s) is not None]
+
+    # Sort by extracted number
+    return sorted(filtered, key=lambda s: extract_number(s))
+
 
 def get_cycle_dirs(base_run_dir, cycle_num=None):
     listdir = os.listdir(base_run_dir)
-    cycle_dirs = [d for d in listdir if 'active_cycle_' in d]
+    cycle_dirs = [d for d in listdir if 'active_cycle_' in d or 'batch_' in d]
     cycle_dirs = sort_strings_by_number(cycle_dirs)
     cycle_dirs = [os.path.join(base_run_dir, c) for c in cycle_dirs]
     
@@ -112,7 +127,7 @@ def load_configuration(config_path: str) -> argparse.Namespace:
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
     config = argparse.Namespace(**config)
-    config.executor["config_filepath"] = config_path
+    # config.executor["config_filepath"] = config_path
     return config
 
 def get_MMMGrunner(base_run_dir):
@@ -130,6 +145,7 @@ def get_MMMGrunner(base_run_dir):
 def get_sasg(cycle_dir, name=''):
     # import samplers
     from samplers.SpatiallyAdaptiveSparseGrids import SpatiallyAdaptiveSparseGrids
+    from enchanted_surrogates.samplers.sgpp_sampler import SgppSampler
     import pysgpp
 
     # print('GETTING sasg FROM:', cycle_dir)
@@ -140,10 +156,14 @@ def get_sasg(cycle_dir, name=''):
         raise FileNotFoundError('More than one .yaml file in base_run_dir, not sure which to use as config file')
     config_file_name = config_file_name[0]
     config = load_configuration(os.path.join(base_run_dir, config_file_name))
-    bounds=np.array(config.sampler['bounds'])
-    parameters = config.sampler['parameters']
+    # bounds=np.array(config.sampler['bounds'])
+    # parameters = config.sampler['parameters']
     
-    sasg = SpatiallyAdaptiveSparseGrids(**config.sampler)
+    try:
+        sasg = SpatiallyAdaptiveSparseGrids(**config.sampler)
+    except Exception as e:
+        print('got exception:',e)
+        sasg = SgppSampler(**config.executor_kwargs['sampler_kwargs'])
     
     grid_file_path = os.path.join(cycle_dir, name+'pysgpp_grid.txt')
     surpluses_file_path = os.path.join(cycle_dir, name+'surpluses.mat')
